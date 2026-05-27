@@ -1,0 +1,92 @@
+﻿l_english:
+ # Court position DISPLAY NAMES are static — the engine generates modifier
+ # labels (e.g. "Senator: -2" in opinion breakdowns) from this loc key in a
+ # scope where [GetPlayer.Custom(...)] doesn't resolve, which previously
+ # produced empty ":  -2" labels. Vanilla positions are all static for the
+ # same reason. Culture flavor is preserved in the desc and in trait names
+ # (those evaluate in character scope, where Custom works).
+ senator_court_position:0 "Senator"
+ senator_court_position_desc:0 "A [GetPlayer.Custom('GetSenateSenatorName')] holds a seat in the Senate of Magnaura, advising the Basileus on matters of state and ceremony. The position is a high honour reserved for direct vassals of the empire."
+ senator_court_position_extra_employer_modifier_desc:0 "Strengthens the dignity and counsel of the imperial court."
+
+ patrician_court_position:0 "Patrician"
+ patrician_court_position_desc:0 "A [GetPlayer.Custom('GetSenatePatricianName')] is a noble of patrician rank, named to the broader body of the Senate of Magnaura by the Basileus. Patricians are direct vassals of the empire honoured for life with this dignity, though the emperor may revoke it."
+ patrician_court_position_extra_employer_modifier_desc:0 "Adds to the prestige and ceremonial weight of the imperial court."
+
+ # Raw culture-variant strings consumed by the customizable_localization functions.
+ SENATE_NAME_HYPATOS_GREEK:0 "Hypatos"
+ SENATE_NAME_HYPATOS_LATIN:0 "Hypatus"
+ SENATE_NAME_SENATOR_GREEK:0 "Synkletikos"
+ SENATE_NAME_SENATOR_LATIN:0 "Senator"
+ SENATE_NAME_PATRICIAN_GREEK:0 "Patrikios"
+ SENATE_NAME_PATRICIAN_LATIN:0 "Patricius"
+
+ # Plural forms — proper Greek (-oi) and Latin (-i / -ores) endings.
+ SENATE_NAME_HYPATOS_GREEK_PLURAL:0 "Hypatoi"
+ SENATE_NAME_HYPATOS_LATIN_PLURAL:0 "Hypati"
+ SENATE_NAME_SENATOR_GREEK_PLURAL:0 "Synkletikoi"
+ SENATE_NAME_SENATOR_LATIN_PLURAL:0 "Senators"
+ SENATE_NAME_PATRICIAN_GREEK_PLURAL:0 "Patrikioi"
+ SENATE_NAME_PATRICIAN_LATIN_PLURAL:0 "Patricians"
+
+ senate_approval_high_modifier:0 "Senate Acclamation"
+ senate_approval_high_modifier_desc:0 "The Senate of Magnaura hails $trait_autocrator_ercf$ as a worthy heir to the emperors of old. Their public acclamation lends weight to the throne."
+
+ senate_approval_low_modifier:0 "Senate Discontent"
+ senate_approval_low_modifier_desc:0 "The Senate of Magnaura mutters in the colonnades of the palace. The Basileus has lost their goodwill, and the empire as a whole feels the chill."
+
+ senate_dynasty_dominance_modifier:0 "Senate of One House"
+ senate_dynasty_dominance_modifier_desc:0 "The Senate of Magnaura has been captured by a single dynastic faction. The court whispers that the senate no longer speaks for the empire as a whole."
+
+ senate_anointed_modifier:0 "Anointed by the Magnaura"
+ senate_anointed_modifier_desc:0 "The Senate of Magnaura, satisfied with the conduct of the previous reign, has hailed this Basileus as a worthy successor. Their endorsement strengthens the imperial dignity at the very start of the new reign."
+
+ senate_war_blessed_modifier:0 "Senate-Sanctioned War"
+ senate_war_blessed_modifier_desc:0 "The Magnaura assembled and gave its blessing to this campaign. The senate's public sanction lends imperial authority to the war effort, easing legitimacy and steeling the treasury."
+
+ SENATE_BUTTON:0 "#bold Senate of Magnaura#!\n#weak Convene the imperial senate.#!"
+ SENATE_WINDOW_TITLE:0 "Senate of Magnaura"
+ SENATE_APPROVAL_LABEL:0 "Approval:"
+ SENATE_REIGNING_BASILEUS:0 "Reigning Basileus"
+ SENATE_EMPEROR_FLAVOR:0 "Presiding sovereign of [GetPlayer.GetPrimaryTitle.GetNameNoTooltip]."
+ SENATE_TIER_HOSTILE:0 "The senate is hostile."
+ SENATE_TIER_INDIFFERENT:0 "The senate is indifferent."
+ SENATE_TIER_APPROVING:0 "The senate approval is high."
+
+ # ----------------------------------------------------------------------
+ # Hover tooltip for the approval bar (window_senate.gui).
+ # Approval has two variants gated on the soft-cap threshold (>= 80).
+ # ----------------------------------------------------------------------
+
+ SENATE_APPROVAL_TOOLTIP_HEADER:0 "#T Senate Approval#!\nCurrent: #high [GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_approval').GetValue|0]#! / 100\nLast year: [GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_approval_last_year').GetValue|0]   #weak (change:#! [Subtract_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_approval').GetValue, GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_approval_last_year').GetValue )|=+0]#weak )#!"
+
+ SENATE_APPROVAL_TOOLTIP_NORMAL:0 "#weak Yearly drift (next pulse):#!\n$BULLET$ Baseline: #N −3#!\n$BULLET$ Hypatos (×+1.5): #P +[Multiply_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_hypatus_count').GetValue, '(CFixedPoint)1.5' )|1]#!\n$BULLET$ Senators (×+1.0): #P +[Multiply_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_senators_count').GetValue, '(CFixedPoint)1' )|0]#!\n$BULLET$ Patricians (×+0.5): #P +[Multiply_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_patricians_count').GetValue, '(CFixedPoint)0.5' )|1]#!\n#weak #P +0.5#weak / yr per friendly senate member (opinion ≥ 50) and #N -0.25#weak / yr per displeased one (opinion < 0).#!\n\nNet projected change next year: [Add_CFixedPoint( '(CFixedPoint)-3', Add_CFixedPoint( Multiply_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_hypatus_count').GetValue, '(CFixedPoint)1.5' ), Add_CFixedPoint( Multiply_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_senators_count').GetValue, '(CFixedPoint)1' ), Multiply_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_patricians_count').GetValue, '(CFixedPoint)0.5' ) ) ) )|=+1]"
+
+ SENATE_APPROVAL_TOOLTIP_SOFTCAP:0 "#weak Yearly drift (next pulse) — #high soft cap active#weak  (approval ≥ 80, positive contributions halved):#!\n$BULLET$ Baseline: #N −3#!\n$BULLET$ Hypatos (×+0.75): #P +[Multiply_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_hypatus_count').GetValue, '(CFixedPoint)0.75' )|2]#!\n$BULLET$ Senators (×+0.5): #P +[Multiply_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_senators_count').GetValue, '(CFixedPoint)0.5' )|1]#!\n$BULLET$ Patricians (×+0.25): #P +[Multiply_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_patricians_count').GetValue, '(CFixedPoint)0.25' )|2]#!\n#weak #P +0.5#weak / yr per friendly senate member (opinion ≥ 50) and #N -0.25#weak / yr per displeased one (opinion < 0).#!\n\nNet projected change next year: [Add_CFixedPoint( '(CFixedPoint)-3', Add_CFixedPoint( Multiply_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_hypatus_count').GetValue, '(CFixedPoint)0.75' ), Add_CFixedPoint( Multiply_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_senators_count').GetValue, '(CFixedPoint)0.5' ), Multiply_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_patricians_count').GetValue, '(CFixedPoint)0.25' ) ) ) )|=+2]"
+
+ SENATE_APPROVAL_TOOLTIP_THRESHOLDS:0 "\n#weak Thresholds:#!\n$BULLET$ Below 40 — #N the senate is hostile#! (penalties)\n$BULLET$ At or above 70 — #P the senate is approving#! (bonuses)\n$BULLET$ At or above 80 — soft cap halves positive contributions"
+
+ SENATE_FILLED_PORTRAIT_TOOLTIP:0 "[CourtPosition.GetEmployee.GetUINameNoTooltip]\n#weak This dignity can be revoked from court positions.#!"
+ SENATE_HYPATUS_VACANT_NAME:0 "Vacant"
+
+ # ----- War-blessed notification toast -----
+ senate_war_blessed_toast:0 "#high The Senate of Magnaura sanctions this campagin!#!"
+
+ SENATE_VACANT_SENATOR:0 "Vacant senator's seat\n#weak A direct vassal may be elevated to fill this dignity.#!"
+ SENATE_VACANT_PATRICIAN:0 "Vacant patrician's dignity\n#weak A direct vassal may be honoured with this rank.#!"
+ SENATE_HYPATUS_HEADER:0 "[GetPlayer.Custom('GetSenateHypatosName')]"
+ SENATE_SENATORS_HEADER:0 "[GetPlayer.Custom('GetSenateSenatorPlural')]"
+ SENATE_PATRICIANS_HEADER:0 "[GetPlayer.Custom('GetSenatePatricianPlural')]"
+
+ hypatus_court_position:0 "Consul"
+ hypatus_court_position_desc:0 "The [GetPlayer.Custom('GetSenateHypatosName')] is the foremost dignitary of the Senate of Magnaura — first among senators, presiding over the senatorial body and standing nearest the Basileus in matters of imperial counsel. Reserved for a direct vassal of the empire."
+ hypatus_court_position_extra_employer_modifier_desc:0 "Anchors the dignity of the senate and the prestige of the imperial court."
+
+ SENATE_VACANT_HYPATUS:0 "Vacant Hypatos seat\n#weak A direct vassal may be elevated to the foremost senatorial dignity.#!"
+
+ # Custom name loc keys for historical scholar characters to avoid vanilla shadowing.
+ basileus_name_jordanes:0 "Jordanes"
+ basileus_name_vigilius:0 "Vigilius"
+
+ senate_peer_opinion:0 "Fellow Dignitary of the Magnaura"
+

@@ -1,0 +1,118 @@
+﻿l_english:
+ # ─── Story panel ───
+ story_bulgarian_gambit:0 "The Bulgarian Gambit"
+ story_bulgarian_gambit_desc:0 "The schism with the West has cooled, but the question of Bulgaria's church — and Bulgaria's crown — lies an open question."
+ BULGARIAN_GAMBIT_INFO_STRING:0 "The Bulgarians play one against the other to win an autocephalous church, and to keep a free crown. We shall not allow it."
+ BG_REALM:0 "The Bulgarian Crown"
+ BG_BULGARIAN_RULER:0 "Ruler of Bulgaria"
+ BG_PATRIARCH:0 "Our Patriarch"
+ BG_SPYMASTER:0 "Agent"
+ BG_SUBORNED_BOYARS:0 "Suborned Boyars"
+ BG_PROGRESS:0 "Progress of the Gambit"
+ BG_PROGRESS_MIN:0 "An idle Ambition"
+ BG_PROGRESS_MAX:0 "At the Precipice"
+
+ # ─── Decision ───
+ basileus_bulgarian_gambit_decision:0 "The Bulgarian Gambit"
+ basileus_bulgarian_gambit_decision_desc:0 "Although the schism had been cooled, the wound it opened has not. The Bulgarian church still wavers between Constantinople and the Pope, and Bulgaria itself stands as a rival crown upon our very doorstep."
+ basileus_bulgarian_gambit_decision_tooltip:0 "Subjugate Bulgaria to restore Roman mastery."
+ basileus_bulgarian_gambit_decision_confirm:0 "Let us begin the gambit."
+ basileus_bulgarian_gambit_independent_requirement:0 "Bulgaria is not already your vassal"
+
+ # ─── 0001 Opener ───
+ bulgarian_gambit.0001.t:0 "The Bulgarian Gambit: Prelude"
+ bulgarian_gambit.0001.desc:0 "Although [photios.GetFirstName] was deposed and the breach with [pope.GetTitledFirstName] papered over, the matter of Bulgaria and its sovereignty remains unsettled.\n\n[bulgarian_ruler.GetTitledFirstName] plays one against the other to win an autocephalous church, and to keep a free crown.\n\nWe shall not allow it.\n\n#emp #low Historical Context: When [basil.GetFirstName] seizes the throne in Constantinople, he founds himself lacking absolute legitimacy, and needs Western recognition. He immediately deposes Patriarch [photios.GetFirstName], reinstates the pro-Western Patriarch [ignatius.GetFirstName], and attempts to mend the schism with the Papacy.\n\nLater on, Pope [pope_nicolaus.GetFirstName] dies. Despite [boris.GetFirstName]' repeated and desperate requests, the new Pope rigidly refuses to appoint future Pope Formosus as Archbishop of Bulgaria, citing strict canonical laws against transferring bishops between sees.#!"
+ bulgarian_gambit.0001.desc.simple:0 "The old breach with Rome is papered over, yet the matter of Bulgaria and its sovereignty remains unsettled.\n\n[bulgarian_ruler.GetTitledFirstName] plays Greek and Latin against one another to win an autocephalous church, and to keep a free crown.\n\nWe shall not allow it."
+ bulgarian_gambit.0001.a:0 "Press our claims."
+ bulgarian_gambit.0001.b:0 "Subvert the boyars before the bishops."
+
+ # ─── 0002 Contest of Churches ───
+ bulgarian_gambit.0002.t:0 "The Bulgarian Gambit: The Contest of Churches"
+ bulgarian_gambit.0002.desc:0 "Papal legates ride north with the [Glossary( 'Responsa', 'RESPONSA_GLOSS' )] in hand; our own clergy ready to answer in kind. Bulgaria has become a prize contested between two sees, and whoever wins its altars wins the first hold upon its people."
+ bulgarian_gambit.0002.a:0 "Offer concessions."
+ bulgarian_gambit.0002.b:0 "Threaten to sever them from the church entirely."
+
+ # ─── 0003 Reactive demand (Bulgarian ruler) ───
+ bulgarian_gambit.0003.t:0 "The Bulgarian Gambit: A Demand from the City"
+ bulgarian_gambit.0003.desc:0 "An embassy arrives from [basileus.GetTitledFirstName]. The terms are velvet-wrapped iron: acknowledge the supremacy of Constantinople over the Bulgarian church, and bend the knee in matters of faith — or be named a schismatic and an enemy of the Romans."
+ bulgarian_gambit.0003.a:0 "Submit. The church is not worth a war with the Empire."
+ bulgarian_gambit.0003.b:0 "Defy them."
+
+ # ─── 0004 Subversion of the Boyars ───
+ bulgarian_gambit.0004.t:0 "The Bulgarian Gambit: Subversion of the Boyars"
+ bulgarian_gambit.0004.desc:0 "Bulgaria's great men are proud, but pride has a price, and Constantinople has never been short of gold. A faction among the boyars has let it be known that their loyalty is for sale — or that they might prefer a different master on the throne."
+ bulgarian_gambit.0004.a:0 "Buy a faction of boyars outright."
+ bulgarian_gambit.0004.b:0 "Cultivate a discontented pretender."
+
+ # ─── 0005 The Sword Drawn ───
+ bulgarian_gambit.0005.t:0 "The Bulgarian Gambit: At the Precipice"
+ bulgarian_gambit.0005.desc:0 "The clergy have done what clergy can; the coin has bought what coin can buy. The rest must be settled by the force of arms.\n\nOur former lands — the [Glossary( 'Haemimontus', 'HAEMIMONTUS_GLOSS' )] and the [Glossary( 'Paristrion', 'PARISTRION_GLOSS' )] — must be taken whole. Let our jurists draw up the pretext for a war of subjugation, and let the tagmata march.\n\n#weak We may now declare war on the Bulgarians.#!"
+ bulgarian_gambit.0005.a:0 "Marshal the tagmata!"
+ bulgarian_gambit.0005.unlock_toast:0 "The #high Subjugation of Bulgaria#! casus belli is now available."
+
+ # ─── 0006 Foreign Complication ───
+ bulgarian_gambit.0006.t:0 "The Bulgarian Gambit: Papal Protests"
+ bulgarian_gambit.0006.desc:0 "Word of our designs has reached the West. The Pope's envoys protest that Bulgaria is a Christian realm, not a province to be swallowed, and murmur of the rights of churches and kings."
+ bulgarian_gambit.0006.a:0 "Ignore them. The East is ours to order."
+
+ # ─── 0007 / 0008 The Eagles March (war declaration) ───
+ bulgarian_gambit.0007.t:0 "The Bulgarian Gambit: The March"
+ bulgarian_gambit.0007.desc:0 "The pretext is drawn, the dromons crewed, the themata called to muster. The roads south from Adrianople fill with the standards of the Roman Empire, and the passes of the Haemus lie open before us.\n\nThe Bulgarians have no choice but to meet us in battle."
+ bulgarian_gambit.0007.a:0 "For our glorious Empire!"
+ bulgarian_gambit.0008.t:0 "The Imperial Regiments Arrive"
+ bulgarian_gambit.0008.desc:0 "Word races up from the Haemus: [basileus.GetTitledFirstName] has crossed the frontier in force. The Roman regiments are upon the passes, and the bells of Pliska and Preslav ring the alarm. There will be no diplomacy this time, only the force of arms."
+ bulgarian_gambit.0008.a:0 "Then we fight."
+ bulgarian_gambit.0006.b:0 "Mollify the Pope with a quiet gift."
+
+ # ─── 0051 Failure ───
+ bulgarian_gambit.0051.t:0 "The Bulgarian Gambit: The Gambit Undone"
+ bulgarian_gambit.0051.desc:0 "The war is over, and the Bulgarian heartland is not ours. The tagmata return diminished, the boyars we courted fall silent, and the court that once whispered of a second Justinian now whispers only of overreach.\n\nThe design is broken. Bulgaria endures, and the chance will not come again in our time."
+ bulgarian_gambit.0051.a:0 "So passes the dream of the Danube."
+
+ # ─── 0050 Climax ───
+ bulgarian_gambit.0050.t:0 "The Bulgarian Gambit: Fall of the Bulgarian Crown"
+ bulgarian_gambit.0050.desc:0 "The frontier is ours, from the walls of the City to the slopes of the Haemus. The Bulgarian crown, stripped of its strength and surrounded, can no longer stand as an equal of the Roman Empire.\n\nLet it be dissolved henceforth."
+ bulgarian_gambit.0050.a:0 "We are masters of the region once more."
+
+ # ─── Subjugation casus belli ───
+ BASILEUS_BULGARIAN_SUBJUGATION_CB_NAME:0 "Subjugation of Bulgaria"
+ BASILEUS_BULGARIAN_SUBJUGATION_WAR_NAME:0 "[ConcatIfNeitherEmpty('$ORDER|q$', ' ')][ATTACKER.GetPrimaryTitle.GetAdjective] Subjugation of Bulgaria"
+ BASILEUS_BULGARIAN_SUBJUGATION_WAR_NAME_BASE:0 "[ATTACKER.GetPrimaryTitle.GetAdjective][DEFENDER.GetPrimaryTitle.GetName]"
+ basileus_bulgarian_subjugation_cb_name:0 "Subjugation of Bulgaria"
+ basileus_bulgarian_subjugation_cb_desc:0 "Wage total war upon the Bulgarian crown to seize the lands of the Bulgarian Crown, for the Empire."
+ basileus_bulgarian_subjugation_cb_short_name:0 "Subjugation"
+ basileus_bulgarian_subjugation_cb_victory_desc:0 "The [Glossary( 'Haemimontus', 'HAEMIMONTUS_GLOSS' )] and the [Glossary( 'Paristrion', 'PARISTRION_GLOSS' )] is back under our jurisdiction."
+ basileus_bulgarian_subjugation_cb_white_peace_desc:0 "The war ends without resolution."
+ basileus_bulgarian_subjugation_cb_defeat_desc:0 "The subjugation has failed."
+
+ # ─── Nickname (climax reward) ───
+ nick_basileus_bulgar_slayer:0 "the Bulgar-Slayer"
+
+ # ─── Reward modifier ───
+ basileus_subjugator_of_bulgaria:0 "Subjugator of Bulgaria"
+ basileus_subjugator_of_bulgaria_desc:0 "This ruler broke the Bulgarian crown and restored Roman mastery over the Haemus."
+
+ # ─── Beat modifiers ───
+ bg_pressing_the_claim:0 "Pressing the Patriarch's Claim"
+ bg_pressing_the_claim_desc:0 "We press Constantinople's authority over the Bulgarian church, and the faithful take note of our zeal."
+ bg_contest_of_churches:0 "Contest of Churches"
+ bg_contest_of_churches_desc:0 "The bidding war for Bulgaria's altars sharpens our prelates and our wits alike."
+ bg_boyars_in_pocket:0 "Boyars in Our Pocket"
+ bg_boyars_in_pocket_desc:0 "A faction of Bulgarian boyars takes our gold, and with it our whispers travel north."
+ bg_tagmata_mustered:0 "Tagmata: Mustered"
+ bg_tagmata_mustered_desc:0 "The imperial regiments are gathered and provisioned for the Bulgarian frontier."
+ bg_defiance_of_rome:0 "Papal Defiance"
+ bg_defiance_of_rome_desc:0 "We have rebuffed Papal protests over Bulgaria, and the City applauds our resolve."
+ bg_cowed_by_the_city:0 "Cowed by the City"
+ bg_cowed_by_the_city_desc:0 "We bent the knee to Constantinople in matters of faith, and our own lords think us the lesser for it."
+ bg_defiant_of_the_greeks:0 "Defiant of the Greeks"
+ bg_defiant_of_the_greeks_desc:0 "We spurned Constantinople's demands, and our lords stand the prouder for our defiance — though the Greeks will not forget it."
+ bg_humbled_by_bulgaria:0 "Humbled before Bulgaria"
+ bg_humbled_by_bulgaria_desc:0 "The war to break Bulgaria failed, and the court remembers the overreach."
+
+
+ # ─── Glossaries ───
+
+ RESPONSA_GLOSS:0 "The Pope's reply, the #emp Responsa Nicolai ad consulta Bulgarorum#!, is a lengthy and detailed document that outlines the canonical reasons for refusing to appoint Formosus as Archbishop of Bulgaria."
+ HAEMIMONTUS_GLOSS:0 "Haemimontus was originally a Late Roman province, taking its name from the Haemus Mountains."
+ PARISTRION_GLOSS:0 "Paristrion was a Eastern Roman military-administrative frontier region along the Lower Danube."

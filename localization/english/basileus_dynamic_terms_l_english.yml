@@ -1,0 +1,12 @@
+﻿l_english:
+ # ─── Culture-conditional terms (Greek fallback / eastern_roman Latin) ───
+ BASILEUS_TERM_SARACEN_GREEK:0 "Hagarene"
+ BASILEUS_TERM_SARACEN_LATIN:0 "Saracen"
+
+ # ─── Senate game concept (static name + tooltip) ───
+ game_concept_senate:0 "Senate"
+ game_concept_senate_desc:0 "The #high Senate of Magnaura#! is the assembled body of the empire's dignitaries — [GetPlayer.Custom('GetSenateSenatorPlural')] and [GetPlayer.Custom('GetSenatePatricianPlural')] drawn from the direct vassals of the throne. It lends the [autocrator|E] the acclamation and counsel of the aristocracy, and its approval shapes the legitimacy of each reign."
+
+ # ─── Enemy demonym game concept (dynamic name + tooltip) ───
+ game_concept_saracen:0 "[GetPlayer.Custom('GetEnemyDemonym')]"
+ game_concept_saracen_desc:0 "A collective term for the Muslim powers that hold the lost eastern provinces — the caliphates and emirates whose rule the reconquest seeks to undo."

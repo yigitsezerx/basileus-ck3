@@ -1,0 +1,10 @@
+﻿l_english:
+ BASILEUS_IMPERIAL_SUBJUGATION_CB_NAME:0 "Grand Imperial Expedition"
+ BASILEUS_IMPERIAL_SUBJUGATION_WAR_NAME:0 "[ConcatIfNeitherEmpty('$ORDER|q$', ' ')][ATTACKER.GetPrimaryTitle.GetAdjective] Reclamation of [TITLE.GetBaseName]"
+ BASILEUS_IMPERIAL_SUBJUGATION_WAR_NAME_BASE:0 "[ATTACKER.GetPrimaryTitle.GetAdjective][DEFENDER.GetPrimaryTitle.GetName]"
+ basileus_imperial_subjugation_cb_name:0 "Imperial Expedition"
+ basileus_imperial_subjugation_cb_desc:0 "In the hour of our glorious Triumph, wage a Grand Imperial Expedition to reclaim an entire region — seizing it and all its lands held by our foes."
+ basileus_imperial_subjugation_cb_short_name:0 "Imperial Expedition"
+ basileus_imperial_subjugation_cb_victory_desc:0 "The Grand Imperial Expedition succeeds."
+ basileus_imperial_subjugation_cb_white_peace_desc:0 "$basileus_imperial_subjugation_cb_short_name$ ends without resolution."
+ basileus_imperial_subjugation_cb_defeat_desc:0 "The Imperial Expedition has failed."

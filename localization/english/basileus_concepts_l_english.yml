@@ -1,0 +1,130 @@
+﻿l_english:
+ game_concept_logothetes: "Logothetes"
+ game_concept_logothetes_desc: "The #emp Logothetes#! was a high-ranking official in the later Roman administrative hierarchy. Depending on their specific department, they oversaw diplomacy, the public post, or various financial treasuries. The #high Logothetes ton Sekreton#! eventually evolved into a de facto prime minister, overseeing all other civil departments."
+ 
+ game_concept_domestic_schools: "Domestic of the Schools"
+ game_concept_domestic_schools_desc: "The #high Domestic of the Schools#! (Domesticus ton Scholon) was originally the commander of the elite tagmata guard regiments stationed in Constantinople. Over time, the office evolved into the supreme commander of the field armies, eventually split into Domestic of the East and West. It represents the pinnacle of the Byzantine military hierarchy."
+ 
+ game_concept_stratelates: "Stratēlatēs"
+ game_concept_stratelates_desc: "#high Stratēlatēs#! was a supreme military rank and title of honor in the later Roman Empire. Functionally equivalent to the Latin [magister_militum|E], the Stratēlatēs oversaw the strategic command, administration, and training of the imperial field forces."
+ 
+ game_concept_magister_militum: "Magister Militum"
+ game_concept_magister_militum_desc: "#high Magister Militum#!, "Master of Soldiers" was the highest military rank in the later Roman Empire. Originally established as two separate commands for the infantry and cavalry, the office became the pinnacle of the Roman military hierarchy, responsible for the Emperor's field armies across the provinces."
+ 
+ game_concept_magister_officiorum: "Magister Officiorum"
+ game_concept_magister_officiorum_desc: "The #high Magister Officiorum#! (Master of Offices) was one of the most powerful administrative positions in the late Roman and early Byzantine state. They controlled the imperial secretariats, the palace guard, the public post, and the state's intelligence networks. In the Byzantine Ministry system, they are responsible for the administration of personnel and appointments."
+ 
+ game_concept_sakellarios: "Sakellarios"
+ game_concept_sakellarios_desc: "The #high Sakellarios#! served as the general comptroller of the empire. Armed with the power to audit all departments and oversee the imperial treasury, the Sakellarios ensured the financial stability and integrity of the state's resources."
+ 
+ game_concept_quaestor: "Quaestor"
+ game_concept_quaestor_desc: "The #high Quaestor#! was the chief legal officer of the Empire. Responsible for drafting imperial laws and overseeing the administration of justice, the Quaestor ensured that the Emperor's rule was conducted according to the law and established precedent."
+ 
+ game_concept_patriarch: "Patriarch"
+ game_concept_patriarch_desc: "The #high Ecumenical Patriarch of Constantinople#! is the highest spiritual authority in the Eastern Orthodox world. Residing in the capital, the Patriarch works in [symphonia|E] with the Emperor to guide the faithful and safeguard the traditions of the Church."
+ 
+ game_concept_eparch: "Eparch"
+ game_concept_eparch_desc: "Often referred to as the #high Father of the City#!.\n\nThe #high Eparch of Constantinople#! held supreme judicial and administrative authority over the capital city. the Eparch regulated the markets, the guilds, and the public infrastructure, maintaining order in the heart of the Empire."
+ 
+ game_concept_praefectus: "Praefectus"
+ game_concept_praefectus_desc: "The #high Praefectus#! is the Latin-derived title for the high-ranking administrative officer in charge of public works and development. In the Byzantine context, this role is functionally linked to the [eparch|E] of Constantinople, combining urban administration with imperial construction projects."
+ 
+ game_concept_praepositus: "Praepositus Sacri Cubiculi"
+ game_concept_praepositus_desc: "The #high Praepositus Sacri Cubiculi#! (Grand Chamberlain) was the head of the imperial household. Often held by a trusted eunuch, the chamberlain oversaw all palace ceremonies and acted as the primary gatekeeper to the Emperor's personal presence."
+ 
+ game_concept_symphonia: "Symphonia"
+ game_concept_symphonia_desc: "The #high Symphonia#! is the Byzantine principle of 'harmony' between the State and the Church. It views the Emperor and the Patriarch as two heads of a single body politic, working together to guide the physical and spiritual well-being of Christendom."
+
+ game_concept_great_palace: "Great Palace"
+ game_concept_great_palace_desc: "The #high Great Palace of Constantinople#! was the primary residence of the Byzantine Emperors for over eight hundred years. A sprawling complex of pavilions, gardens, and churches, it served as the administrative heart of the Empire and the seat of the Imperial Council."
+ 
+ game_concept_blachernae_palace: "Blachernae Palace"
+ game_concept_blachernae_palace_desc: "The #high Palace of Blachernae#!, located in the northwestern corner of Constantinople, became the primary imperial residence in the late Byzantine period. Known for its imposing fortifications and strategic position near the city walls, it replaced the older Great Palace as the center of imperial power."
+
+ game_concept_autocrator:0 "Autocrator"
+ game_concept_autokrator:0 "Autocrator"
+ game_concept_autocrator_desc:0 "An #emp Autocrator#! is a sovereign who exercises absolute authority over the Roman state, bypassing the traditional bureaucracy and the Senate to rule by divine right and iron will.\n\nTo the Romans, the Autocrator is the ultimate arbiter of justice, the supreme commander of the armies, and the vicegerent of God on Earth. Achieving this status requires a ruler to consolidate power through military victory, administrative dominance, and the ruthless suppression of internal rivals."
+
+ game_concept_constantine_the_great:0 "Constantine the Great"
+ game_concept_constantine_the_great_desc:0 "#emp Constantine the Great#!, the founder of Constantinople, is said to be the first Roman Emperor to convert to Christianity. His reign marked a pivotal turning point in world history, establishing the [symphonia|E] between the Roman state and the Church. He is traditionally regarded as one of the Equal-to-the-Apostles, a sacred dignity that subsequent legendary Emperors have sought to emulate."
+
+ game_concept_isapostolos:0 "Equal-to-the-Apostles"
+ game_concept_isapostolos_desc:0 "The dignity of #emp Equal-to-the-Apostles#!, is the highest sacred honor the Roman state and Church can bestow upon a sovereign. It implies that the Emperor's role in safeguarding and spreading the faith is equal in spiritual importance to that of the original Apostles.\n\nHistorically granted to figures like [constantine_the_great|E], it marks a ruler not just as a political master, but as a holy protector of the Christian world and a primary agent of divine will on Earth."
+
+ game_concept_exalted_among_men:0 "Exalted among Men"
+ game_concept_exalted_among_men_desc:0 "The fourth level of [prestige|E]. An #emp Exalted among Men#! ruler is recognized throughout the known world as a figure of immense significance, whose actions shape the course of history. Maintaining this status is a prerequisite for being recognized as [isapostolos|E]."
+
+ game_concept_paragon_of_virtue:0 "Paragon of Virtue"
+ game_concept_paragon_of_virtue_desc:0 "The fourth level of [piety|E]. A #emp Paragon of Virtue#! is seen as a living example of their faith's tenets, respected by clergy and laity alike for their unwavering commitment to religious ideals. Maintaining this status is a prerequisite for being recognized as [isapostolos|E]."
+
+ game_concept_rhomaios:0 "Rhōmaîos"
+ game_concept_rhomaios_desc:0 "The term #EMP Rhōmaîos#! was the primary self-identification of the medieval Greek-speaking inhabitants of the Roman Empire. While they spoke Greek, they viewed themselves as the direct successors of the ancient Roman state and culture.\n\nIn this context, being #high Roman#! was a political and religious identity rather than an ethnic one."
+
+ game_concept_triumph:0 "Triumph"
+ game_concept_triumph_desc:0 "A $game_concept_triumph$ is a supreme honor awarded to a victorious commander, or the Emperor. Originating in ancient Rome as a ritualized procession through the capital to celebrate military success, it evolved in the later Roman era into a sacred manifestation of the Emperor's divine favor. In Constantinople, this #emp adventus#! celebrated the sovereign as the chosen vessel of victory and the undisputed master of the Roman world."
+
+ 
+  game_concept_logothetes_dromou: "Logothetēs tou Dromou"
+  game_concept_logothetes_dromou_desc: "The Logothete of the Course was responsible for the public post, internal security, and foreign affairs. They acted as the de facto prime minister and main point of contact for foreign ambassadors."
+  
+  game_concept_parakoimomenos: "Parakoimōmenos"
+  game_concept_parakoimomenos_desc: "Literally "the one who sleeps near"', this high official was often a trusted eunuch who managed the palace and acted as the Emperor's personal confidant and chief of security."
+  
+  game_concept_megas_domestikos: "Megas Domestikos"
+  game_concept_megas_domestikos_desc: "The Grand Domestic was the supreme commander of the Roman field armies, surpassing all other generals in rank and authority."
+  
+  game_concept_logothetes_genikou: "Logothetēs tou Genikou"
+  game_concept_logothetes_genikou_desc: "The Logothete of the Genikon was the minister in charge of the general financial department, overseeing state taxation, the census, and the general budget. In the Roman council, they serve as the [steward|E]."
+  
+  game_concept_logothetes_kanikleiou: "Chartoularios tou Kanikleiou"
+  game_concept_logothetes_kanikleiou_desc: "The Keeper of the Inkstand was the and head of the imperial chancellery. They were responsible for drafting imperial documents and managing the civil service bureaucracy."
+  
+  game_concept_sakellarios_greek: "Sakellarios"
+  game_concept_sakellarios_greek_desc: "The Sakellarios served as the general comptroller of the empire, with the power to audit all departments and oversee the imperial treasury."
+  
+  game_concept_stratopedarches: "Stratopedarchēs"
+  game_concept_stratopedarches_desc: "The Stratopedarchēs was a high military rank responsible for the administration, camp management, and logistics of the imperial armies."
+  
+  game_concept_logothetes_ton_sekreton: "Logothetēs ton Sekretōn"
+  game_concept_logothetes_ton_sekreton_desc: "The Logothete of the Secretariats was a high-ranking official who acted as a coordinator between various administrative departments, eventually evolving into a de facto prime minister."
+  
+  game_concept_megas_oikonomos: "Megas Oikonomos"
+  game_concept_megas_oikonomos_desc: "The Grand Oikonomos was the high official responsible for the financial administration of the Great Church and the management of ecclesiastical property."
+  
+  game_concept_logothetes_praitoriou: "Logothetēs tou Praitōriou"
+  game_concept_logothetes_praitoriou_desc: "The Logothete of the Praetorium was a high judicial official responsible for the administration of the law and the maintenance of order."
+  
+  game_concept_eparchos: "Eparchos"
+  game_concept_eparchos_desc: "The Eparch of Constantinople held supreme judicial and administrative authority over the capital city, its guilds, and its markets."
+  
+  game_concept_domestikos_ton_scholon: "Domestikos ton Scholon"
+  game_concept_domestikos_ton_scholon_desc: "The Domestic of the Schools was the commander of the elite Scholae Palatinae regiments and often served as the supreme field commander in the East or West."
+ 
+  game_concept_tagma: "Tagma"
+  game_concept_tagmata: "Tagmata"
+  game_concept_tagmata_desc: "#high Tagmata#! were the elite, professional regiments of the later Roman army, primarily garrisoned in and around the capital. Unlike the thematic forces, which were regional militias, the Tagmata formed a permanent, central strategic reserve under the direct command of the Emperor. They served as the core of imperial expeditionary forces and as a prestigious school for future military leaders."
+
+ # BASILEUS - PANDECTS GAME CONCEPT
+
+ game_concept_pandects:0 "Pandects"
+ game_concept_pandects_desc:0 "The #high Pandects#!, also known as the #high Digest#!, is one of the great monuments of Roman law. A vast compendium of juristic writings commissioned by the Emperor [justinian_the_great|E] and compiled under the supervision of his chief legal minister, [tribonian|E], in the year 533 AD.\n\nDrawn from the works of over forty classical Roman jurists spanning five centuries of legal thought, the Pandects distilled the accumulated wisdom of Roman jurisprudence into a single authoritative collection. It formed the cornerstone of the [corpus_juris_civilis|E], the Body of Civil Law, alongside the Institutes, the Codex, and the Novels."
+
+ game_concept_justinian_the_great:0 "Justinian the Great"
+ game_concept_justinian_the_great_desc:0 "#high Flavius Petrus Sabbatius Iustinianus#!, known to history as #high Justinian the Great#!, was the Roman Emperor from 527 to 565 AD. One of the most consequential rulers the roman world has ever known.\n\nBorn of humble origins in the province of #high Dardania#!, [justinian_the_great|E] rose through the court of his uncle, Emperor #high Justin I#!, whom he would eventually succeed. His reign was defined by an almost superhuman ambition: nothing less than the restoration of the old Roman Empire in its entirety.\n\nYet [justinian_the_great|E]'s most enduring legacy was not won on the battlefield. His sweeping reform of Roman law, the [corpus_juris_civilis|E], codified centuries of legal tradition into a single coherent body of law that would go on to form the foundation of legal systems across Europe for more than a millennium. His construction of the #high Hagia Sophia#! redefined what architecture could aspire to be.\n\nAlas, he was not without controversy. His relentless wars exhausted the treasury. His religious policies fractured the Church. His wife, the formidable Empress #high Theodora#!, wielded power in ways that scandalized and fascinated in equal measure."
+
+ game_concept_tribonian:0 "Tribonian"
+ game_concept_tribonian_desc:0 "#high Tribonianus#!, known in Greek as #high Tribonianos#!, was the foremost legal mind of the age of [justinian_the_great|E], and the man most responsible for the monumental achievement of the [corpus_juris_civilis|E].\n\nBorn in Pamphylia around 485 AD, Tribonian rose through the imperial bureaucracy on the strength of his extraordinary learning. By the time [justinian_the_great|E] commissioned the great legal reform of 528 AD, there was no more qualified man in the empire to lead it. Appointed quaestor of the palace, the empire's chief legal officer, Tribonian assembled and directed the committees of jurists that would produce, in rapid succession, the Codex, the [pandects|E], and the Institutes.\n\n[pandects|E] alone represented a feat of almost incomprehensible scholarly labour. In three years, Tribonian's commission read, evaluated, and distilled the writings of over forty classical Roman jurists, some three million lines of legal text, into a coherent and authoritative collection of one hundred and fifty thousand lines. It was, by any measure, one of the greatest acts of intellectual organization in the ancient world."
+ 
+ game_concept_corpus_juris_civilis:0 "Corpus Juris Civilis"
+ game_concept_corpus_juris_civilis_desc:0 "The #high Corpus Juris Civilis#!, or Body of Civil Law, is the monumental codification of Roman law commissioned by Emperor [justinian_the_great|E] in the 6th century AD. It consists of four main parts: the #high Codex Justinianus#!, a compilation of imperial constitutions, the Digests, or [pandects|E], the #high Institutiones#!, a legal textbook for students, and the #high Novellae Constitutiones#!, new laws enacted after 534 AD. [corpus_juris_civilis|E] served as the foundation for legal systems in many European countries and remains a cornerstone of civil law traditions worldwide."
+
+ game_concept_jordanes_the_historian:0 "Jordanes"
+ game_concept_jordanes_the_historian_desc:0 "#high Jordanes#! was a 6th-century historian of Gothic origin who wrote in Latin during the reign of [justinian_the_great|E]. A Romanized Goth who served as a #high notarius#! (bureaucratic secretary) in the imperial administration, he is best known for two works: the #high Romana#!, a summary of Roman history from the founding of the city to the age of Justinian, and the #high Getica#!, a history of the Gothic peoples from their mythical origins to their settlement within the Roman world.\n\nThe Getica, in particular, is remarkable. Based in part on the lost twelve-volume history of [cassiodorus|E], it is the only surviving Latin-language narrative of the Gothic migrations and their transformation from barbarian invaders to Roman foederati. Jordanes wrote it around 551 AD, in #high Constantinople#!."
+
+ game_concept_romana_et_getica:0 "Romana et Getica"
+ game_concept_romana_et_getica_desc:0 "The [romana_et_getica|E] are the twin historical works of [jordanes_the_historian|E], composed in Latin around 551 AD in Constantinople.\n\nThe #high Romana#! (#high De summa temporum vel origine actibusque gentis Romanorum#!) is a condensed history of the Roman people from the founding of the city to the reign of [justinian_the_great|E]. Drawing on earlier chronicles, it traces the arc of Roman civilization from republic to empire to the turbulent transformations of the 6th century.\n\nThe #high Getica#! (#high De origine actibusque Getarum#!) is a history of the Gothic peoples, from their mythical Scandinavian origins through their migrations across Europe to their ultimate settlement as foederati within the Roman world. Based in part on the now-lost twelve-volume history of [cassiodorus|E], the Getica is the only surviving Latin-language account of the Gothic migration period.\n\nTogether, these works represent a unique literary achievement: a Gothic author writing in Latin about the very peoples who brought down the Western Roman Empire, composed in the capital of the Eastern Empire that survived."
+ game_concept_cassiodorus:0 "Cassiodorus"
+ game_concept_cassiodorus_desc:0 "#high Flavius Magnus Aurelius Cassiodorus Senator#!, known simply as #high Cassiodorus#!, was one of the most prominent Roman statesmen and scholars of the 6th century.\n\nServing under the Ostrogothic kings in Italy, most notably as #high magister officiorum#! to #high Theodoric the Great#!, Cassiodorus devoted his life to bridging the divide between the Roman and Germanic worlds. His greatest historical achievement was a twelve-volume #high History of the Goths#!, a work intended to show that the Goths were a noble people with a history as ancient and glorious as that of Rome itself.\n\nThough his Gothic history is now lost to time, it survived long enough to be abridged by [jordanes_the_historian|E] into the [romana_et_getica|E]. In his later years, Cassiodorus retired to his estate at #high Vivarium#!, where he established a monastery dedicated to the preservation of classical and sacred texts, ensuring that the light of learning would not be extinguished in the West."
+
+ game_concept_two_emperor_problem:0 "Two-Emperor Problem"
+ game_concept_two_emperor_problem_desc:0 "The #high Two-Emperor Problem#! is the historical contradiction between the idea of the #high universal empire#!, that there was only ever one true emperor at any one given time, and the truth that there were often multiple individuals who claimed the position simultaneously."

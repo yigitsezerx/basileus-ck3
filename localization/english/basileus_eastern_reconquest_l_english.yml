@@ -1,0 +1,194 @@
+﻿l_english:
+ # ─── Decision ────────────────────────────────────────────────────────────────
+ basileus_reclaim_the_east_decision:0 "Reclaim the East"
+ basileus_reclaim_the_east_decision_desc:0 "Once, the provinces of the East, Anatolia, Syria, the breadbasket itself, Egypt. They were the beating heart of the Roman world, the source of its grain, its silver, and its faith.\n\nThey have been lost for generations. The eastern frontier has bled inward, our victories at the frontiers of old have rusted into memory, and other powers now sit in the cities where Roman citizens once gathered.\n\nWith the heartlands of the empire secure beneath [ROOT.Char.GetTitledFirstName]'s personal hand, the moment to act has come. To raise the standards of the Romans once more."
+ basileus_reclaim_the_east_decision_tooltip:0 "#emp "He hastens gladly towards the necessities, and considers the toils to be a joy.#!"\n- [Glossary( 'George of Pisidia', 'GEORGE_PISIDIA_GLOSS' )]"
+ basileus_reclaim_the_east_decision_confirm:0 "I will restore our glorious Empire."
+ basileus_reclaim_the_east_decision_effect_tt:0 "An audience is convened with the foremost dignitary of the Senate. The reconquest of the East begins."
+
+ # ─── Event ───────────────────────────────────────────────────────────────────
+ basileus_eastern_reconquest.0001.t:0 "The Eastern Question"
+ basileus_eastern_reconquest.0001.desc:0 "The Magnaura is quiet after the session. The senators have been dismissed; only [eastern_advisor.GetTitledFirstName] remains, standing where the marble of the dais meets the porphyry of the floor.\n\n[eastern_advisor.GetSheHe|U] has heard the rumours, as has every dignitary in the City. The maps spread across the table are not the maps of yesterday's senate meeting. These are old maps, with old borders and names. #italic Antioch. Caesarea. Alexandria.#!\n\n[eastern_advisor.GetTitledFirstName] speaks at last, choosing the words carefully.\n\n#italic \"Your imperial serenity, the court has wondered, and now I must ask plainly. You mean to march east?\"#!\n\n[eastern_advisor.GetSheHe|U] pauses. The light from the high windows catches the gold of [eastern_advisor.GetHerHis] robe.\n\n#italic \"It would be a campaign such as no $trait_autocrator_ercf$ has dared since the days of Heraclius. The lost provinces and themes, the lost cities, the lost glory — all of it, reclaimed in a single reign? It is our duty as your #emp loyal#! subjects to follow you. But as i must be prudent in my counsel, the costs could be enormous.. The court whispers, and the City started watching the grain prices so keenly already. Your imperial serenity, it's a grand design indeed.\"#!\n\n[eastern_advisor.GetTitledFirstName] meets [ROOT.Char.GetTitledFirstName]'s eyes.\n\n#italic \"Yet, some may call it hubris.\"#!"
+ basileus_eastern_reconquest.0001.a:0 "#high It's only hubris #emp if#! I fail.#!"
+
+ # ─── Event 2: the struggle begins (primer) ──────────────────────────────────
+ basileus_eastern_reconquest.0002.t:0 "The Eastern Reconquests"
+ basileus_eastern_reconquest.0002.desc:0 "The proclamation goes out from the $BYZANTINE_COUNCIL_WINDOW_TITLE$ to every theme and tagma of the Empire: the East shall be in Roman hands once more.\n\nThe campaign will sure to unfold over a generation, from the first #emp Resolve#!, into the #emp Reconquests#! in earnest, and onward to either #emp Restoration#! or #emp Hubris#!. Every reconquered county, every converted province, every great city retaken pushes the struggle forward; lost ground and rebellion at home drag it back, and the defenders rally hardest when the Empire is closest to victory.\n\nWhen the whole of the Theodosian East is restored, the $trait_autocrator_ercf$ may #emp proclaim the Restored Empire#! and end the struggle in glory. Should fifty years pass without that victory, history will render its verdict.\n\n#weak Consult the Struggle window to track progress, catalysts, and the paths to its end.#!"
+ basileus_eastern_reconquest.0002.a:0 "We shall see how the situation develops."
+
+ # ─── Hubris timer event (50-year auto-fire) ──────────────────────────────────
+ basileus_eastern_reconquest.0050.t:0 "The Dream Slips Away"
+ basileus_eastern_reconquest.0050.desc:0 "Half a century has passed since the senate gathered in the Magnaura, since the maps of Antioch and Alexandria were spread across the porphyry floor, since the words were spoken: #italic It's only hubris if I fail.#!\n\nThe East has not been restored. The eagles have flown, and bled, and returned — but the lost provinces remain lost. The senators of today were not yet born when the campaign was declared. The grain ships of Alexandria still belong to other masters. The cathedrals of Antioch still echo with prayers in other tongues.\n\nThe court has gone silent on the subject. The maps have been rolled up. What was once the great work of [ROOT.Char.GetTitledFirstNamePossessive] House is, by quiet consensus, set aside.\n\nHistory will remember which it was."
+ basileus_eastern_reconquest.0050.a:0 "#N So it was hubris after all.#!"
+
+ # ─── Ending decisions ────────────────────────────────────────────────────────
+ basileus_eastern_reconquest_triumph_decision:0 "Proclaim the Theodosian Empire"
+ basileus_eastern_reconquest_triumph_decision_desc:0 "Once more, from the Bosphorus to the Nile!\n\nAntioch, Caesarea, and Alexandria are ours; the lost provinces have returned to the imperial fold. The work begun a generation ago is complete.\n\nLet the heralds proclaim it. Let the Magnaura ring with the acclamations, Roman glory is restored."
+ basileus_eastern_reconquest_triumph_decision_tooltip:0 "Available only when every county of the historic Theodosian East is held by the Basileus or one of [ROOT.Char.GetHerHis] vassals."
+ basileus_eastern_reconquest_triumph_decision_confirm:0 "Roman glory is restored."
+
+ basileus_eastern_reconquest_concede_decision:0 "Concede the Reconquest"
+ basileus_eastern_reconquest_concede_decision_desc:0 "The campaign is at an end. It seems what was promised will not come to pass, at least not in this reign.\n\nLet history call it what it will."
+ basileus_eastern_reconquest_concede_decision_tooltip:0 "Voluntarily end the Eastern Reconquests."
+ basileus_eastern_reconquest_concede_decision_confirm:0 "Alas.."
+
+ # ─── Ending modifiers ────────────────────────────────────────────────────────
+ basileus_restored_theodosian_empire:0 "Restorer of the Theodosian Empire"
+ basileus_restored_theodosian_empire_desc:0 "Restored the borders of Theodosius the Great."
+
+ basileus_hubris_of_the_east:0 "Hubris"
+ basileus_hubris_of_the_east_desc:0 "This character proclaimed the reconquest of the East, but alas, could not deliver it."
+
+ # ─── Geographical Regions ───────────────────────────────────────────────────────────────
+ custom_heartlands_ere:0 "Eastern Roman Heartlands"
+ custom_theodosian_ere:0 "Theodosian Eastern Empire"
+
+ # ─── Struggle (name + flavour) ───────────────────────────────────────────────
+ # The engine localizes a struggle by its BARE key (cf. vanilla
+ # `iberian_struggle:0 "Iberian Struggle"`), not a *_name suffix.
+ basileus_eastern_reconquest_struggle:0 "The Eastern Reconquests"
+ game_concept_basileus_eastern_reconquest_struggle:0 "Eastern Reconquests"
+ basileus_eastern_reconquest_struggle_name:0 "The Eastern Reconquests"
+ basileus_eastern_reconquest_struggle_desc:0 "A generation-defining campaign to reclaim the lost provinces of the East — Anatolia, the Levant, Egypt, and the cities of antiquity. Will it be remembered as triumph, or as hubris?"
+ basileus_eastern_reconquest_struggle_intro:0 "The Basileus has declared it. The senators have heard it. The eagles will fly east once more."
+ basileus_eastern_reconquest_struggle_future:0 "The campaign proceeds; the maps are redrawn yet again."
+ basileus_eastern_reconquest_struggle_past:0 "The Eastern Reconquest has concluded — for good or ill."
+
+ # ─── Struggle phases ─────────────────────────────────────────────────────────
+ struggle_eastern_reconquest_phase_resolve:0 "Resolve"
+ struggle_eastern_reconquest_phase_resolve_desc:0 "The declaration has been made and the $game_concept_tagma$ stir. The campaign has not yet begun in earnest, but every diplomat, every general, every senator knows the direction in which the Roman Empire now marches."
+
+ struggle_eastern_reconquest_phase_reconquest:0 "Conflict"
+ struggle_eastern_reconquest_phase_reconquest_desc:0 "Open conflicts along the border and in the field. Cities are besieged, claims pressed, treaties broken. The eastern provinces have not been so contested since the days of Heraclius."
+
+ struggle_eastern_reconquest_phase_triumph:0 "Triumph"
+ struggle_eastern_reconquest_phase_triumph_desc:0 "Roman arms carry all before them. The pace of reconquest is now unstoppable; the only question is how complete the restoration will be."
+
+ struggle_eastern_reconquest_phase_setback:0 "Stagnation"
+ struggle_eastern_reconquest_phase_setback_desc:0 "We have stumbled. While the [saracen|E] realms have rallied; our vassals back home grow doubtful. The campaign may yet recover, or it may be remembered as the great failure of the age."
+
+ # ─── Struggle effects category labels (referenced from struggle phases) ─────
+ WAR_EFFECTS_NAME:0 "Military"
+ FAITH_EFFECTS_NAME:0 "Faith"
+ CULTURE_EFFECTS_NAME:0 "Culture"
+ OTHER_EFFECTS_NAME:0 "Realm"
+
+ # ─── Custom catalysts ───────────────────────────────────────────────────────
+ catalyst_basileus_reconquered_eastern_county:0 "Reconquered an Eastern County"
+ catalyst_basileus_reconquered_eastern_county_desc:0 "A county within the historic Eastern Empire has been returned to Roman hands."
+ catalyst_basileus_eastern_culture_flipped:0 "Converted an Eastern County to a Roman Culture"
+ catalyst_basileus_eastern_culture_flipped_desc:0 "A county within the historic Eastern Empire has adopted Roman culture — the slow work of restoration."
+ catalyst_basileus_great_eastern_city_recovered:0 "Recovered a Great Eastern City"
+ catalyst_basileus_great_eastern_city_recovered_desc:0 "One of the great cities of the lost East — Antioch, Alexandria, or Jerusalem — has returned to the imperial fold. A defining moment of the campaign."
+ catalyst_basileus_eastern_county_faith_flipped_christian:0 "Converted an Eastern County to a Christian Faith"
+ catalyst_basileus_eastern_county_faith_flipped_christian_desc:0 "A county within the historic Eastern Empire now keeps the Christian faith — patiently undoing centuries of [saracen|E] rule."
+
+ # ----- Defender-side mirrors (push phases backward) -----
+ catalyst_basileus_roman_county_lost:0 "Lost an Eastern County to the [saracen|E]s"
+ catalyst_basileus_roman_county_lost_desc:0 "A county within the historic Eastern Empire has been taken from Roman hands. The reconquest falters."
+ catalyst_basileus_great_eastern_city_lost:0 "Lost a Great Eastern City"
+ catalyst_basileus_great_eastern_city_lost_desc:0 "One of the great cities of the East — Antioch, Alexandria, or Jerusalem — has been lost back to [saracen|E] rule. The campaign is in serious doubt."
+ catalyst_basileus_basileus_died_during_struggle:0 "$trait_autocrator_ercf$ Died During the Reconquest"
+ catalyst_basileus_basileus_died_during_struggle_desc:0 "$trait_autocrator_ercf$ is dead. The eastern reconquest stalls; the new $trait_autocrator_ercf$ must take up the work — or set it aside."
+
+ # ----- Wave 3: immersion + balance -----
+ catalyst_basileus_won_eastern_battle:0 "Won a Battle in the East"
+ catalyst_basileus_won_eastern_battle_desc:0 "Roman arms have prevailed in a field battle in the East."
+ catalyst_basileus_recovered_holy_site:0 "Recovered a Holy Site"
+ catalyst_basileus_recovered_holy_site_desc:0 "A sacred site of the Roman faith has been returned to Christian hands."
+ catalyst_basileus_converted_eastern_ruler:0 "Converted an Eastern Ruler"
+ catalyst_basileus_converted_eastern_ruler_desc:0 "A ruler of the East has embraced a Christian faith — a realm won without the sword."
+ catalyst_basileus_lost_eastern_battle:0 "Lost a Battle in the East"
+ catalyst_basileus_lost_eastern_battle_desc:0 "A [saracen|E] or a foreign mercenary army have bloodied a Roman army in the field."
+ catalyst_basileus_roman_vassal_revolt:0 "A Roman Vassal Revolts"
+ catalyst_basileus_roman_vassal_revolt_desc:0 "Rebellion at home divides Roman strength while the eastern campaign is underway."
+
+ # ─── Custom struggle phase parameter ────────────────────────────────────────
+ struggle_parameter_unlocks_basileus_roman_reclamation_casus_belli:0 "Unlocks the #emp Roman Reclamation#! [casus_belli|E] in the [struggle_region|E]"
+
+ # ─── Custom CB (Roman Reclamation) ──────────────────────────────────────────
+ # War names use ATTACKER / DEFENDER / TITLE scopes (per vanilla conquest
+ # CB convention — see CONQUEST_WAR_NAME / DUCAL_CONQUEST_WAR_NAME).
+ basileus_roman_reclamation_cb:0 "Roman Reclamation"
+ BASILEUS_ROMAN_RECLAMATION_CB_NAME:0 "Roman Reclamation"
+ BASILEUS_ROMAN_RECLAMATION_WAR_NAME:0 "[ConcatIfNeitherEmpty('$ORDER|q$', ' ')][ATTACKER.GetPrimaryTitle.GetAdjective] Reclamation of the [TITLE.GetBaseName]"
+ BASILEUS_ROMAN_RECLAMATION_WAR_NAME_BASE:0 "[ATTACKER.GetPrimaryTitle.GetAdjective][DEFENDER.GetPrimaryTitle.GetName]"
+ basileus_roman_reclamation_cb_name:0 "Roman Reclamation"
+ basileus_roman_reclamation_cb_desc:0 "Reclaim a duchy that lies within the historic Eastern Empire from a [saracen|E] holder."
+ basileus_roman_reclamation_cb_short_name:0 "Reclamation"
+ BASILEUS_RECLAMATION_COST_SCALING:0 "Already-reclaimed Eastern territory"
+ basileus_roman_reclamation_cb_victory_desc:0 "Our former territories return to the Roman fold."
+ basileus_roman_reclamation_cb_white_peace_desc:0 "The campaign ends without resolution."
+ basileus_roman_reclamation_cb_defeat_desc:0 "The reclamation has failed."
+
+ # ─── Glossaries ───────────────────────────────────────────────────────────────
+ GEORGE_PISIDIA_GLOSS:0 "George of Pisidia was a $greek$ poet, born in Pisidia. As an important early poet of Eastern Roman literature, he contributed a great deal to the formation of many of the main features of Eastern Roman poetry."
+
+ # ─── Missing catalyst localizations ──────────────────────────────────────────
+ catalyst_basileus_built_frontier_holding:0 "Built a Holding on the Frontier"
+ catalyst_basileus_built_frontier_holding_desc:0 "A new castle, city, or temple has been raised in the contested East — stone walls where once there were only ruins."
+ catalyst_basileus_filled_imperial_coffers:0 "Filled the Imperial War Chest"
+ catalyst_basileus_filled_imperial_coffers_desc:0 "The imperial treasury is full. The reconquest can be funded in earnest."
+ catalyst_basileus_captured_high_value_defender:0 "Captured a Noble Defender"
+ catalyst_basileus_captured_high_value_defender_desc:0 "A ruler or scion of the [saracen|E] defenders, or a rebellious individual has been taken captive by Roman arms."
+ catalyst_basileus_assassinated_eastern_caliph:0 "Assassinated a Caliph"
+ catalyst_basileus_assassinated_eastern_caliph_desc:0 "The Caliph is dead by a Roman hand. The [saracen|E]s have lost their spiritual leader."
+ catalyst_basileus_basileus_captured_in_battle:0 "The $trait_autocrator_ercf$ Taken Captive"
+ catalyst_basileus_basileus_captured_in_battle_desc:0 "The $trait_autocrator_ercf$ has been captured by the enemy. Roman morale falters, and the reconquest is in grave doubt."
+ catalyst_basileus_roman_bankrupt_in_struggle:0 "Imperial Bankruptcy"
+ catalyst_basileus_roman_bankrupt_in_struggle_desc:0 "The treasury is empty. The armies go unpaid, the siege engines rot, and the campaign grinds to a halt."
+
+ # ─── Triumphator character interaction ───────────────────────────────────────
+ grant_triumphator_interaction:0 "Acknowledge Triumphator"
+ grant_triumphator_interaction_desc:0 "Officially recognize a war hero as a Triumphator, granting them the corresponding trait."
+ grant_triumphator_eligible_candidate_requirement:0 "Is a close male family member of the $trait_autocrator_ercf$, or a powerful vassal"
+ grant_triumphator_served_in_last_won_war_requirement:0 "Served as a commander, knight, or belligerent in the last war won by the $trait_autocrator_ercf$"
+ grant_triumphator_once_per_reign_requirement:0 "You have not yet bestowed the Triumphator honor during your reign"
+ triumphator_granted_title:0 "Triumphator Title Granted"
+ triumphator_granted_desc:0 "[scope:actor.GetTitledFirstName] has officially recognized [scope:recipient.GetShortName] as a Triumphator for heroic deeds in the last war."
+
+
+ # ─── New Catalysts: Wave 4 ──────────────────────────────────────────────────
+ catalyst_basileus_senate_blessing:0 "Senate Blessing Secured"
+ catalyst_basileus_senate_blessing_desc:0 "The Senate has officially blessed our eastern endeavors, confirming public and aristocratic support."
+ catalyst_basileus_secured_western_frontier:0 "Western Frontier Secured"
+ catalyst_basileus_secured_western_frontier_desc:0 "A marriage alliance or a truce/peace has been secured with a major western power, ensuring our western borders are safe while we campaign in the East."
+
+ catalyst_basileus_banners_consecrated:0 "Banners Consecrated by the [patriarch|E]"
+ catalyst_basileus_banners_consecrated_desc:0 "The [patriarch|E] has consecrated our war banners, declaring the reconquest a holy task in the eyes of God."
+ 
+
+ catalyst_basileus_elevated_celebrated_general:0 "Elevated Celebrated Military Commander"
+ catalyst_basileus_elevated_celebrated_general_desc:0 "A military commander has been elevated to the rank of Triumphator, bolstering military prestige and zeal."
+
+ catalyst_basileus_theological_dispute_flared:0 "Theological Dispute Flares"
+ catalyst_basileus_theological_dispute_flared_desc:0 "A failed conversion or religious debate has sparked theological division, inflaming local unrest."
+ catalyst_basileus_jihad_declared:0 "Caliphate Proclaims Jihad"
+ catalyst_basileus_jihad_declared_desc:0 "[saracen|E]s have called for a Great Holy War, bringing massive numbers of defenders to the frontier."
+ catalyst_basileus_eastern_coalition_formed:0 "Eastern Coalition Formed"
+ catalyst_basileus_eastern_coalition_formed_desc:0 "The eastern rulers have formed a unified defensive pact to resist further Roman encroachment."
+ catalyst_basileus_plague_outbreak:0 "Plague Outbreak"
+ catalyst_basileus_plague_outbreak_desc:0 "A devastating plague has broken out in the struggle region or Constantinople, weakening both armies and administration."
+ catalyst_basileus_senate_conspiracy:0 "Senate/Palace Conspiracy Unmasked"
+ catalyst_basileus_senate_conspiracy_desc:0 "A political conspiracy or high-level plot against the Basileus has been uncovered, dividing the capital."
+ catalyst_basileus_legion_mutiny:0 "Desertion or Mutiny over Pay"
+ catalyst_basileus_legion_mutiny_desc:0 "The imperial treasury is dry, leading to mutiny, desertion, and unrest among the Tagmata."
+ catalyst_basileus_eastern_lord_defected:0 "Eastern Border Lord Defects"
+ catalyst_basileus_eastern_lord_defected_desc:0 "A Roman vassal in the East has defected or joined a rebellion, fracturing our administration."
+ catalyst_basileus_defender_alliance_shattered:0 "Defender Alliance Shattered"
+ catalyst_basileus_defender_alliance_shattered_desc:0 "The defensive alliance between the eastern rulers has shattered, leaving them divided and vulnerable."
+
+ catalyst_basileus_miracle_battle:0 "Miracle on the Orontes"
+ catalyst_basileus_miracle_battle_desc:0 "Against overwhelming odds, Roman arms have triumphed in a legendary battle, hailed as a miracle by the clergy."
+
+ # ─── New Decisions ──────────────────────────────────────────────────────────
+ basileus_consecrate_banners_decision:0 "Consecrate War Banners"
+ basileus_consecrate_banners_decision_desc:0 "Before we march to reclaim the lands of our forefathers, we should invite the [patriarch|E] and the high clergy to perform a solemn blessing upon our military standards. Let the soldiers know that they do not march merely for land, but for the very faith of the Empire."
+ basileus_consecrate_banners_decision_tooltip:0 "Seek the blessing of the [patriarch|E], granting a martial modifier and satisfying our holy resolve."
+ basileus_consecrate_banners_decision_confirm:0 "In the name of the Father!"
+ 
+
+
+ # ─── New Modifiers ──────────────────────────────────────────────────────────
+ basileus_consecrated_banners_modifier:0 "Consecrated Banners"
+ basileus_consecrated_banners_modifier_desc:0 "This ruler's military banners have been blessed by the [patriarch|E], inspiring holy zeal and martial discipline."

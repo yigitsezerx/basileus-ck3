@@ -1,0 +1,8 @@
+﻿l_english:
+ rule_basileus_one_catholic_empire:0 "Two-Emperor Problem"
+ rule_basileus_one_catholic_empire_desc:0 "When enabled, only a single Catholic (and Catholic-derived) empire may be established. The $e_byzantium$ and its ruler are exempt, they never count toward the limit and are never restricted."
+ setting_basileus_one_catholic_empire_off:0 "Off"
+ setting_basileus_one_catholic_empire_off_desc:0 "Catholic empires may be created."
+ setting_basileus_one_catholic_empire_on:0 "On"
+ setting_basileus_one_catholic_empire_on_desc:0 "A second Christian empire cannot be created while and if a Catholic one already exists, excepting the $e_byzantium$."
+ basileus_one_catholic_empire_restriction_tt:0 "There may only be one Catholic empire (the $e_byzantium$ excepted)"

@@ -1,0 +1,55 @@
+﻿l_english:
+# Eastern Roman
+
+# Feudal / Administrative
+ baron_feudal_male_eastern_roman:0 "Merarchēs"
+ baron_feudal_female_eastern_roman:0 "Merarchēs"
+ barony_feudal_eastern_roman:0 "Merarchate"
+ count_feudal_male_eastern_roman:0 "Tourmarchēs"
+ count_feudal_female_eastern_roman:0 "Tourmarchēs"
+ county_feudal_eastern_roman:0 "Tourma"
+ duke_feudal_male_eastern_roman:0 "Strategus" # Formerly Strategetes # Formerly Stratēlatēs
+ duke_feudal_female_eastern_roman:0 "Strategissa" # Formerly Strategitissa
+ duchy_feudal_eastern_roman:0 "Theme"
+ king_feudal_male_eastern_roman:0 "Catepan"
+ king_feudal_female_eastern_roman:0 "Catepanissa"
+ kingdom_feudal_eastern_roman:0 "Catepanate"
+ emperor_feudal_male_eastern_roman:0 "Basileus" # Formerly Dominus
+ emperor_feudal_female_eastern_roman:0 "Basilissa" # Formerly Domina
+ empire_feudal_eastern_roman:0 "Empire"
+ king_feudal_male_independent_eastern_roman:0 "Despot"
+ king_feudal_female_independent_eastern_roman:0 "Despotissa"
+ kingdom_feudal_independent_eastern_roman:0 "Despotate"
+ king_administrative_male_independent_eastern_roman:0 "Catepan"
+ king_administrative_female_independent_eastern_roman:0 "Catepanissa"
+ kingdom_administrative_independent_eastern_roman:0 "Catepanate"
+
+# Exarch of Ravenna (Italy)
+ exarch_male_eastern_roman:0 "Exarch"
+ exarch_female_eastern_roman:0 "Exarch"
+ exarchate_eastern_roman:0 "Exarchate"
+
+# Imperial Prefect of Aegyptus (Egypt)
+# Rebranded as Catepan.
+ # augustal_prefect_male_eastern_roman:0 "Augustal Prefect"
+ # augustal_prefect_female_eastern_roman:0 "Augustal Prefecta"
+ # augustal_prefecture_eastern_roman:0 "Augustal Prefecture"
+
+# Domesticate & Domesticus of Anatolia
+# Using "Exarch of Anatolia" etc. would imply the Emperor has lost control of his own backyard.
+ domesticus_male_eastern_roman:0 "Domesticus"
+ domesticus_female_eastern_roman:0 "Domestica"
+ domesticate_eastern_roman:0 "Domesticate"
+
+# Western Roman Caesar
+ caesar_male_western_roman:0 "Caesar"
+ caesar_female_western_roman:0 "Caesarissa"
+
+# Hegemon (Dominus Noster) of the Roman Empire
+ dominus_noster_male_roman:0 "Dominus"
+ dominus_noster_female_roman:0 "Domina"
+
+# Nobilissimus
+
+ nobilissimus_ercf_male:0 "Nobilissimus Caesar"
+ nobilissimus_ercf_female:0 "Nobilissima Caesarissa"

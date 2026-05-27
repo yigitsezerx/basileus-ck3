@@ -1,0 +1,6 @@
+﻿l_english:
+
+  culture_parameter_regimental_tagmata_maa_size: "The #V $building_type_regimental_grounds_01$#! line of [buildings|E] increase the #V Size of [GetMaA('cataphract_roman').GetNameNoTooltip] [regiments|E]#!"
+
+  tradition_regimental_tagmata_name:0 "Regimental Tagmata"
+  tradition_regimental_tagmata_desc:0 "[tagmata|E] replaced the old ceremonial guard units with professional, loyal regiments of heavy cavalry. Garrisoned in and around the capital, these units form the central reserve and elite core of the imperial expeditionary forces, serving as a prestigious training ground for the empire's future commanders."

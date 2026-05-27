@@ -1,0 +1,122 @@
+﻿l_english:
+ # ============================================================
+ # TRACK loc keys — track name shown in the trait-path UI.
+ # Static strings (no Custom calls) so they render cleanly
+ # in scope-less contexts.
+ # ============================================================
+ trait_track_hypatos_tenure:0 "Consular Tenure"
+ trait_track_hypatos_tenure_desc:0 "Tenure as the foremost dignitary of the Senate of Magnaura. Years of presiding over the senatorial body deepen the dignity's influence and standing."
+
+ trait_track_senator_tenure:0 "Senatorial Service"
+ trait_track_senator_tenure_desc:0 "Tenure in the Senate of Magnaura. Long service among the senatorial body refines counsel and entrenches one's standing in the imperial court."
+
+ trait_track_patrician_tenure:0 "Patrician Dignity"
+ trait_track_patrician_tenure_desc:0 "Tenure as a patrician of the realm. Years bearing this senatorial dignity build prestige and quiet authority among the empire's noble houses."
+
+ # ============================================================
+ # HYPATOS — culture-conditional tier names, all STATIC.
+ # Selected by triggers in the trait definition's name = { first_valid } block.
+ # ============================================================
+ # Base tier (0-9 XP) — "Hypatos" (Greek) / "Hypatus" (Latin)
+ trait_hypatos_tenure_consul:0 "Consul"
+ trait_hypatos_tenure_greek:0 "Hypatos"
+ trait_hypatos_tenure_greek_desc:0 "Holds the dignity of #high Hypatos#! — first among senators of the Senate of Magnaura. Their voice and counsel carry weight in the imperial court."
+ trait_hypatos_tenure_latin:0 "Hypatus"
+ trait_hypatos_tenure_latin_desc:0 "Holds the dignity of #high Hypatus#! — first among senators of the Senate of Magnaura. Their voice and counsel carry weight in the imperial court."
+
+ # Veteran tier (10-19 XP)
+ trait_hypatos_tenure_level_1_greek:0 "Veteran Hypatos"
+ trait_hypatos_tenure_level_1_greek_desc:0 "A seasoned #high Hypatos#! of the Senate of Magnaura. Years presiding over the senatorial body have entrenched their position in imperial counsel."
+ trait_hypatos_tenure_level_1_latin:0 "Veteran Hypatus"
+ trait_hypatos_tenure_level_1_latin_desc:0 "A seasoned #high Hypatus#! of the Senate of Magnaura. Years presiding over the senatorial body have entrenched their position in imperial counsel."
+
+ # Elder tier (20+ XP)
+ trait_hypatos_tenure_level_2_greek:0 "Senior Hypatos"
+ trait_hypatos_tenure_level_2_greek_desc:0 "A long-revered #high Hypatos#! whose tenure spans decades — a living institution of the senate."
+ trait_hypatos_tenure_level_2_latin:0 "Senior Hypatus"
+ trait_hypatos_tenure_level_2_latin_desc:0 "A long-revered #high Hypatus#! whose tenure spans decades — a living institution of the senate."
+
+ # ============================================================
+ # SENATOR — culture-conditional tier names, all STATIC.
+ # ============================================================
+ trait_senator_tenure_senator:0 "Senator"
+ trait_senator_tenure_greek:0 "Synkletikos"
+ trait_senator_tenure_greek_desc:0 "Holds a seat in the Senate of Magnaura as a Synkletikos, advising the Basileus on matters of state and ceremony."
+ trait_senator_tenure_latin:0 "Senator"
+ trait_senator_tenure_latin_desc:0 "Holds a seat in the Senate of Magnaura as a Senator, advising the Basileus on matters of state and ceremony."
+
+ trait_senator_tenure_level_1_greek:0 "Veteran Synkletikos"
+ trait_senator_tenure_level_1_greek_desc:0 "A seasoned Synkletikos whose presence in the deliberations of the senate is well-established."
+ trait_senator_tenure_level_1_latin:0 "Veteran Senator"
+ trait_senator_tenure_level_1_latin_desc:0 "A seasoned Senator whose presence in the deliberations of the senate is well-established."
+
+ trait_senator_tenure_level_2_greek:0 "Senior Synkletikos"
+ trait_senator_tenure_level_2_greek_desc:0 "A long-standing Synkletikos — generations have come and gone while this voice has remained in the senate."
+ trait_senator_tenure_level_2_latin:0 "Senior Senator"
+ trait_senator_tenure_level_2_latin_desc:0 "A long-standing Senator — generations have come and gone while this voice has remained in the senate."
+
+ # ============================================================
+ # PATRICIAN — culture-conditional tier names, all STATIC.
+ # ============================================================
+ trait_patrician_tenure_patrician: "Patrician"
+ trait_patrician_tenure_greek:0 "Patrikios"
+ trait_patrician_tenure_greek_desc:0 "Holds the Patrikios dignity granted by the Basileus."
+ trait_patrician_tenure_latin:0 "Patricius"
+ trait_patrician_tenure_latin_desc:0 "Holds the Patricius dignity granted by the Basileus."
+
+ trait_patrician_tenure_level_1_greek:0 "Veteran Patrikios"
+ trait_patrician_tenure_level_1_greek_desc:0 "A well-established Patrikios of the realm, honoured for sustained service to the imperial dignity."
+ trait_patrician_tenure_level_1_latin:0 "Veteran Patricius"
+ trait_patrician_tenure_level_1_latin_desc:0 "A well-established Patricius of the realm, honoured for sustained service to the imperial dignity."
+
+ trait_patrician_tenure_level_2_greek:0 "Senior Patrikios"
+ trait_patrician_tenure_level_2_greek_desc:0 "A Patrikios of long standing whose dignity has endured across the years."
+ trait_patrician_tenure_level_2_latin:0 "Senior Patricius"
+ trait_patrician_tenure_level_2_latin_desc:0 "A Patricius of long standing whose dignity has endured across the years."
+
+ # ============================================================
+ # Emeritus traits (revoked while alive). Not leveled.
+ # Still use Custom calls — these aren't tracked, so the
+ # parens-display issue doesn't apply to them.
+ # ============================================================
+ # Emeritus traits — name switches by culture via name_block.
+ # CRITICAL: no `trait_hypatos_emeritus:0` / `trait_senator_emeritus:0` /
+ # `trait_patrician_emeritus:0` top-level name keys are defined. Those keys
+ # are what the engine renders in the parens-doubling slot; omitting them
+ # mirrors the tenure-trait approach (which doesn't double).
+ # The _desc keys ARE needed because the trait still uses default desc lookup.
+ trait_hypatos_emeritus_consul:0 "Former Consul"
+ trait_hypatos_emeritus_greek:0 "Former Hypatos"
+ trait_hypatos_emeritus_latin:0 "Former Hypatus"
+ trait_hypatos_emeritus_desc:0 "[ROOT.Char.GetFirstNameNoTooltip] was once the foremost dignitary of the Senate of Magnaura. Though the title has been withdrawn, the respect endures."
+
+ trait_senator_emeritus_senator:0 "Former Senator"
+ trait_senator_emeritus_greek:0 "Former Synkletikos"
+ trait_senator_emeritus_latin:0 "Former Senator"
+ trait_senator_emeritus_desc:0 "[ROOT.Char.GetFirstNameNoTooltip] once held a senatorial seat in the Senate of Magnaura. The dignity was withdrawn, but a measure of senatorial standing remains."
+
+ trait_patrician_emeritus_patrician:0 "Former Patrician"
+ trait_patrician_emeritus_greek:0 "Former Patrikios"
+ trait_patrician_emeritus_latin:0 "Former Patricius"
+ trait_patrician_emeritus_desc:0 "[ROOT.Char.GetFirstNameNoTooltip] once bore the patrician dignity granted by the $trait_autocrator_ercf$. The title is gone, but [ROOT.Char.GetHerHis] social influence lingers."
+
+ # ============================================================
+ # Ascended (basileus) traits — name switches by culture via the
+ # trait's `name = { first_valid }` block. NO `trait_X_basileus:0`
+ # top-level name keys defined (that's the doubling trigger).
+ # Only the per-culture loc strings + descs are present.
+ # ============================================================
+ trait_hypatos_basileus_consul:0 "Ascended Consul"
+ trait_hypatos_basileus_greek:0 "Ascended Hypatos"
+ trait_hypatos_basileus_latin:0 "Ascended Hypatus"
+ trait_hypatos_basileus_desc:0 "[ROOT.Char.GetFirstNameNoTooltip] ascended the imperial throne having once been the foremost dignitary of the Senate of Magnaura. The Magnaura still remembers [ROOT.Char.GetHerHis] voice, and the realm hears the echo of senatorial counsel in [ROOT.Char.GetHerHis] decrees."
+
+ trait_senator_basileus_senator:0 "Ascended Senator"
+ trait_senator_basileus_greek:0 "Ascended Synkletikos"
+ trait_senator_basileus_latin:0 "Ascended Senator"
+ trait_senator_basileus_desc:0 "[ROOT.Char.GetFirstNameNoTooltip] sat among the senators of the Magnaura before ascending the imperial throne. Old colleagues whisper that [ROOT.Char.GetSheHe] still listens with a senator's ear."
+
+ trait_patrician_basileus_patrician:0 "Ascended Patrician"
+ trait_patrician_basileus_greek:0 "Ascended Patrikios"
+ trait_patrician_basileus_latin:0 "Ascended Patricius"
+ trait_patrician_basileus_desc:0 "[ROOT.Char.GetFirstNameNoTooltip] bore the patrician dignity before assuming the purple. The patrician houses count [ROOT.Char.GetHerHim] as one of their own elevated to the throne."

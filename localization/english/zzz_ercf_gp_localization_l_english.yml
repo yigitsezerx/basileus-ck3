@@ -1,0 +1,75 @@
+l_english:
+ great_project_type_great_wall:0 "[GetPlayer.Custom('GetGreatWallProjectName')]"
+ great_project_type_great_wall_desc:0 "[GetPlayer.Custom('GetGreatWallProjectDesc')]"
+ great_project_type_grand_canals:0 "[GetPlayer.Custom('GetGrandCanalsProjectName')]"
+ great_project_type_grand_canals_desc:0 "[GetPlayer.Custom('GetGrandCanalsProjectDesc')]"
+ great_project_type_grand_campaign_project:0 "[GetPlayer.Custom('GetGrandCampaignProjectName')]"
+ great_project_type_grand_campaign_project_desc:0 "[GetPlayer.Custom('GetGrandCampaignProjectDesc')]"
+ msg_great_project_planned_title:0 "[GetPlayer.Custom('GetGreatProjectPlannedTitle')]"
+ msg_great_project_planned_desc:0 "[GetPlayer.Custom('GetGreatProjectPlannedDesc')]"
+ msg_great_project_started_title:0 "[GetPlayer.Custom('GetGreatProjectStartedTitle')]"
+ msg_great_project_started_desc:0 "[GetPlayer.Custom('GetGreatProjectStartedDesc')]"
+ msg_great_project_aborted_title:0 "[GetPlayer.Custom('GetGreatProjectAbortedTitle')]"
+ msg_great_project_aborted_desc:0 "[GetPlayer.Custom('GetGreatProjectAbortedDesc')]"
+ msg_great_project_completed_title:0 "[GetPlayer.Custom('GetGreatProjectCompletedTitle')]"
+ msg_great_project_completed_desc:0 "[GetPlayer.Custom('GetGreatProjectCompletedDesc')]"
+
+ empty_string:0 ""
+
+ # Byzantine Notification Titles/Descs
+ msg_great_project_planned_title_byz:0 "[GreatProject.GetNameNoTooltip] is Being Planned"
+ msg_great_project_planned_desc_byz:0 "[GreatProject.GetName] is being planned in [GreatProject.GetLocation.GetName].\nIt needs [GreatProject.GetRequiredContributionCount|V] [great_project_contributions|E] to start."
+ msg_great_project_started_title_byz:0 "[GreatProject.GetNameNoTooltip] Started"
+ msg_great_project_started_desc_byz:0 "[GreatProject.GetName] got enough [great_project_contributions|E] to start progress.\nIt will be completed in [GreatProject.GetConstructionEndDate.GetTimeToDate|V]."
+ msg_great_project_aborted_title_byz:0 "[GreatProject.GetNameNoTooltip] was Abandoned"
+ msg_great_project_aborted_desc_byz:0 "The [GreatProject.GetType.GetName] [great_project|E] based in [GreatProject.GetLocation.GetName] is no longer available for contributions."
+ msg_great_project_completed_title_byz:0 "[GreatProject.GetNameNoTooltip] Completed"
+ msg_great_project_completed_desc_byz:0 "[GreatProject.GetName] has been successfully completed in [GreatProject.GetLocation.GetName]"
+
+ # Vanilla Fallbacks (for when player is NOT Byzantine/China)
+ msg_great_project_planned_title_vanilla:0 "$msg_great_project_planned_title$"
+ msg_great_project_planned_desc_vanilla:0 "$msg_great_project_planned_desc$"
+ msg_great_project_started_title_vanilla:0 "$msg_great_project_started_title$"
+ msg_great_project_started_desc_vanilla:0 "$msg_great_project_started_desc$"
+ msg_great_project_aborted_title_vanilla:0 "$msg_great_project_aborted_title$"
+ msg_great_project_aborted_desc_vanilla:0 "$msg_great_project_aborted_desc$"
+ msg_great_project_completed_title_vanilla:0 "$msg_great_project_completed_title$"
+ msg_great_project_completed_desc_vanilla:0 "$msg_great_project_completed_desc$"
+ 
+ # Byzantine Projects
+ great_project_type_great_wall_byz:0 "Renovate the Theodosian Walls"
+ great_project_type_great_wall_desc_byz:0 "The [theodosian_walls|E] are the ultimate defense of the Roman capital. Maintaining them ensures the city remains the 'Queen of Cities' and impregnable to all foes."
+ 
+ # Regional Projects
+ great_project_type_via_egnatia:0 "Renovate the Via Egnatia"
+ great_project_type_via_egnatia_desc:0 "The Via Egnatia is the primary artery of the Balkans, connecting Constantinople to the Adriatic. Restoring it ensures the swift movement of troops and trade across the European provinces."
+ 
+ great_project_type_fortify_anatolia_byz:0 "Fortify the Anatolian Frontier"
+ great_project_type_fortify_anatolia_byz_desc:0 "The Anatolian frontier is the shield of the Empire against the incursions from the east. Strengthening the border forts and beacon systems ensures early warning and defense."
+
+ # UI and Custom Loc
+ GetGreatProjectTabName_byz:0 "Imperial Works"
+ GetGreatProjectSingleName_byz:0 "Imperial Work"
+ son_of_heaven_byz:0 "Basileus"
+ son_of_heaven_short_byz:0 "Basileus"
+ son_of_heaven_possessive_byz:0 "Basileus'"
+ celestial_retirement_law_byz:0 "Imperial Tenure"
+
+ # Contributions
+ great_project_contribution_repair_pavement:0 "Repair Pavement"
+ great_project_contribution_secure_bridges:0 "Secure Bridges"
+ great_project_contribution_postal_stations:0 "Establish Postal Stations"
+ great_project_contribution_frontier_garrisons:0 "Establish Frontier Garrisons"
+ great_project_contribution_beacon_system:0 "Restore Beacon System"
+
+ # Modifiers
+ ercf_via_egnatia_restored_modifier:0 "Restored Via Egnatia"
+ ercf_fortified_frontier_modifier:0 "Fortified Frontier"
+ 
+ # Fallbacks
+ great_project_type_great_wall_tgp:0 "Improve the Great Wall"
+ great_project_type_great_wall_desc_tgp:0 "The Great Wall is the shield of the Middle Kingdom against the barbarians of the north."
+ great_project_type_grand_canals_tgp:0 "Construct Grand Canals"
+ great_project_type_grand_canals_desc_tgp:0 "The Grand Canals connect the fertile south to the administrative north, ensuring the flow of grain and prosperity."
+ great_project_type_grand_campaign_project_tgp:0 "The Grand Campaign"
+ great_project_type_grand_campaign_project_desc_tgp:0 "A centralized military effort to exert authority and secure the borders of the Celestial Empire."

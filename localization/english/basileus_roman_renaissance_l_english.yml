@@ -1,0 +1,150 @@
+﻿l_english:
+
+ # BASILEUS - ROMAN RENAISSANCE
+
+ pandects_renovatio.0001.t:0 "Pandects"
+  pandects_renovatio.0001.desc:0 "The lamps burn low. The palace scribes retired hours ago, but sleep has not come to me. Spread across the table before me are documents of another age. Administrative codices, legal commentaries, theological correspondence. All written in a language that no longer echoes in these halls.\n\n#high Latin#!.\n\nThe tongue of many emperors past. A language that once was the common speech of every #high Roman#! subject. I have been studying it in secret. Carefully, almost furtively turning these crumbling pages with the reverence one might afford a relic.\n\nAnd then, unbidden, the thought arrives.\n\nWhat if I could bring it back?\n\nNot as a curio of scholars. Not as the private language of theologians. But as the true tongue of administration, of law, of empire. We have always called ourselves Romans, why should we not speak as our forebears once did?\n\nIt is, merely a thought. A fantasy, perhaps.\n\nBut it is also a seed. A seed that, if nurtured, could grow into something magnificent. The great legal monument of Justinian, I hold in my hands, composed in the Latin that once was the language of the world, could be the cornerstone of a renaissance.\n\nAnd I cannot quite let the thought go."
+
+
+ pandects_renovatio.0001.a:0 "One can dream."
+ pandects_renovatio.0001.a_tt:0 "#emp Set the Codex down carefully. This dream deserves a night's rest, and then a plan.#!"
+
+ pandects_renovatio.0001.b:0 "I should put these foolish ambitions to rest."
+ pandects_renovatio.0001.b_tt:0 "It is, in the end, just a relic of a bygone era."
+
+ corpus_juris_civilis:0 "[pandects|E]"
+ corpus_juris_civilis_desc:0 "[pandects|E], or #high Digest#!, was a compendium or digest of juristic writings on Roman law, spearheaded by [tribonian|E] and compiled by order of the Roman emperor, [justinian_the_great|E]. The #high Digest#! formed one part of [justinian_the_great|E]'s reduction and codification of all Roman laws up to his time. The whole work came to be known as the [corpus_juris_civilis|E]."
+
+ # EVENT 1001 — The Imperial Court
+
+ pandects_renovatio.0002.t:0 "Renovatio Linguae Latinae: The Imperial Court"
+
+  pandects_renovatio.0002.desc:0 "Days have passed since I last set [the_codex.GetName] down. The thoughts it stirred have not quieted.\n\nToday, I raise the matter before the imperial court.\n\nMy words come carefully at first, a question framed as curiosity, a proposal dressed as idle speculation. But my councillors are not fools. They hear the ambition beneath my rhetoric, and their faces tell the story before any of them speaks.\n\n[opposition_leader.GetFullName] is the first to find [opposition_leader.GetHerHis] voice.\n\n\"Your imperial serenity, the people speak Greek. The church speaks Greek. The armies, the courts, the markets — all Greek. Latin is a language of monuments and the dead. To impose it now would be to demand that the empire relearn itself from the ground up. The cost alone would be —\"\n\nI cut [opposition_leader.GetHerHim] off with a look.\n\nThe council falls silent. But the silence itself is an answer. They think it cannot be done. They think I am chasing a ghost.\n\nPerhaps they are right. Perhaps not."
+
+ pandects_renovatio.0002.a:0 "I am $trait_autocrator_ercf$, and will not be deterred by the doubts of others."
+ pandects_renovatio.0002.a_tt:0 "#emp The court's doubt is noted, and then set aside. The work begins in earnest.#!"
+
+ pandects_renovatio.0002.b:0 "...Perhaps [opposition_leader.GetFirstNameNoTooltip] is right."
+ pandects_renovatio.0002.b_tt:0 "#emp I should put these foolish ambitions to rest.#!"
+
+ # Story Cycle Localization
+ story_renovatio:0 "Renovatio Linguae Latinae"
+ story_renovatio_desc:0 "The personal rediscovery of an ancient legal codex has sparked an impossible dream: to restore the #high Latin#! tongue to its former glory across the empire."
+ ROMAN_RENAISSANCE_INFO_STRING:0 "With the [pandects|E] as your guide, you are dedicating your life and resources to translating ancient legal texts and reintroducing them to a reluctant imperial court.\n\nThe chance of ultimate success increases with your dedication."
+ LATIN_CODEX:0 "Codex"
+ OPPOSITION_LEADER:0 "Voice of Opposition"
+ RENAISSANCE_LEADER:0 "Visionary"
+ RENAISSANCE_PROGRESS:0 "#high Renovatio#! Progress"
+ OPPOSITION_POWER:0 "Opposition Power"
+ RENAISSANCE_PROGRESS_MIN:0 "0"
+ RENAISSANCE_PROGRESS_MAX:0 "100"
+
+ basileus_commission_latin_translations:0 "Commission Latin Translations"
+ basileus_commission_latin_translations_desc:0 "To force a language upon a realm, the texts of law, faith, and philosophy must be translated into it. We must hire scholars to sift through the [pandects|E] and other ancient texts."
+ basileus_commission_latin_translations_tooltip:0 "Spend Gold and Prestige to push the Roman Renaissance forward."
+ basileus_commission_latin_translations_effect_tt:0 "The Translation Efforts modifier is applied."
+ basileus_translation_efforts:0 "Translating Ancient Texts"
+ basileus_translation_efforts_desc:0 "This character is funding the translation of ancient Latin documents."
+
+ # Story Cycle UI Labels
+ LATIN_SCHOLAR:0 "Scholar"
+ JORDANES_ARTIFACT:0 "Twin Histories"
+
+ # EVENT 0010 — A Voice from the West (Jordanes Discovery)
+
+ pandects_renovatio.0003.t:0 "Renovatio Linguae Latinae: The Histories of [jordanes_the_historian|E]"
+
+  pandects_renovatio.0003.desc:0 "A man calling himself [jordanes_scholar.GetFirstName] has requested an audience. Clad in the simple robes of a scholar, he claims to have been sifting through the ancient archives of Constantinople, where the last echoes of Latin learning still linger among the crumbling libraries.\n\nHe carries with him a bundle of vellum, carefully wrapped in oilcloth. When he unfolds it before me, the words on the page are unmistakable: the [jordanes_artifact.GetNameNoTooltip] of [jordanes_the_historian|E].\n\n\"#emp Written by a Goth who served your predecessors, a man caught between two worlds — much like the language itself#!.\"\n\nI turn the brittle pages carefully. Here, in faded ink, is the story of how Latin died in the West. And perhaps, hidden within it, the secret of how it might live again."
+
+ pandects_renovatio.0003.a:0 "Welcome, scholar. Show me what you have brought."
+ pandects_renovatio.0003.a_tt:0 "#emp [jordanes_scholar.GetFirstName] joins your court, he brings with him the [jordanes_artifact.GetNameNoTooltip]!#" 
+
+ pandects_renovatio.0003.b:0 "I have no time for dusty manuscripts."
+ pandects_renovatio.0003.b_tt:0 "#emp The scholar is dismissed. The manuscript is lost.#!"
+
+ # Artifact
+ jordanes_romana_getica:0 "[romana_et_getica|E]"
+ jordanes_romana_getica_desc:0 "The #high Romana#! and the #high Getica#! are the twin histories of [jordanes_the_historian|E], a 6th-century Gothic bureaucrat who wrote in Latin. The Romana traces the history of Rome from its founding to the reign of [justinian_the_great|E], while the Getica chronicles the origins and migrations of the Gothic peoples. Together, they form the only surviving Latin-language narrative of the transition from the ancient world to the medieval one."
+
+
+ # Story Cycle UI — Supporters and Detractors
+ SUPPORTERS:0 "Supporters"
+ DETRACTORS:0 "Detractors"
+
+ # EVENT 0005 — The Latin Chrysobull
+ pandects_renovatio.0005.t:0 "Renovatio Linguae Latinae: The Chrysobull"
+ pandects_renovatio.0005.desc:0 "The atmosphere in the throne room is electric. I stand before the assembled court, a heavy parchment in my hands.\n\nThen, I begin to read. Not in Greek, but in the resonant, ancient tongue of our forebears.\n\n\"#italic In nomine sanctae et individuae Trinitatis. [ROOT.GetCharacter.GetFirstName], in Christo Deo fidelis Imperator et Moderator Romanorum. Per hoc nostrum chrysobullum, divina favente clementia, decernimus et sancimus ut lingua Latina, sermo noster priscus et imperialis, in curia nostra restitutatur. Leges, decreta, et acta palatii sub sigillo nostro aureo deinceps in hoc sermone conscribantur. Quod est dictum, fiat.#!\"\n\nA stunned silence follows. The courtiers look at one another, some with faces of pure shock, others with a slow-burning realization of what this means."
+ pandects_renovatio.0005.a:0 "Romani, vocem meam audite!"
+ pandects_renovatio.0005.a_tt:0 "#emp The administration of the Empire is officially returned to its Latin roots. The court language is changed to Latin."
+
+ # Opinion Modifiers
+ offended_by_latin_decree:0 "Offended by Latin Chrysobull"
+ visionary_latin_ruler:0 "Visionary Ruler"
+ 
+  # EVENT 0006 — The Great Betrayal
+  pandects_renovatio.0006.t:0 "Renovatio Linguae Latinae: The Ultimatum"
+  pandects_renovatio.0006.desc:0 "The doors to the imperial study burst open. [messenger.GetFirstName] stands there, breathless, clutching a crumpled letter. \"Imperial Majesty... it is as we feared. The murmurs in the halls have turned to open conspiracy.\"\n\nI take the letter. The seal belongs to [opposition_leader.GetTitledFirstName]. It is a manifesto of defiance:\n\n\"#italic To the so-called $trait_autocrator_ercf$, who would lead us into the shadows of the past. You have forsaken our fathers' tongue and our people's soul for the dry dust of antiquity. We will not be led by a Latin obsessed carcass. Return to the ways of our ancestors, or the throne you sit upon will be your tomb.#!\"\n\nThe lines are drawn. [opposition_leader.GetFirstName] and [opposition_leader.GetHerHis] confederates are already gathering their arms."
+  pandects_renovatio.0006.a:0 "I cannot risk a civil war. Revert the decree."
+  pandects_renovatio.0006.a.tt:0 "#emp The Renovatio project is abandoned. The court returns to Greek, and the Empire remains as it was. The story cycle ends in failure.#!"
+  pandects_renovatio.0006.b:0 "If they want a war, they shall have one."
+  pandects_renovatio.0006.b.tt:0 "#emp The detractors will rise in open rebellion. Your supporters will stand with you. A final conflict will determine the soul of the Empire.#!"
+
+  # EVENT 0007 — The Grand Finale
+  pandects_renovatio.0007.t:0 "Renovatio Linguae Latinae: Conclusion"
+  pandects_renovatio.0007.desc:0 "Time have passed since the #emp Chrysobull#! was issued. The court has been transformed. The administration has been restructured. The old Greek bureaucrats have either adapted or been replaced by a new generation of Latin-speaking officials. The [pandects|E] have become the foundational text of a new intellectual movement that has swept through the empire.\n\nThe dream that once seemed so distant is now a reality. The language of #high Latin#! has returned to its rightful place at the heart of the empire."
+  pandects_renovatio.0007.a:0 "Let the annals of history record this day."
+  pandects_renovatio.0007.a.tt:0 "#emp All $greek$ speaking characters and counties are converted to the $eastern_roman$ culture.#!"
+
+  # EVENT 9000 — The Death of a Visionary
+
+  pandects_renovatio.9000.t:0 "Renovatio Linguae Latinae: The Death of a Visionary"
+   pandects_renovatio.9000.desc:0 "The candles in the imperial study flicker in a cold draft that has nothing to do with the night air. News has reached me that [jordanes_scholar.GetFullName] is no more.\n\nThe scholar who saw the potential for a new age where others saw only dust has passed into the silence of history. Without [jordanes_scholar.GetHerHis] expertise, the dream of a Latin revival feels suddenly, crushing, hollow. I must decide if the work can continue without [jordanes_scholar.GetHerHim]."
+  pandects_renovatio.9000.a:0 "We must find a successor to continue the work."
+  pandects_renovatio.9000.a.desc:0 "#emp The project will face a setback while a new expert is found.#!"
+  pandects_renovatio.9000.b:0 "The dream died with [jordanes_scholar.GetHerHim]."
+
+  # EVENT 9010 — The Succession of Learning
+
+  pandects_renovatio.9010.t:0 "Renovatio Linguae Latinae: The Succession of Learning"
+   pandects_renovatio.9010.desc:0 "With the seat of the lead scholar vacant, I have surveyed the empire for someone capable of taking up the mantle. The work of translating the [pandects|E] and the [romana_et_getica|E] is too important to be abandoned now."
+  pandects_renovatio.9010.a:0 "Elevate [new_scholar_candidate.GetFirstName] to lead the project."
+  pandects_renovatio.9010.a_tt:0 "#emp [new_scholar_candidate.GetFirstName] is a talented courtier who already understands our goals.#!"
+  pandects_renovatio.9010.b:0 "Bring in an outsider to oversee the work."
+  pandects_renovatio.9010.b_tt:0 "#emp A new scholar will be hired, but it will take longer for them to integrate.#!"
+
+ HEXAGRAM_ARTIFACT:0 "Hexagram"
+ 
+ # EVENT 0004 — The Silver of Heraclius
+ pandects_renovatio.0004.t:0 "Renovatio Linguae Latinae: [hexagram_artifact.GetNameNoTooltip]"
+ pandects_renovatio.0004.desc:0 "My [steward.GetCouncilTitle], [steward.GetFirstName], approaches me with a look of quiet triumph. In [steward.GetHerHis] hand is a heavy silver coin, its surface worn but its message still clear.\n\n\"Your imperial serenity, while auditing the older palace reserves, I found this, a [hexagram_artifact.GetName].\n\n#emp I take the coin#!.\n\nOn the reverse, surrounding a cross upon steps, is a legend in bold, uncial Latin: #high DEVS ADIVTA ROMANIS#!. Even as the administration turned to Greek, the coin of the realm still cried out in the tongue of our ancestors.\n\n\"It is a reminder.\" [steward.GetFirstName] says."
+ pandects_renovatio.0004.a:0 "A symbol of Roman continuity."
+ pandects_renovatio.0004.a_tt:0 "You receive the #high [hexagram_artifact.GetName]#!.
+ pandects_renovatio.0004.b:0 "A curious relic, nothing more."
+ pandects_renovatio.0004.b_tt:0 "The coin is returned to the treasury."
+ 
+ # Artifact: Hexagram of Heraclius
+ hexagram_of_heraclius:0 "Hexagram of Heraclius"
+ hexagram_of_heraclius_desc:0 "This heavy silver coin was minted during the reign of [heraclius.GetFirstName], to fund the struggle against the Sassanid Persians. It features the famous Latin legend #high DEVS ADIVTA ROMANIS#! - God help the Romans. A testament to the enduring role of Latin as the language of Roman identity even as the empire became increasingly hellenized."
+
+
+  # DECISION: Delve into Classics
+  basileus_delve_into_classics:0 "Delve into the Classics"
+  basileus_delve_into_classics_desc:0 "The scrolls of the long lost ages sit heavy on my desk, caked in the dust of centuries. To the common eye, they are mere ink and vellum; to me, they are a map back to a lost greatness. I will immerse myself in these ancient texts, seeking not just to understand their words, but to breathe life into the language itself. If I can master the classics, perhaps I can inspire my people to do the same."
+  basileus_delve_into_classics_tooltip:0 "Begin an obsessive study of the ancient texts."
+  basileus_delve_into_classics_confirm:0 "Let's see what we have here."
+  delve_into_classics_pandidakterion_established_requirement:0 "The Pandidakterion has been established"
+
+  basileus_broken_spirit:0 "Broken Spirit"
+  basileus_broken_spirit_desc:0 "This character has seen their grand ambitions crumble before the weight of political reality. The fire of leadership has been extinguished."
+ 
+  PANDECTS_BETRAYAL_WAR_NAME:0 "War to revoke the Chrysobull"
+  PANDECTS_BETRAYAL_WAR_NAME_MY:0 "War to revoke the Chrysobull against [DEFENDER.GetTitledFirstName]"
+  PANDECTS_BETRAYAL_WAR_NAME_WAR_ADJ:0 "War of Chrysobull"
+  PANDECTS_BETRAYAL_WAR_NAME_ADJECTIVE:0 "War of Chrysobull"
+
+ pandects_betrayal_cb:0 "Revolt against the Latin Chrysobull"
+  
+  PANDECTS_WHITE_PEACE_FAILURE_TT:0 "#N You failed to crush the rebellion. The detractors have won a political victory, and the Renovatio project is forced to end.#!"
+  PANDECTS_REVERT_LANGUAGE_TT:0 "The court language reverts to Greek as the project is abandoned."
+
+ basileus_restorer_of_latin:0 "Restitutor"

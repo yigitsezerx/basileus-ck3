@@ -1,0 +1,24 @@
+﻿﻿l_english:
+ # ============================================================
+ # Aptitude-tooltip labels for trait-based bonuses on the senate
+ # court positions (hypatus / senator / patrician). Referenced
+ # from the `desc =` field inside each `add = { ... }` block in
+ # common/court_positions/types/zzzz_basileus_senate.txt.
+ # Without these the tooltip shows the raw key (e.g.
+ # "court_position_trait_scholar +15").
+ # ============================================================
+ court_position_trait_scholar:0 "Scholar"
+ court_position_trait_just:0 "Just"
+ court_position_trait_honest:0 "Honest"
+ court_position_trait_gregarious:0 "Gregarious"
+ court_position_trait_diligent:0 "Diligent"
+ court_position_trait_patient:0 "Patient"
+ court_position_trait_administrator:0 "Administrator"
+
+ court_position_trait_education_dip_2:0 "Apprentice Diplomat"
+ court_position_trait_education_dip_3:0 "Adept Diplomat"
+ court_position_trait_education_dip_4:0 "Brilliant Diplomat"
+
+ court_position_trait_education_stew_2:0 "Apprentice Administrator"
+ court_position_trait_education_stew_3:0 "Adept Administrator"
+ court_position_trait_education_stew_4:0 "Brilliant Strategist"

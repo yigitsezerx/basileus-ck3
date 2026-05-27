@@ -1,0 +1,74 @@
+﻿l_english:
+# FLAVIUS FOR EASTERN ROMANS
+ trait_flavius_ercf:0 "Flavius"
+ trait_flavius_ercf_female:0 "Flavia"
+ trait_flavius_ercf_desc:0 "A name of honor, and later an honorific title carried by emperors since Constantine, marking the bearer as a legitimate and venerable ruler of the #alert_trial Roman Empire#!."
+ trait_flavius_ercf_character_desc:0 "[ROOT.GetCharacter.GetFirstNameNoTooltip] enjoys glory, as heir to Constantine’s legacy and as one of the rightful sovereigns of the #alert_trial Roman Empire#!."
+ descendants_gain_flavius_ercf:0 "Your descendants gain [GetTrait('flavius_ercf').GetName( GetNullCharacter )]."
+
+ # ERCF - AUTOCRATOR FOR THE EASTERN ROMAN EMPEROR AFTER CORONATION
+  trait_autocrator_ercf:0 "Autocrator of the Romans"
+  trait_autocrator_ercf_desc:0 "[ROOT.GetCharacter.GetFirstNameNoTooltip] is hailed as the [autocrator|E] of the Romans, exercising near unlimited authority and bypassing the bureaucracy to rule by decree and will."
+  
+  trait_autocrator_ercf_level_1:0 "Aspiring Autocrator"
+  trait_autocrator_ercf_level_1_desc:0 "[ROOT.GetCharacter.GetFirstNameNoTooltip] has begun to assert [ROOT.GetCharacter.GetHerHis] personal will over the administrative machinery of the state, taking the first steps toward becoming a true [autokrator|E]."
+
+  trait_autocrator_ercf_level_2:0 "Autocrator"
+  trait_autocrator_ercf_level_2_desc:0 "The true [autokrator|E]. [ROOT.GetCharacter.GetFirstNameNoTooltip]' word is law, and [ROOT.GetCharacter.GetSheHe] has successfully bypassed the traditional checks on Imperial power."
+
+  trait_autocrator_ercf_level_3:0 "Basileus and Autocrator"
+  trait_autocrator_ercf_level_3_desc:0 "The combined title of the supreme sovereign. [ROOT.GetCharacter.GetFirstNameNoTooltip] is the undisputed [autokrator|E] and master of the Roman world, both in tradition and in absolute practice."
+
+  trait_autocrator_ercf_level_4:0 "[isapostolos|E]"
+  trait_autocrator_ercf_level_4_desc:0 "A dignity reserved for the most legendary of sovereigns, [ROOT.GetCharacter.GetFirstNameNoTooltip] has transcended the role of a mere monarch to become a sacred [autokrator|E]. Like [constantine_the_great|E], [ROOT.GetCharacter.GetSheHe] is hailed as a living saint and the undisputed master of the Roman world. A status as absolute as it is rare in the long annals of history.\n\n#warning_icon! #X To maintain this sacred status, [ROOT.GetCharacter.GetFirstNameNoTooltip] must remain [exalted_among_men|E] and a [paragon_of_virtue|E].#!"
+
+  trait_track_autocrator_ercf:0 "$trait_autocrator_ercf$"
+  trait_track_autocrator_ercf_desc:0 "This [trait|E] represents your absolute authority over the Roman state. It progresses as you hold the throne, win wars, and crush internal opposition.\n\nTo be an #emp Autocrator#! is to tolerate no rival to your divine right to rule."
+
+
+# ERCF - NOBILISSIMUS
+ # TRAIT
+ trait_nobilissimus_ercf:0 "Nobilissimus"
+ trait_nobilissimus_ercf_female:0 "Nobilissima"
+ trait_nobilissimus_ercf_desc:0 "The dignity of #alert_trial Nobilissimus#!, the #emp most Noble#!."
+ # The "Present Tense" description for the -heir-
+ trait_nobilissimus_ercf_character_desc:0 "[ROOT.GetCharacter.GetFirstNameNoTooltip] has been marked with the dignity of #alert_trial Nobilissimus#!, making [ROOT.GetCharacter.GetHerHim] a member of the inner Imperial circle, taking precedence over all other imperial heirs."
+
+ # The "Past Tense" description (For the Emperor)
+ trait_nobilissimus_ercf_emperor_desc:0 "Having been granted the dignity of #alert_trial Nobilissimus#!, [ROOT.GetCharacter.GetFirstNameNoTooltip] enjoyed near absolute legitimacy prior to [ROOT.GetCharacter.GetHerHis] ascension."
+ 
+ # INTERACTION
+ grant_nobilissimus_interaction:0 "Grant Dignity of Nobilissimus"
+ grant_nobilissimus_interaction_desc:0 "Invest this family member with the title of Nobilissimus. This marks them as your designated successor.\n\n@warning_icon! #X You may only grant this dignity once, but if the current #alert_trial Nobilissimus#! passes away, can be granted again.#!"
+
+ character_is_capable_requirement:0 "[CHARACTER.GetShortUIName] is capable"
+ previous_nobilissimus_must_be_dead:0 "Previous #alert_trial Nobilissimus#! is deceased"
+
+ # SACRED MANDATE WARNINGS
+ ercf_autocrator_unworthy_isapostolos_tt:0 "#warning_icon! #X [ROOT.GetCharacter.GetFirstNameNoTooltip] is deemed unworthy of the [isapostolos|E] dignity. Lacking the necessary [prestige|E] or [piety|E] levels, the God-given mandate to rule is withdrawn, and [ROOT.GetCharacter.GetFirstNameNoTooltip] is pushed back to the threshold of a mere mortal sovereign.#!"
+ ercf_autocrator_war_lost_regression_tt:0 "#warning_icon! #X The Autocrat has suffered a military disaster! The loss of a war severely undermines the [autokrator|E]'s absolute authority, causing a massive loss of XP.#!"
+ ercf_autocrator_regency_stagnation_tt:0 "#warning_icon! #X The Autocrat is sidelined by a [regent|E]! In the absence of personal rule, the [autokrator|E]'s authority stagnates and withers, losing XP each year.#!"
+ ercf_autocrator_ruthless_dominance_tt:0 "#F Rule by Fear#!: The [autokrator|E] cements their authority through ruthless dominance over their enemies."
+ ercf_autocrator_traditional_mutilation_tt:0 "#F Traditional Mutilation#!: By blinding or castrating a rival, the [autokrator|E] demonstrates the ancient and terrible power of the Roman sovereign."
+ ercf_autocrator_triumph_xp_gain_tt:0 "By celebrating a [triumph|E], the [autokrator|E] cements their absolute authority over the Roman world, demonstrating that they are the chosen vessel of victory."
+ hold_triumph_decision_effects: "During your [triumph|E], you will be offered several choices to make a lasting impression on your subjects and gain [legitimacy|E], [influence|E], [prestige|E], [piety|E], and more."
+
+ # TRIUMPHATOR!
+ trait_basileus_triumphator:0 "Triumphator"
+ trait_track_basileus_triumphator:0 "Military Renown"
+ trait_track_basileus_triumphator_desc:0 "A measurement of this commander's standing in the eyes of the Roman people."
+  # Greek
+ trait_basileus_triumphator_tropaiouchos:0 "Tropaiouchos" # Trophy-Bearer
+ trait_basileus_triumphator_tropaiouchos_desc:0 "[ROOT.GetCharacter.GetFirstNameNoTooltip] has been granted a grand [triumph|E] through the [Glossary( 'Golden Gate', 'GOLDEN_GATE_GLOSS' )], celebrated by the [Glossary( 'Senate', 'SENATE_MAGNAURA_GLOSS' )] and the Factions of the Hippodrome as a living monument of Roman victory."
+ trait_basileus_triumphator_niketates:0 "Niketates" # Bringer of Victory
+ trait_basileus_triumphator_niketates_desc:0 "Having been granted a grand [triumph|E] through the [Glossary( 'Golden Gate', 'GOLDEN_GATE_GLOSS' )] on multiple occasions, lauded as the "Bringer of Victory" by the [Glossary( 'Senate', 'SENATE_MAGNAURA_GLOSS' )] and the Factions of the Hippodrome, [ROOT.GetCharacter.GetFirstNameNoTooltip] has cemented his reputation as a celebrated Roman military commander."
+
+ # Default / Eastern Roman (Latinised)
+ trait_basileus_triumphator_desc:0 "[ROOT.GetCharacter.GetFirstNameNoTooltip] has been granted a grand [triumph|E] through the [Glossary( 'Golden Gate', 'GOLDEN_GATE_GLOSS' )], celebrated by the [Glossary( 'Senate', 'SENATE_MAGNAURA_GLOSS' )] and the Factions of the Hippodrome as a living monument of Roman victory."
+
+ 
+ # Glossaries
+
+ GOLDEN_GATE_GLOSS:0 "The Golden Gate was the most magnificent and historically significant gate in the walls of Constantinople. Located at the southern terminus of the massive Theodosian Land Walls, it served as the grand state entrance to the capital."
+
+ SENATE_MAGNAURA_GLOSS:0 "By the time the Senate consolidated its presence in the Magnaura during the later Roman periods, its old legislative powers had completely vanished. It no longer operated like the old Senate. Instead, it performed vital ceremonial, advisory, and legitimizing functions for the $trait_autocrator_ercf$."

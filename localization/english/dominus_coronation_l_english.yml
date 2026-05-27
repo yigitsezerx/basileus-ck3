@@ -1,0 +1,51 @@
+﻿l_english:
+ # ─── Event 1: The Imperial Name ───────────────────────────────────────────────
+ dominus_coronation.0001.t: "A New Reign"
+ dominus_coronation.0001.desc: "The moment of my coronation is nigh. I can feel the weight of the crown already..\n\nThroughout the long history of the Roman Empire, several emperors have sometimes shed the names of their birth, taking on a regal identity to mark their reign as a new chapter in the eternal story of our Empire.\n\nHow shall history remember me?"
+
+ # Options
+ dominus_coronation.0001.opt_rename: "I shall choose my own regnal name."
+ dominus_coronation.0001.opt_keep: "I will forge my own legacy. My birth name shall be my reign name."
+
+ # ─── Event 2: The Chosen Name ─────────────────────────────────────────────────
+ dominus_coronation.0002.t: "A Name of My Own Choosing"
+ dominus_coronation.0002.desc: "The imperial scribes await, ready to inscribe my chosen name into the annals of the Roman Empire for all eternity.\n\nI may choose any name I wish, or abandon this endeavour and rule under the name I was born with."
+
+ # Options
+ dominus_coronation.0002.opt_confirm: "So be it. This is the name I shall carry."
+ dominus_coronation.0002.opt_parent_father: "I shall reign with the name of my father."
+ dominus_coronation.0002.opt_parent_mother: "I shall honor my mother, let her name be remembered through my reign."
+ dominus_coronation.0002.opt_cancel: "Perhaps my birth name is legacy enough."
+
+ # ─── BYZANTINE BIRTH NAME TOOLTIP ─────────────────────────────────────────────
+ # Vanilla CK3 does not preserve or display a renamed character's birth name
+ # anywhere — popes who pick a papal name simply lose their old name via
+ # change_first_name. This is our custom replacement.
+ #
+ # dominus_save_birth_name_effect (called in dominus_coronation.0002 immediate)
+ # creates an immortal donor character cloned from root (template_character),
+ # and stores a reference to it in var:dominus_birth_name_char. The Var lookup
+ # below resolves that donor's name even after the emperor has been renamed.
+ DOMINUS_BIRTH_NAME_TOOLTIP:0 "Born: [Character.MakeScope.Var('dominus_birth_name_char').GetFirstNameNoTooltip]"
+
+ # ─── Modifiers ────────────────────────────────────────────────────────────────
+ dominus_echo_conqueror: "Legacy of the Conqueror"
+ dominus_echo_conqueror_desc: "Echoes of a martial forebear sharpen the Basileus's command of arms."
+ dominus_echo_peacemaker: "Legacy of the Peacemaker"
+ dominus_echo_peacemaker_desc: "The Basileus carries the diplomatic poise of his namesake."
+ dominus_echo_builder: "Legacy of the Builder"
+ dominus_echo_builder_desc: "The administrative legacy of his namesake guides the Basileus's reign."
+ dominus_echo_schemer: "Legacy of the Schemer"
+ dominus_echo_schemer_desc: "The cunning of his namesake whispers through the palace corridors."
+ dominus_echo_philosopher: "Legacy of the Philosopher"
+ dominus_echo_philosopher_desc: "Wisdom from the namesake's books shapes the Basileus's counsel."
+ dominus_echo_ancestors: "Legacy of the Ancestors"
+ dominus_echo_ancestors_desc: "The dignity of the namesake's house carries forward."
+ dominus_forge_own_path: "Forging an Imperial Legacy"
+ dominus_forge_own_path_desc: "The Basileus chooses to carry his birth name into the imperial annals."
+
+ # Regnal-name badge: name shows the chosen throne name (current first name),
+ # description carries the birth-name line. This is what makes the "Born: X"
+ # information visible from the character window's modifier panel.
+ dominus_regnal_throne_name: "Throne Name: [Character.GetFirstNameNoTooltip]"
+ dominus_regnal_throne_name_desc: "$DOMINUS_BIRTH_NAME_TOOLTIP$\n\nUpon ascending to the imperial throne, this Basileus shed the name of his birth and took up an imperial regnal name."

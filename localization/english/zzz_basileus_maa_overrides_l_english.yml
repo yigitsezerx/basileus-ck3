@@ -1,0 +1,41 @@
+﻿l_english:
+  # Latin Unit Names
+  cataphract_roman:0 "Cataphracts"
+  akritai_roman:0 "Acrites"
+  ballistrai_roman:0 "Ballistrae"
+  skoutatoi_roman:0 "Scutati"
+
+  # Game Concepts
+  game_concept_cataphract_roman:0 "$cataphract_roman$"
+  game_concept_cataphract_roman_desc:0 "$cataphract_roman_flavor$"
+  
+  game_concept_akritai_roman:0 "$akritai_roman$"
+  game_concept_akritai_roman_desc:0 "$akritai_roman_flavor$"
+  
+  game_concept_ballistrai_roman:0 "$ballistrai_roman$"
+  game_concept_ballistrai_roman_desc:0 "$ballistrai_roman_flavor$"
+  
+  game_concept_skoutatoi_roman:0 "$skoutatoi_roman$"
+  game_concept_skoutatoi_roman_desc:0 "$skoutatoi_roman_flavor$"
+
+  # Latin Unit Flavor Text
+  cataphract_roman_flavor:0 "#F Clad in multi-layered lamellar and riding armored steeds, they are the direct heirs to the Imperial heavy cavalry tradition, capable of shattering any line through shock and iron.#!"
+  akritai_roman_flavor:0 "#F Veteran rural conscripts, defenders of the rocky passes, who use careful timing and local knowledge to harass even the mightiest of hosts.#!"
+  ballistrai_roman_flavor:0 "#F Heirs to the Roman engineering corps, these specialists operate torsion-based engines that rain spear-sized bolts into besieged settlements and enemy formations alike, causing fear and disorder.#!"
+  skoutatoi_roman_flavor:0 "#F The tall #italic scutum#! shields these infantry array against the foe is their namesake. Yet their chief virtue in battle is discipline, which affords them good order in both advance and retreat.#!"
+
+  # Fallbacks for vanilla units (ensuring they still show correctly for Greeks)
+  cataphract_vanilla_name:0 "Kataphraktoi"
+  akritai_vanilla_name:0 "Akritai"
+  ballistrai_vanilla_name:0 "Ballistrai"
+  skoutatoi_vanilla_name:0 "Skoutatoi"
+
+  # Tradition Localization
+  tradition_imperial_tagmata_roman_name:0 "Imperial Tagmata"
+  tradition_imperial_tagmata_roman_desc:0 "Elite, well-armored regiments form the backbone of this culture's military campaigns. Their haughty troops have little regard for petty warrior nobles and reckless acts of personal valor; instead, they honor discipline and the hallowed names of their units. #EMP Excubitores! Scholae! Hicanati!#!"
+
+  # Parameter Tooltip Overrides for the Roman Tradition
+  culture_parameter_unlock_maa_cataphract_roman:0 "Can recruit [GetMaA('cataphract_roman').GetName] as [men_at_arms|E]"
+  culture_parameter_unlock_maa_akritai_roman:0 "Can recruit [GetMaA('akritai_roman').GetName] as [men_at_arms|E]"
+  culture_parameter_unlock_maa_ballistrai_roman:0 "Can recruit [GetMaA('ballistrai_roman').GetName] as [men_at_arms|E]"
+  culture_parameter_unlock_maa_skoutatoi_roman:0 "Can recruit [GetMaA('skoutatoi_roman').GetName] as [men_at_arms|E]"

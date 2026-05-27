@@ -1,0 +1,131 @@
+﻿l_english:
+ # ─── Reorganize the Themes decision ───
+ basileus_reorganize_themes_decision:0 "Restructure the Themes"
+ basileus_reorganize_themes_decision_desc:0 "The administration of the frontier regions is a patchwork. Where our control is complete, we may reorganize the land into proper [Glossary( 'themes', 'THEME_GLOSS' )]."
+ basileus_reorganize_themes_decision_tooltip:0 "Consolidate a fully-controlled region into a restructured [Glossary( 'theme', 'THEME_GLOSS' )]."
+ basileus_reorganize_themes_decision_req:0 "We must completely control the lands of a theme we have not yet reorganized"
+ CHOOSE_THEME_BUTTON:0 "Choose a Theme"
+ basileus_reorganize_themes_decision_confirm:0 "Restructure the Themes"
+
+ # ─── Theme options ───
+ basileus_theme_bulgarian_frontier_desc:0 "Bulgaria"
+ theme_bulgarian_frontier_tooltip:0 "Reorganize the conquered Bulgarian frontier into proper themes."
+ # basileus_theme_haemimontus_desc:0 "Reorganize the #high Haemimontus#! — the duchies of the southern Bulgarian frontier — into a single theme. The lands of Bulgaria proper are merged into Philippopolis, which is renamed Haemimontus."
+ # basileus_theme_paristrion_desc:0 "Reorganize the #high Paristrion#! — the Danubian frontier — into a single theme. Dobrudja is merged into Turnovo, which is renamed Paristrion."
+
+ basileus_theme_peloponnese_frontier_desc:0 "[GetPlayer.Custom('GetBasileusThemePeloponneseName')]"
+ theme_peloponnese_tooltip:0 "Reorganize the [GetPlayer.Custom('GetBasileusThemePeloponneseName')]."
+ BASILEUS_THEME_PELOPONNESE_NAME:0 "Peloponnese"
+ BASILEUS_THEME_PELOPONNESE_NAME_adj:0 "Peloponnesian"
+
+ basileus_theme_hellas_frontier_desc:0 "Hellas"
+ theme_hellas_tooltip:0 "Reorganize Hellas."
+ basileus_theme_hellas_requires_peloponnese_tt:0 "The #high [GetPlayer.Custom('GetBasileusThemePeloponneseName')]#! must be reorganized first"
+ basileus_theme_thrace_requires_macedonia_tt:0 "#high [GetPlayer.Custom('GetBasileusThemeMacedoniaName')]#! must be reorganized first."
+
+ basileus_theme_macedonia_frontier_desc:0 "[GetPlayer.Custom('GetBasileusThemeMacedoniaName')]"
+ theme_macedonia_tooltip:0 "Reorganize [GetPlayer.Custom('GetBasileusThemeMacedoniaName')]."
+
+ basileus_theme_thrace_frontier_desc:0 "[GetPlayer.Custom('GetBasileusThemeThrakeName')]"
+ theme_thrace_tooltip:0 "Reorganize [GetPlayer.Custom('GetBasileusThemeThrakeName')]."
+
+ basileus_theme_dioclea_frontier_desc:0 "[GetPlayer.Custom('GetBasileusThemeDiocleaName')]"
+ theme_dioclea_tooltip:0 "Reorganize [GetPlayer.Custom('GetBasileusThemeDiocleaName')]."
+ basileus_theme_dalmatia_frontier_desc:0 "Dalmatia"
+ theme_dalmatia_tooltip:0 "Reorganize Dalmatia."
+
+ basileus_theme_croatia_frontier_desc:0 "[GetPlayer.Custom('GetBasileusThemeCroatiaName')]"
+ theme_croatia_tooltip:0 "Reorganize [GetPlayer.Custom('GetBasileusThemeCroatiaName')]."
+ 
+ basileus_theme_syria_frontier_desc:0 "Syria"
+ theme_syria_tooltip:0 "Reorganize Syria."
+
+ basileus_theme_palestina_frontier_desc:0 "Palestine"
+ theme_palestina_tooltip:0 "Reorganize Palestine."
+
+  basileus_theme_africa_frontier_desc:0 "[GetPlayer.Custom('GetBasileusThemeAfricaName')]"
+  theme_africa_tooltip:0 "Reorganize [GetPlayer.Custom('GetBasileusThemeAfricaName')]."
+
+ # ─── Theme title names (set_title_name + the _adj adjective convention) ───
+ # These resolve dynamically by culture via customizable_localization:
+ # eastern_roman → Latinised form; Greek / every other culture → fallback.
+ BASILEUS_THEME_HAEMIMONTUS_NAME:0 "[GetPlayer.Custom('GetBasileusThemeHaemimontusName')]"
+ BASILEUS_THEME_HAEMIMONTUS_NAME_adj:0 "[GetPlayer.Custom('GetBasileusThemeHaemimontusAdj')]"
+ BASILEUS_THEME_PARISTRION_NAME:0 "[GetPlayer.Custom('GetBasileusThemeParistrionName')]"
+ BASILEUS_THEME_PARISTRION_NAME_adj:0 "[GetPlayer.Custom('GetBasileusThemeParistrionAdj')]"
+ # Peloponnese
+ BASILEUS_THEME_PELOPONNESE_NAME:0 "[GetPlayer.Custom('GetBasileusThemePeloponneseName')]"
+ BASILEUS_THEME_PELOPONNESE_NAME_adj:0 "[GetPlayer.Custom('GetBasileusThemePeloponneseAdj')]"
+ # Thrace kingdom — the title itself is named dynamically.
+ # Static fallback name for k_thrace; the form-effect overrides it per culture
+ # via set_title_name (basileus_set_theme_name_effect).
+ k_thrace:0 "Thrake"
+ k_thrace_adj:0 "Thrakesian"
+ # MACEDONIA
+ BASILEUS_THEME_MACEDONIA_NAME:0 "[GetPlayer.Custom('GetBasileusThemeMacedoniaName')]"
+ BASILEUS_THEME_MACEDONIA_NAME_adj:0 "[GetPlayer.Custom('GetBasileusThemeMacedoniaAdj')]"
+ # DIOCLEA
+ BASILEUS_THEME_DIOCLEA_NAME:0 "[GetPlayer.Custom('GetBasileusThemeDiocleaName')]"
+ BASILEUS_THEME_DIOCLEA_NAME_adj:0 "[GetPlayer.Custom('GetBasileusThemeDiocleaAdj')]"
+ # CROATIA
+ BASILEUS_THEME_CROATIA_NAME:0 "[GetPlayer.Custom('GetBasileusThemeCroatiaName')]"
+ BASILEUS_THEME_CROATIA_NAME_adj:0 "[GetPlayer.Custom('GetBasileusThemeCroatiaAdj')]"
+ # AFRICA
+ BASILEUS_THEME_AFRICA_NAME:0 "[GetPlayer.Custom('GetBasileusThemeAfricaName')]"
+ BASILEUS_THEME_AFRICA_NAME_adj:0 "[GetPlayer.Custom('GetBasileusThemeAfricaAdj')]"
+ # Culture variants — eastern_roman (ER) vs Greek/default fallback (GREEK).
+ BASILEUS_THEME_HAEMIMONTUS_NAME_ER:0 "Haemimontus"
+ BASILEUS_THEME_HAEMIMONTUS_NAME_GREEK:0 "Haemimontos"
+ BASILEUS_THEME_HAEMIMONTUS_ADJ_ER:0 "Haemimontan"
+ BASILEUS_THEME_HAEMIMONTUS_ADJ_GREEK:0 "Haemimontan"
+ BASILEUS_THEME_PARISTRION_NAME_ER:0 "Paristrion"
+ BASILEUS_THEME_PARISTRION_NAME_GREEK:0 "Paradounabis"
+ BASILEUS_THEME_PARISTRION_ADJ_ER:0 "Paristrian"
+ BASILEUS_THEME_PARISTRION_ADJ_GREEK:0 "Paradounabian"
+ BASILEUS_THEME_PELOPONNESE_NAME_ER:0 "Peloponnese"
+ BASILEUS_THEME_PELOPONNESE_NAME_GREEK:0 "Peloponnesos"
+ BASILEUS_THEME_PELOPONNESE_ADJ_ER:0 "Peloponnesian"
+ BASILEUS_THEME_PELOPONNESE_ADJ_GREEK:0 "Peloponnesian"
+ BASILEUS_THEME_THRAKE_NAME_ER:0 "Thrace"
+ BASILEUS_THEME_THRAKE_NAME_GREEK:0 "Thrake"
+ BASILEUS_THEME_THRAKE_ADJ_ER:0 "Thracian"
+ BASILEUS_THEME_THRAKE_ADJ_GREEK:0 "Thrakesian"
+ BASILEUS_THEME_MACEDONIA_NAME_ER:0 "Macedonia"
+ BASILEUS_THEME_MACEDONIA_NAME_GREEK:0 "Makedonia"
+ BASILEUS_THEME_MACEDONIA_ADJ_ER:0 "Macedonian"
+ BASILEUS_THEME_MACEDONIA_ADJ_GREEK:0 "Makedonian"
+ BASILEUS_THEME_DIOCLEA_NAME_ER:0 "Dioclea"
+ BASILEUS_THEME_DIOCLEA_NAME_GREEK:0 "Diokleia"
+ BASILEUS_THEME_DIOCLEA_ADJ_ER:0 "Dioclean"
+ BASILEUS_THEME_DIOCLEA_ADJ_GREEK:0 "Dioklean"
+ BASILEUS_THEME_CROATIA_NAME_ER:0 "Croatia"
+ BASILEUS_THEME_CROATIA_NAME_GREEK:0 "Chorvatia"
+ BASILEUS_THEME_CROATIA_ADJ_ER:0 "Croatian"
+ BASILEUS_THEME_CROATIA_ADJ_GREEK:0 "Chorvatian"
+ BASILEUS_THEME_AFRICA_NAME_ER:0 "Africa"
+ BASILEUS_THEME_AFRICA_NAME_GREEK:0 "Afriki"
+ BASILEUS_THEME_AFRICA_ADJ_ER:0 "African"
+ BASILEUS_THEME_AFRICA_ADJ_GREEK:0 "Afrikian"
+
+ # set_title_name adjective convention: KEY -> KEY_adj. These let the static
+ # name keys (used by basileus_set_theme_name_effect) carry an adjective.
+ BASILEUS_THEME_HAEMIMONTUS_NAME_ER_adj:0 "Haemimontan"
+ BASILEUS_THEME_HAEMIMONTUS_NAME_GREEK_adj:0 "Haemimontan"
+ BASILEUS_THEME_PARISTRION_NAME_ER_adj:0 "Paristrian"
+ BASILEUS_THEME_PARISTRION_NAME_GREEK_adj:0 "Paradounabian"
+ BASILEUS_THEME_PELOPONNESE_NAME_ER_adj:0 "Peloponnesian"
+ BASILEUS_THEME_PELOPONNESE_NAME_GREEK_adj:0 "Peloponnesian"
+ BASILEUS_THEME_THRAKE_NAME_ER_adj:0 "Thracian"
+ BASILEUS_THEME_THRAKE_NAME_GREEK_adj:0 "Thrakesian"
+ BASILEUS_THEME_MACEDONIA_NAME_ER_adj:0 "Macedonian"
+ BASILEUS_THEME_MACEDONIA_NAME_GREEK_adj:0 "Makedonian"
+ BASILEUS_THEME_DIOCLEA_NAME_ER_adj:0 "Dioclean"
+ BASILEUS_THEME_DIOCLEA_NAME_GREEK_adj:0 "Dioklean"
+ BASILEUS_THEME_CROATIA_NAME_ER_adj:0 "Croatian"
+ BASILEUS_THEME_CROATIA_NAME_GREEK_adj:0 "Chorvatian"
+ BASILEUS_THEME_AFRICA_NAME_ER_adj:0 "African"
+ BASILEUS_THEME_AFRICA_NAME_GREEK_adj:0 "Afrikian"
+
+ # ─── Glossaries ───
+
+ THEME_GLOSS:0 "The #emp themes#! or #emp themata#! were the main military and administrative divisions of the later Roman Empire."

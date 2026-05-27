@@ -1,0 +1,148 @@
+﻿l_english:
+ EMPTY_STRING: ""
+
+ # Byzantine Council Window Strings
+ BYZANTINE_COUNCIL_WINDOW_TITLE: "Imperial Court of [ROOT.Char.GetCapitalLocation.GetTitle.GetNameNoTierNoTooltip]"
+ BYZANTINE_COUNCIL_WINDOW_TITLE_GREAT_PALACE: "Great Palace of [ROOT.Char.GetCapitalLocation.GetTitle.GetNameNoTierNoTooltip]"
+ BYZANTINE_COUNCIL_WINDOW_TITLE_BLACHERNAE: "Palace of Blachernae"
+ BYZANTINE_DEPARTMENTS_HEADER: "Senior Offices"
+ BYZANTINE_MINISTRIES_HEADER: "Offices"
+
+ # Byzantine Flavor Descriptions (Historic Tooltips)
+ game_concept_dominus_minister_grand_chancellor_byz_desc: "The [logothetes|E] is the highest ranking minister and is in charge of diplomatic matters.\n\n#F The Logothetes ton Sekreton oversaw all civil departments, acting as a de facto prime minister and the Emperor's most trusted advisor in the later Empire.#!"
+ game_concept_dominus_minister_censor_byz_desc: "The [logothetes|E] tou Dromou is the minister in charge of matters of intrigue and intelligence.\n\n#F The 'Logothete of the Course' was responsible for the public post, internal security, and foreign affairs. They were the main point of contact for foreign ambassadors.#! \n\nBeware of having a disloyal Logothetes, for they can easily conceal and participate in [schemes|E] against you and your [close_family|E]!"
+ game_concept_dominus_minister_grand_marshal_byz_desc: "The [domestic_schools|E] is the highest ranking commander in the [realm|E] and commands an [army|E] of [title_men_at_arms|E].\n\n#F Originally the commander of the elite tagmata guard regiments, the Domesticus became the supreme commander of the field armies in the East and West.#!"
+ game_concept_dominus_minister_of_personnel_byz_desc: "The [magister_officiorum|E] is the minister in charge of all matters related to [appointments|E] and can greatly impact the [candidate_score|E] of other [characters|E].\n\n#F The Master of Offices was the head of the imperial civil service, overseeing the secretariats, the palace guard, and the official state ceremonies.#!"
+ game_concept_dominus_minister_of_revenue_byz_desc: "The [sakellarios|E] is the minister in charge of [taxation|E] and aids the Emperor with the [treasury|E].\n\n#F The Sakellarios served as the general comptroller of the empire, with the power to audit all departments and oversee the imperial treasury.#!"
+ game_concept_dominus_minister_of_rites_byz_desc: "The [patriarch|E] is the minister in charge of religious and spiritual affairs, and can assist [governors|E] in hosting [examinations|E].\n\n#F The Ecumenical Patriarch of Constantinople is the spiritual leader of the Orthodox world. In the concept of [symphonia|E], the Emperor and Patriarch work together as the two heads of Christendom.#!"
+ game_concept_dominus_minister_of_war_byz_desc: "The [stratelates|E] is your chief [commander|E] and the [councillor|E] in charge of military matters in general.\n\n#F The 'leader of the army' was the supreme military commander of the Roman and Byzantine field armies. In the middle Byzantine era, this title was used for the highest-ranking generals.#!"
+ game_concept_dominus_minister_of_justice_byz_desc: "The [quaestor|E] is the minister in charge of legal affairs and assisting the Emperor to maintain a righteous rule.\n\n#F The Quaestor was the chief legal officer of the Empire, responsible for drafting imperial laws and overseeing the administration of the judicial system.#!"
+ game_concept_dominus_minister_of_works_byz_desc: "The [praefectus|E] is the minister in charge of construction and development throughout the [realm|E], and may start [great_projects|E].\n\n#F The [eparch|E] of Constantinople held supreme judicial and administrative authority over the capital city, its markets, its guilds, and its public infrastructure.#!"
+ 
+ # Byzantine Standard Council Flavors
+ game_concept_dominus_councillor_spymaster_byz_desc: "The [praepositus|E] is the head of the imperial household and oversaw all palace ceremonies.\n\n#F The Lord Chamberlain was often a trusted eunuch who acted as the Emperor's closest personal confidant and gatekeeper to the imperial presence.#!"
+ game_concept_dominus_councillor_steward_byz_desc: "The [logothetes|E] of the Genicon is the minister in charge of general taxation and the state budget.\n\n#F The Logothete of the Genicon oversaw the assessment and collection of taxes across the entire empire, ensuring the stability of the imperial finances.#!"
+ game_concept_dominus_councillor_marshal_byz_desc: "The [stratelates|E] is a supreme military commander and chief administrative officer of the armies.\n\n#F The Master of Soldiers was a traditional Roman rank that survived as the Stratēlatēs, representing the Emperor's authority over the field armies.#!"
+ game_concept_dominus_councillor_chancellor_byz_desc: "The [logothetes|E] of the Drome is the minister in charge of the public post, intelligence, and foreign diplomacy.\n\n#F The Logothete of the Course was the primary point of contact for foreign ambassadors and oversaw the security of the empire's communication networks.#!"
+ game_concept_dominus_councillor_court_chaplain_byz_desc: "The [patriarch|E] is the spiritual leader of the Orthodox world and the Emperor's partner in the governance of Christendom.\n\n#F The Ecumenical Patriarch of Constantinople represents the highest spiritual authority in the Empire, working in [symphonia|E] with the Emperor to guide the faithful.#!"
+
+ # HARD OVERRIDES of the original TGP Keys (No dominus prefix)
+ game_concept_minister_grand_chancellor_desc: "[GetPlayer.Custom('GetMinisterGrandChancellorDesc')]"
+ game_concept_minister_censor_desc: "[GetPlayer.Custom('GetMinisterCensorDesc')]"
+ game_concept_minister_grand_marshal_desc: "[GetPlayer.Custom('GetMinisterGrandMarshalDesc')]"
+ game_concept_minister_of_personnel_desc: "[GetPlayer.Custom('GetMinisterOfPersonnelDesc')]"
+ game_concept_minister_of_revenue_desc: "[GetPlayer.Custom('GetMinisterOfRevenueDesc')]"
+ game_concept_minister_of_rites_desc: "[GetPlayer.Custom('GetMinisterOfRitesDesc')]"
+ game_concept_minister_of_war_desc: "[GetPlayer.Custom('GetMinisterOfWarDesc')]"
+ game_concept_minister_of_justice_desc: "[GetPlayer.Custom('GetMinisterOfJusticeDesc')]"
+ game_concept_minister_of_works_desc: "[GetPlayer.Custom('GetMinisterOfWorksDesc')]"
+ 
+ # Standard Position Overrides
+ game_concept_chancellor_desc: "[GetPlayer.Custom('GetCouncillorChancellorDesc')]"
+ game_concept_steward_desc: "[GetPlayer.Custom('GetCouncillorStewardDesc')]"
+ game_concept_marshal_desc: "[GetPlayer.Custom('GetCouncillorMarshalDesc')]"
+ game_concept_spymaster_desc: "[GetPlayer.Custom('GetCouncillorSpymasterDesc')]"
+ game_concept_court_chaplain_desc: "[GetPlayer.Custom('GetCouncillorCourtChaplainDesc')]"
+
+ # Legacy Key overrides (Basileus-prefixed)
+ basileus_minister_grand_chancellor_desc: "[GetPlayer.Custom('GetMinisterGrandChancellorDesc')]"
+
+ # Council Positions
+ councillor_chancellor_greek: "Logothetēs tou Dromou"
+ councillor_chancellor_greek_possessive: "Logothetēs tou Dromou's"
+ councillor_steward_greek: "Logothetēs tou Genikou"
+ councillor_steward_greek_possessive: "Logothetēs tou Genikou's"
+ councillor_marshal_greek: "Stratēlatēs"
+ councillor_marshal_greek_possessive: "Stratēlatēs's"
+ councillor_spymaster_greek: "Parakoimōmenos"
+ councillor_spymaster_greek_possessive: "Parakoimōmenos's"
+ councillor_court_chaplain_greek: "Patriarchēs"
+ councillor_court_chaplain_greek_possessive: "Patriarchēs's"
+
+ # Ministries
+ minister_grandchancellor_greek: "Logothetēs ton Sekretōn"
+ minister_grandchancellor_greek_possessive: "Logothetēs ton Sekretōn's"
+ minister_censor_greek: "Logothetēs tou Dromou"
+ minister_censor_greek_possessive: "Logothetēs tou Dromou's"
+ minister_personnel_greek: "Chartoularios tou Kanikleiou"
+ minister_personnel_greek_possessive: "Chartoularios tou Kanikleiou's"
+ minister_revenue_greek: "Sakellarios"
+ minister_revenue_greek_possessive: "Sakellarios's"
+ minister_rites_greek: "Megas Oikonomos"
+ minister_rites_greek_possessive: "Megas Oikonomos's"
+ minister_war_greek: "Stratopedarchēs"
+ minister_war_greek_possessive: "Stratopedarchēs's"
+ minister_justice_greek: "Logothetēs tou Praitōriou"
+ minister_justice_greek_possessive: "Logothetēs tou Praitōriou's"
+ minister_works_greek: "Eparchos"
+ minister_works_greek_possessive: "Eparchos's"
+ minister_grandmarshal_greek: "Megas Domestikos"
+ minister_grandmarshal_greek_possessive: "Megas Domestikos's"
+
+ # Greek Tooltip Descriptions
+ minister_personnel_greek_desc: "The [logothetes_kanikleiou|E] is the minister in charge of all matters related to [appointments|E] and can greatly impact the [candidate_score|E] of other [characters|E].\n\n#F The Keeper of the Inkstand was the keeper of the imperial inkstand and head of the imperial chancellery, responsible for drafting documents and managing the bureaucracy.#!"
+ councillor_steward_greek_desc: "The [logothetes_genikou|E] is the minister in charge of general taxation and the state budget.\n\n#F The Logothete of the Genicon oversaw the assessment and collection of taxes across the entire empire, ensuring the stability of the imperial finances.#!"
+ councillor_marshal_greek_desc: "The [stratelates|E] is the minister in charge of the field armies and military strategy.\n\n#F The Stratēlatēs was a supreme military rank, functionally equivalent to the Master of Soldiers, responsible for the defense of the imperial borders.#!"
+ councillor_court_chaplain_greek_desc: "The [patriarch|E] is the minister in charge of religious and spiritual affairs.\n\n#F The Ecumenical Patriarch of Constantinople is the highest spiritual authority, working in [symphonia|E] with the Emperor to safeguard the traditions of the Church.#!"
+ minister_justice_greek_desc: "The [logothetes_praitoriou|E] is the minister in charge of legal affairs and assisting the Emperor to maintain a righteous rule.\n\n#F As the administrator of the Praetorium, this official was responsible for the judicial system and the maintenance of order within the capital and beyond.#!"
+ minister_works_greek_desc: "The [eparchos|E] is the minister in charge of construction and development throughout the [realm|E], and may start [great_projects|E].\n\n#F The Eparch of Constantinople held supreme judicial and administrative authority over the Queen of Cities, its markets, its guilds, and its public infrastructure.#!"
+ minister_grandmarshal_greek_desc: "The [megas_domestikos|E] is the highest ranking commander in the [realm|E] and commands an [army|E] of [title_men_at_arms|E].\n\n#F The [domestikos_ton_scholon|E] was originally the commander of the elite tagmata guard regiments, before becoming the supreme commander of the field armies in the East and West.#!"
+ 
+ councillor_chancellor_greek_desc: "The [logothetes_dromou|E] is the head of the imperial household and oversaw all palace ceremonies and foreign diplomacy.\n\n#F The Logothete of the Course was responsible for the public post, internal security, and foreign affairs, acting as the main point of contact for foreign ambassadors.#!"
+ councillor_spymaster_greek_desc: "The [parakoimomenos|E] is the minister in charge of the Emperor's security and intelligence.\n\n#F The "One who sleeps near" was often the most powerful official in the palace, acting as a trusted guardian and personal agent of the Emperor.#!"
+ basileus_minister_censor_desc: "[GetPlayer.Custom('GetMinisterCensorDesc')]"
+ basileus_minister_grand_marshal_desc: "[GetPlayer.Custom('GetMinisterGrandMarshalDesc')]"
+ basileus_minister_of_personnel_desc: "[GetPlayer.Custom('GetMinisterOfPersonnelDesc')]"
+ basileus_minister_of_revenue_desc: "[GetPlayer.Custom('GetMinisterOfRevenueDesc')]"
+ basileus_minister_of_rites_desc: "[GetPlayer.Custom('GetMinisterOfRitesDesc')]"
+ basileus_minister_of_war_desc: "[GetPlayer.Custom('GetMinisterOfWarDesc')]"
+ basileus_minister_of_justice_desc: "[GetPlayer.Custom('GetMinisterOfJusticeDesc')]"
+ basileus_minister_of_works_desc: "[GetPlayer.Custom('GetMinisterOfWorksDesc')]"
+
+ # Breakdown overrides (Using GetPlayer for robust detection)
+ minister_grand_chancellor_action_breakdown: "[GetPlayer.Custom('GetMinisterGrandChancellorActionBreakdown')]"
+ minister_censor_action_breakdown: "[GetPlayer.Custom('GetMinisterCensorActionBreakdown')]"
+ minister_grand_marshal_action_breakdown: "[GetPlayer.Custom('GetMinisterGrandMarshalActionBreakdown')]"
+ minister_of_personnel_action_breakdown: "[GetPlayer.Custom('GetMinisterOfPersonnelActionBreakdown')]"
+ minister_of_revenue_action_breakdown: "[GetPlayer.Custom('GetMinisterOfRevenueActionBreakdown')]"
+ minister_of_rites_action_breakdown: "[GetPlayer.Custom('GetMinisterOfRitesActionBreakdown')]"
+ minister_of_war_action_breakdown: "[GetPlayer.Custom('GetMinisterOfWarActionBreakdown')]"
+ minister_of_justice_action_breakdown: "[GetPlayer.Custom('GetMinisterOfJusticeActionBreakdown')]"
+ minister_of_works_action_breakdown: "[GetPlayer.Custom('GetMinisterOfWorksActionBreakdown')]"
+
+ # Backup copies of original Chinese/Generic texts (Cleaned up of Secretary references for fallback safety)
+ game_concept_dominus_minister_grand_chancellor_tgp_desc: "The Grand Chancellor is the highest ranking minister and is in charge of diplomatic matters.\n\n$minister_grand_chancellor_action_breakdown$"
+ game_concept_dominus_minister_censor_tgp_desc: "The Censor is the minister in charge of matters of intrigue and intelligence.\n\n$minister_censor_action_breakdown$"
+ game_concept_dominus_minister_grand_marshal_tgp_desc: "The Grand Marshal is the highest ranking commander in the realm and commands an Army of Title Men-at-Arms.\n\n$minister_grand_marshal_action_breakdown$"
+ game_concept_dominus_minister_of_personnel_tgp_desc: "The Minister of Personnel is the minister in charge of all matters related to appointments and can greatly impact the Candidate Score of other characters.\n\n$minister_of_personnel_action_breakdown$"
+ game_concept_dominus_minister_of_revenue_tgp_desc: "The Minister of Revenue is the minister in charge of taxation and aids the Emperor with the treasury.\n\n$minister_of_revenue_action_breakdown$"
+ game_concept_dominus_minister_of_rites_tgp_desc: "The Minister of Rites is the minister in charge of religious and spiritual affairs.\n\n$minister_of_rites_action_breakdown$"
+ game_concept_dominus_minister_of_war_tgp_desc: "The Minister of War is the minister in charge of the administration and management of troops.\n\n$minister_of_war_action_breakdown$"
+ game_concept_dominus_minister_of_justice_tgp_desc: "The Minister of Justice is the minister in charge of legal affairs and assisting the Emperor to maintain a righteous rule.\n\n$minister_of_justice_action_breakdown$"
+ game_concept_dominus_minister_of_works_tgp_desc: "The Minister of Works is the minister in charge of construction and development throughout the realm, and may start Great Projects.\n\n$minister_of_works_action_breakdown$"
+
+ # Vanilla Backups for standard positions
+ game_concept_chancellor_desc_vanilla: "The Chancellor is the [councillor|E] in charge of diplomatic efforts, both inside and outside the [realm|E]."
+ game_concept_steward_desc_vanilla: "The Steward is the [councillor|E] in charge of [domain|E] administration, for example matters of [taxation|E], [culture|E] and [development|E]."
+ game_concept_marshal_desc_vanilla: "The Marshal is your chief [commander|E] and the [councillor|E] in charge of military matters in general."
+ game_concept_spymaster_desc_vanilla: "The Spymaster is the [councillor|E] in charge of intelligence and [schemes|E]."
+ game_concept_court_chaplain_desc_vanilla: "The [court_chaplain|E] is the [councillor|E] in charge of religious matters in the [realm|E]."
+
+ minister_grand_chancellor_action_breakdown_tgp: "#indent_newline:4 #weak The minister can, for example:\n$BULLET$Use the [GetDecision('favored_movement_consults_heaven_decision').GetName|V] [decision|E]\n$BULLET$Invite any type of [courtier|E] with the [GetDecision('tgp_minister_recruit_courtiers_decision').GetName|V] [decision|E]\n$BULLET$Access special #V $influence_meritorious_career_interaction$#! [interaction|E] options, and at a reduced cost\n$BULLET$Start the [GetGreatProjectType('minister_compel_religious_uniformity').GetName|V] [great_project|E]#!#!"
+ minister_censor_action_breakdown_tgp: "#indent_newline:4 #weak The minister can, for example:\n$BULLET$Use #V $censor_find_secrets_interaction$#! [interaction|E] to find [secrets|E] in [vassal|E] [courts|E], which you can use to get a [gold_i][gold|E] reward from your [liege|E] or gain [hooks|E]\n$BULLET$Doing [blackmail|E] will trigger #V '$catalyst_minister_blackmailed$'#! [dynastic_cycle_catalyst|E]\n$BULLET$Access special #V $influence_meritorious_career_interaction$#! [interaction|E] options#!#!"
+ minister_grand_marshal_action_breakdown_tgp: "#indent_newline:4 #weak The minister can, for example:\n$BULLET$Start the #V Grand Campaign#! [great_project|E]\n$BULLET$Start the [GetGreatProjectType('construct_great_barracks').GetName|V] [great_project|E]\n$BULLET$Use #V $CHINA_SEIZE_COUNTY_CB_NAME$#! and #V $CHINA_SEIZE_DUCHY_CB_NAME$#! [casus_bellis|E] in [GetSituationType('dynastic_cycle').GetPhaseType('situation_dynastic_cycle_phase_stability_expansion').GetName] and [GetSituationType('dynastic_cycle').GetPhaseType('situation_dynastic_cycle_phase_instability_conquest').GetName] [dynastic_cycle_eras_short|E]\n$BULLET$Access special #V $influence_meritorious_career_interaction$#! [interaction|E] options#!#!"
+ minister_of_personnel_action_breakdown_tgp: "#indent_newline:4 #weak The minister can, for example:\n$BULLET$Use #V $force_governor_removal_interaction$#! [interaction|E] to fire [governors|E] regardless of the [GetLawGroup('celestial_retirement_law').GetName] [law|E]\n$BULLET$Invite any type of [courtier|E] with the [GetDecision('tgp_minister_recruit_courtiers_decision').GetName|V] [decision|E]\n$BULLET$Compel acceptance of the #V $offer_courtier_interaction$#! and #V $demand_courtier_interaction$#! [interactions|E]\n$BULLET$Access special #V $influence_meritorious_career_interaction$#! [interaction|E] options, and at a reduced cost#!#!"
+ minister_of_revenue_action_breakdown_tgp: "#indent_newline:4 #weak The minister can, for example:\n$BULLET$Aid [vassals|E] who can #V $celestial_request_treasury_interaction$#!\n$BULLET$Use the [GetDecision('tgp_suggest_budget_change_decision').GetName|V] [decision|E]\n$BULLET$Start the [GetGreatProjectType('minister_project_conduct_census').GetName|V] [great_project|E]\n$BULLET$Use #V $pay_treasury_debt_interaction$#! [interaction|E] to pay [treasury_debt|E] of [civilian_governors|E] triggering #V '$catalyst_cleared_treasury_debt$'#! [dynastic_cycle_catalyst|E]\n$BULLET$Access special #V $influence_meritorious_career_interaction$#! [interaction|E] options#!#!"
+ minister_of_rites_action_breakdown_tgp: "#indent_newline:4 #weak The minister can, for example:\n$BULLET$Start the [GetGreatProjectType('minister_project_culture').GetName|V] [great_project|E]\n$BULLET$Start the [GetGreatProjectType('minister_compel_religious_uniformity').GetName|V] [great_project|E]\n$BULLET$Aid [vassals|E] in hosting [examinations|E]\n$BULLET$Access special #V $influence_meritorious_career_interaction$#! [interaction|E] options\n$BULLET$#V $demand_conversion_minister_rites_interaction$#! on [characters|E] of [faith_hostile|E] or [faith_evil|E] [faiths|E]#!#!"
+ minister_of_war_action_breakdown_tgp: "#indent_newline:4 #weak The minister can, for example:\n$BULLET$Send aid to [vassals|E] at [war|E] who can #V $celestial_request_military_aid_interaction$#!\n$BULLET$Order [military_governors|E] to join the [wars|E] of other [governors|E]\n$BULLET$Start the [GetGreatProjectType('minister_project_train_troops').GetName|V] [great_project|E]\n$BULLET$Use #V $pay_treasury_debt_interaction$#! [interaction|E] to pay [treasury_debt|E] of [military_governors|E] triggering #V '$catalyst_cleared_treasury_debt$'#! [dynastic_cycle_catalyst|E]\n$BULLET$Access special #V $influence_meritorious_career_interaction$#! [interaction|E] options#!#!"
+ minister_of_justice_action_breakdown_tgp: "#indent_newline:4 #weak The minister can, for example:\n$BULLET$Start the [GetGreatProjectType('minister_project_establish_control').GetName|V] [great_project|E]\n$BULLET$Use #V $imprison_interaction$#! [interaction|E] on [vassals|E] and [courtiers|E], who cannot refuse\n$BULLET$Use #V $pardon_interaction$#! [interaction|E] on [characters|E] who have committed [crimes|E]\n$BULLET$Use $censor_find_secrets_interaction$ [interaction|E] to find [secrets|E] in [vassal|E] [courts|E] and [imprison|E] or pardon known [criminals|E]\n$BULLET$Exposing [secrets|E] will trigger $catalyst_minister_exposed_secret$ [dynastic_cycle_catalyst|E]\n$BULLET$Access special #V $influence_meritorious_career_interaction$#! [interaction|E] options#!#!"
+ minister_of_works_action_breakdown_tgp: "#indent_newline:4 #weak The [praefectus|E] can, for example:\n$BULLET$Start the [GetGreatProjectType('minister_project_development').GetName|V] [great_project|E]\n$BULLET$Start the [GetGreatProjectType('grand_canals').GetName|V] [great_project|E]\n$BULLET$Start the [GetGreatProjectType('great_wall').GetName|V] [great_project|E]\n$BULLET$Can construct [buildings|E] and [holdings|E] inside the [realm|E]\n$BULLET$Can construct [buildings|E] and [holdings|E] inside [tributaries|E] of the [basileus|E]\n$BULLET$Access special #V $influence_meritorious_career_interaction$#! [interaction|E] options#!#!"
+
+ patriarch_cant_be_fired: "The @councillor_court_chaplain! is the @religious_head! of the [faith|E] and cannot be dismissed by the [emperor|E] as part of the [Symphonia|E]."
+ patriarch_cant_be_reassigned: "The @councillor_court_chaplain! is the @religious_head! of the [faith|E] and cannot be reassigned as part of the [Symphonia|E]."
+
+  minister_symphonia: "[symphonia|E]"
+  game_concept_symphonia_desc: "This Ministry manages the spiritual affairs of the Empire, fundamentally tied to the principles of [symphonia|E]."
+
+ eparch_cannot_be_fired_while_praefectus_tooltip: "Cannot be dismissed while they still serve as the [praefectus|E] on the Imperial council."
+ eparch_cannot_be_fired_while_eparchos_tooltip: "Cannot be dismissed while they still serve as the [eparchos|E] on the Imperial council."

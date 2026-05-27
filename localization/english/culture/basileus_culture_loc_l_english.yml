@@ -1,0 +1,39 @@
+﻿l_english:
+ # Overrides
+ # These are now handled via on_game_start to ensure map labels update correctly.
+ 
+ # Values used by the set_name effect
+ ercf_rhomaios_name:0 "Rhōmaîos"
+ ercf_rhomaios_prefix:0 "Rhōmaíō"
+ ercf_rhomaios_collective:0 "Rhōmaîoi"
+ 
+ ercf_greek_name:0 "Greek"
+ ercf_greek_prefix:0 "Greco"
+ ercf_greek_collective:0 "Greeks"
+ 
+ # Game Rule - Header uses 'rule_' prefix
+ rule_ercf_greek_culture_name_rule:0 "Greek Culture Name"
+ rule_ercf_greek_culture_name_rule_desc:0 "Determines whether the Greek culture is referred to as 'Greek' or the more authentic [rhomaios|E]."
+ 
+ # Settings
+ setting_rhomaios:0 "Rhōmaîos"
+ setting_rhomaios_desc:0 "Greek culture will be named #high [rhomaios|E]#!."
+ setting_greek:0 "Greek"
+ setting_greek_desc:0 "Greek culture will retain its default #high Greek#! name."
+ 
+ rule_basileus_ere_colour_rule:0 "Roman Empire Title Color"
+ rule_basileus_ere_colour_rule_desc:0 "Determines the map color of the Roman Empire."
+ setting_basileus_ere_colour:0 "Rosewood"
+ setting_basileus_ere_colour_desc:0 "The Roman Empire will use a modified version of the rosewood color."
+ setting_basileus_ere_colour_tyrian_red:0 "Tyrian Red"
+ setting_basileus_ere_colour_tyrian_red_desc:0 "The Roman Empire will use a modified version of the tyrian red color."
+ setting_basileus_default_colours:0 "Default Color"
+ setting_basileus_default_colours_desc:0 "The Roman Empire will use its default title color."
+ 
+ # Aesthetic Overrides
+ byzantine_clothing_gfx:0 "Roman"
+ byzantine_building_gfx:0 "Roman"
+ byzantine_group_coa_gfx:0 "Roman"
+ name_list_greek:0 "Roman"
+ eastern_unit_gfx:0 "Roman"
+
