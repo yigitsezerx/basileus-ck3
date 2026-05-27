@@ -1,0 +1,719 @@
+# ============================================================================
+# SENATE OF MAGNAURA — main window definition
+# ============================================================================
+# Type definition only. Instantiation lives inside hud.gui's meta_info widget.
+# Visibility gated by GetVariableSystem.Exists('senate_window').
+#
+# Visual layout (top to bottom):
+#   1. HEADER BAR        — "Senate of Magnaura" title + close button (X)
+#   2. APPROVAL ROW      — slim bar + value + tier text ("hostile/indifferent/approving")
+#   3. TOP ROW           — Emperor card (left) | vertical divider | Hypatus card (right)
+#   4. SENATORS SECTION  — section header + row of 5 slots
+#   5. PATRICIANS SECTION— section header + row of 5 slots
+# ============================================================================
+
+types SenateTypes
+{
+
+# ============================================================================
+# REUSABLE TYPE: senate_vacant_slot
+# ----------------------------------------------------------------------------
+# Visual: the "+" silhouette button shown in every empty seat (hypatos / senator
+# / patrician rows). Click → opens vanilla appoint dialog.
+#
+# Layered (bottom → top):
+#   * background  — faint dark panel
+#   * silhouette  — generic head shape
+#   * plus        — centered "+" icon
+#   * hover_glow  — extra silhouette overlay that fades in on mouseover
+# ============================================================================
+type senate_vacant_slot = button {
+	using = tooltip_se
+	alwaystransparent = no
+
+	# Faint dark panel behind the silhouette.
+	background = {
+		using = Background_Area_Dark
+		alpha = 0.5
+	}
+
+	# Greyed-out head silhouette filling the slot.
+	icon = {
+		name = "silhouette"
+		size = { 100% 100% }
+		texture = "gfx/portraits/unknown_portraits/portrait_mask_blank.dds"
+		alwaystransparent = yes
+		alpha = 0.4
+	}
+
+	# Centered "+" icon — signals "click to appoint".
+	icon = {
+		name = "plus"
+		parentanchor = center
+		size = { 32 32 }
+		texture = "gfx/interface/icons/symbols/icon_plus_small.dds"
+		alwaystransparent = yes
+		alpha = 0.7
+	}
+
+	# Hover highlight — second silhouette that fades in on mouseover for feedback.
+	icon = {
+		name = "hover_glow"
+		size = { 100% 100% }
+		texture = "gfx/portraits/unknown_portraits/portrait_mask_blank.dds"
+		alwaystransparent = yes
+		alpha = 0
+
+		state = {
+			name = hover_enter
+			alpha = 0.3
+			duration = 0.1
+			using = Animation_Curve_Default
+		}
+		state = {
+			name = hover_leave
+			alpha = 0
+			duration = 0.1
+			using = Animation_Curve_Default
+		}
+	}
+}
+
+# ============================================================================
+# REUSABLE TYPE: senate_section_header
+# ----------------------------------------------------------------------------
+# Visual: the thin header strip above the Senators and Patricians rows.
+#   [icon] [title text]                                            [(N/max)]
+#   ────────────────────────── divider line ──────────────────────────────
+#
+# Block overrides expected from caller:
+#   "icon"  — texture path for the leading icon
+#   "title" — header text key (e.g. SENATE_SENATORS_HEADER)
+#   "count" — right-aligned count text (e.g. "(2/5)")
+# ============================================================================
+type senate_section_header = vbox {
+	layoutpolicy_horizontal = expanding
+	spacing = 0
+
+	background = {
+		using = Background_Header
+		alpha = 0.8
+	}
+
+	# Top row: [expand] [icon] [title] [expand] [count]
+	hbox = {
+		layoutpolicy_horizontal = expanding
+		margin_left = 20
+		margin_right = 20
+		margin_top = 4
+		margin_bottom = 10
+		spacing = 10
+
+		# Pushes content toward center.
+		expand = {}
+
+		# Section icon.
+		icon = {
+			size = { 28 28 }
+			block "icon" {
+				texture = "gfx/interface/icons/flat_icons/noble_families.dds"
+			}
+		}
+
+		# Section title text (e.g. "Senators").
+		text_single = {
+			block "title" { text = "" }
+			using = Font_Type_Flavor
+			fontsize = 20
+			default_format = "#high;bol"
+		}
+
+		# Pushes count to the right edge while keeping icon+title centered.
+		expand = {}
+
+		# Count text on the right (e.g. "(2/5)").
+		text_single = {
+			block "count" { text = "" }
+			default_format = "#weak"
+			fontsize = 16
+		}
+	}
+}
+
+# ============================================================================
+# REUSABLE TYPE: senate_character_card
+# ----------------------------------------------------------------------------
+# Visual: large card with [big portrait] [title text + name text] used for
+# the Emperor card in the top row. (Hypatus card is built inline because
+# of its filled/vacant duality, so this type is currently only used for the
+# Emperor side.)
+#
+# Block overrides expected:
+#   "card_portrait" — portrait widget (with datacontext + portrait_head)
+#   "card_title"    — small grey label above the name (e.g. "Reigning Basileus")
+#   "card_name"     — bold character name text
+# ============================================================================
+type senate_character_card = hbox {
+	spacing = 15
+	margin = { 10 10 }
+
+	background = {
+		using = Background_Area_Characterlist
+		alpha = 0.6
+	}
+
+	# Left side: portrait area.
+	widget = {
+		block "card_portrait" {}
+	}
+
+	# Right side: stacked title (small) + name (bold).
+	vbox = {
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		spacing = 5
+		margin_top = 10
+
+		text_single = {
+			block "card_title" { text = "" }
+			default_format = "#weak"
+			fontsize = 14
+		}
+
+		text_single = {
+			block "card_name" { text = "" }
+			using = Font_Type_Flavor
+			fontsize = 18
+			default_format = "#high;bol"
+			multiline = yes
+			max_width = 240
+			autoresize = yes
+		}
+	}
+}
+
+# ============================================================================
+# MAIN WINDOW: window_senate
+# ----------------------------------------------------------------------------
+# Root widget of the senate window. Sized 1100×740. Centered on screen.
+# Visibility toggled by the variable system flag 'senate_window' (set by the
+# HUD button in hud.gui).
+# ============================================================================
+type window_senate = window {
+	name = "senate_window"
+	parentanchor = center
+	movable = yes
+	layer = middle
+
+	# Visibility is the senate window's master switch — set by the HUD button.
+	visible = "[GetVariableSystem.Exists('senate_window')]"
+
+	using = Window_Background     # parchment + corner ornaments behind the window
+	using = Window_Decoration     # decorative frame around the edges
+	using = Animation_ShowHide_Standard
+
+	size = { 1100 900 }
+
+	# Fade-in / fade-out states (and play standard window open/close sounds).
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+		using = Sound_WindowShow_Standard
+	}
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+		using = Sound_WindowHide_Standard
+	}
+
+	margin_widget = {
+		size = { 100% 100% }
+		margin_top = -5
+		margin_bottom = 30
+
+		# Thematic Magnaura backdrop. Placed INSIDE margin_widget rather than
+		# at the window root so it's clipped to the inner content area — at
+		# the root it overflowed the parchment frame because the rectangular
+		# illustration is bigger than the parchment's decorative edges.
+		# Mask_Rough_Edges softens the seam against the parchment.
+		background = {
+			texture = "gfx/interface/illustrations/event_scenes/ep3_constantinople.dds"
+			alpha = 0.10
+			fittype = centercrop
+			using = Mask_Rough_Edges
+			margin_top = -16
+			margin_bottom = -16
+			margin_left = -26
+			margin_right = -26
+		}
+
+		vbox = {
+			using = Window_Margins
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			spacing = 0
+
+			# ============================================================
+			# (1) HEADER BAR
+			# ============================================================
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "header_text" { text = "SENATE_WINDOW_TITLE" }
+				blockoverride "button_close" { onclick = "[GetVariableSystem.Clear('senate_window')]" }
+			}
+
+			widget = { size = { 0 10 } }
+
+			# ============================================================
+			# (2) APPROVAL ROW
+			# Columns (fixed widths so loyalty row below lines up exactly):
+			#   [Label 110] [Bar — expanding] [Number 50] [Tier text 200]
+			# The bar is a button — click opens the breakdown event.
+			# ============================================================
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				margin = { 15 5 }
+				spacing = 5
+
+				background = {
+					using = Background_Area_Dark
+					alpha = 0.5
+				}
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 15
+					margin = { 10 5 }
+
+					# Column 1 — label
+					text_single = {
+						text = "SENATE_APPROVAL_LABEL"
+						using = Font_Type_Flavor
+						fontsize = 18
+						default_format = "#high"
+						align = nobaseline|left
+						min_width = 110
+						max_width = 110
+					}
+
+					# Column 2 — hover-only bar (no onclick). The attached
+					# tooltipwidget shows the current value AND projected next-
+					# year drift; the soft-cap branch swaps via visibility.
+					widget = {
+						layoutpolicy_horizontal = expanding
+						size = { 0 24 }
+
+						tooltipwidget = {
+							widget = {
+								using = GeneralTooltipSetup
+								alwaystransparent = no
+
+								widget = {
+									name = "background"
+									using = DefaultTooltipBackground
+									size = { 100% 100% }
+									alwaystransparent = no
+								}
+
+								vbox = {
+									set_parent_size_to_minimum = yes
+									minimumsize = { 420 0 }
+									margin = { 14 10 }
+									spacing = 6
+									layoutpolicy_horizontal = expanding
+
+									text_multi = {
+										text = "SENATE_APPROVAL_TOOLTIP_HEADER"
+										autoresize = yes
+										max_width = 390
+									}
+									text_multi = {
+										text = "SENATE_APPROVAL_TOOLTIP_NORMAL"
+										autoresize = yes
+										max_width = 390
+										visible = "[LessThan_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_approval').GetValue, '(CFixedPoint)80' )]"
+									}
+									text_multi = {
+										text = "SENATE_APPROVAL_TOOLTIP_SOFTCAP"
+										autoresize = yes
+										max_width = 390
+										visible = "[GreaterThanOrEqualTo_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var('senate_approval').GetValue, '(CFixedPoint)80' )]"
+									}
+									text_multi = {
+										text = "SENATE_APPROVAL_TOOLTIP_THRESHOLDS"
+										autoresize = yes
+										max_width = 390
+									}
+								}
+							}
+						}
+
+						progressbar_red = {
+							size = { 100% 100% }
+							alwaystransparent = yes
+							min = 0  max = 100
+							value = "[GetPlayer.GetPrimaryTitle.MakeScope.Var( 'senate_approval' ).GetValue]"
+							visible = "[LessThan_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var( 'senate_approval' ).GetValue, '(CFixedPoint)45' )]"
+						}
+						progressbar_standard = {
+							size = { 100% 100% }
+							alwaystransparent = yes
+							min = 0  max = 100
+							value = "[GetPlayer.GetPrimaryTitle.MakeScope.Var( 'senate_approval' ).GetValue]"
+							visible = "[And( GreaterThanOrEqualTo_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var( 'senate_approval' ).GetValue, '(CFixedPoint)45' ), LessThan_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var( 'senate_approval' ).GetValue, '(CFixedPoint)70' ) )]"
+						}
+						progressbar_green = {
+							size = { 100% 100% }
+							alwaystransparent = yes
+							min = 0  max = 100
+							value = "[GetPlayer.GetPrimaryTitle.MakeScope.Var( 'senate_approval' ).GetValue]"
+							visible = "[GreaterThanOrEqualTo_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var( 'senate_approval' ).GetValue, '(CFixedPoint)70' )]"
+						}
+					}
+
+					# Column 3 — numeric value
+					text_single = {
+						text = "[GetPlayer.GetPrimaryTitle.MakeScope.Var( 'senate_approval' ).GetValue|0]"
+						default_format = "#high;bol"
+						fontsize = 20
+						min_width = 50
+						max_width = 50
+						align = center
+					}
+
+					# Column 4 — tier description (three states, only one visible at a time)
+					text_single = {
+						text = "SENATE_TIER_HOSTILE"
+						default_format = "#weak"
+						visible = "[LessThan_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var( 'senate_approval' ).GetValue, '(CFixedPoint)45' )]"
+						min_width = 200
+						max_width = 200
+						fontsize = 16
+					}
+					text_single = {
+						text = "SENATE_TIER_INDIFFERENT"
+						default_format = "#weak"
+						visible = "[And( GreaterThanOrEqualTo_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var( 'senate_approval' ).GetValue, '(CFixedPoint)45' ), LessThan_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var( 'senate_approval' ).GetValue, '(CFixedPoint)70' ) )]"
+						min_width = 200
+						max_width = 200
+						fontsize = 16
+					}
+					text_single = {
+						text = "SENATE_TIER_APPROVING"
+						default_format = "#weak"
+						visible = "[GreaterThanOrEqualTo_CFixedPoint( GetPlayer.GetPrimaryTitle.MakeScope.Var( 'senate_approval' ).GetValue, '(CFixedPoint)70' )]"
+						min_width = 200
+						max_width = 200
+						fontsize = 16
+					}
+				}
+			}
+
+
+			widget = { size = { 0 15 } }
+
+			# ============================================================
+			# (3) TOP ROW — Emperor card | Hypatus card
+			# ============================================================
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 15
+				margin = { 5 0 }
+
+				# ─── Emperor card
+				senate_character_card = {
+					layoutpolicy_horizontal = expanding
+
+					blockoverride "card_portrait" {
+						datacontext = "[GetPlayer]"
+						size = { 120 150 }
+
+						portrait_head = {
+							size = { 120 150 }
+							datacontext = "[GetPlayer]"
+						}
+					}
+					blockoverride "card_title" { text = "SENATE_REIGNING_BASILEUS" }
+					blockoverride "card_name" { text = "[GetPlayer.GetNameNoTooltip]" }
+				}
+
+				# ─── Hypatus card
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 15
+					margin = { 10 10 }
+
+					background = {
+						using = Background_Area_Characterlist
+						alpha = 0.6
+					}
+
+					# ─── Hypatus PORTRAIT area
+					widget = {
+						size = { 120 150 }
+
+						flowcontainer = {
+							ignoreinvisible = yes
+							datamodel = "[GetPlayer.GetEmployedCourtPositions]"
+							item = {
+								button = {
+									visible = "[ObjectsEqual( CourtPosition.GetPositionType.Self, GetCourtPositionType( 'hypatus_court_position' ).Self )]"
+									size = { 120 150 }
+									alwaystransparent = no
+									onrightclick = "[CourtPosition.OpenRevokeConfirmation]"
+									tooltip = "SENATE_FILLED_PORTRAIT_TOOLTIP"
+
+									portrait_head = {
+										size = { 120 150 }
+										datacontext = "[CourtPosition.GetEmployee]"
+										alwaystransparent = yes
+									}
+								}
+							}
+						}
+
+						senate_vacant_slot = {
+							size = { 120 150 }
+							visible = "[LessThan_CFixedPoint( GetPlayer.MakeScope.ScriptValue('senate_hypatus_filled'), '(CFixedPoint)1' )]"
+							datacontext = "[GetCourtPositionType('hypatus_court_position')]"
+							onclick = "[CourtPositionType.OpenAppointWindow( GetPlayer.Self )]"
+							tooltip = "SENATE_VACANT_HYPATUS"
+						}
+					}
+
+					# ─── Hypatus TEXT area
+					vbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						spacing = 5
+						margin_top = 10
+
+						# Title row
+						hbox = {
+							spacing = 8
+							icon = {
+								size = { 34 34 }
+								texture = "gfx/interface/icons/court_position_types/hypatus_court_position.dds"
+							}
+							text_single = {
+								text = "SENATE_HYPATUS_HEADER"
+								default_format = "#weak"
+								fontsize = 14
+							}
+						}
+
+						flowcontainer = {
+							ignoreinvisible = yes
+							datamodel = "[GetPlayer.GetEmployedCourtPositions]"
+							item = {
+								text_single = {
+									visible = "[ObjectsEqual( CourtPosition.GetPositionType.Self, GetCourtPositionType( 'hypatus_court_position' ).Self )]"
+									text = "[CourtPosition.GetEmployee.GetNameNoTooltip]"
+									using = Font_Type_Flavor
+									fontsize = 18
+									default_format = "#high;bol"
+								}
+							}
+						}
+
+						text_single = {
+							text = "SENATE_HYPATUS_VACANT_NAME"
+							default_format = "#weak;bol"
+							fontsize = 18
+							visible = "[LessThan_CFixedPoint( GetPlayer.MakeScope.ScriptValue('senate_hypatus_filled'), '(CFixedPoint)1' )]"
+						}
+					}
+				}
+			}
+
+
+			widget = { size = { 0 15 } }
+
+			# ============================================================
+			# (4) SENATORS SECTION
+			# ============================================================
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 4
+
+				# Section header
+				senate_section_header = {
+					blockoverride "icon" { texture = "gfx/interface/icons/court_position_types/senator_court_position.dds" }
+					blockoverride "title" { text = "SENATE_SENATORS_HEADER" }
+					blockoverride "count" { raw_text = "([GetPlayer.MakeScope.ScriptValue('senate_senators_filled')|0]/5)" }
+				}
+
+				# Senators slot row
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 10
+					margin_bottom = 12
+					margin_top = 4
+
+					background = { 
+						using = Background_Area_Characterlist_Wait
+						alpha = 0.6 
+					}
+
+					widget = { layoutpolicy_horizontal = expanding }
+
+					flowcontainer = {
+						ignoreinvisible = yes
+						spacing = 6
+						datamodel = "[GetPlayer.GetEmployedCourtPositions]"
+						item = {
+							button = {
+								visible = "[ObjectsEqual( CourtPosition.GetPositionType.Self, GetCourtPositionType( 'senator_court_position' ).Self )]"
+								size = { 90 120 }
+								alwaystransparent = no
+								onrightclick = "[CourtPosition.OpenRevokeConfirmation]"
+								tooltip = "SENATE_FILLED_PORTRAIT_TOOLTIP"
+
+								portrait_head_small = {
+									size = { 90 120 }
+									datacontext = "[CourtPosition.GetEmployee]"
+									alwaystransparent = yes
+								}
+							}
+						}
+					}
+
+					flowcontainer = {
+						ignoreinvisible = yes
+						spacing = 6
+						datacontext = "[GetCourtPositionType('senator_court_position')]"
+
+						senate_vacant_slot = {
+							size = { 90 120 }
+							visible = "[LessThan_CFixedPoint( GetPlayer.MakeScope.ScriptValue('senate_senators_filled'), '(CFixedPoint)1' )]"
+							onclick = "[CourtPositionType.OpenAppointWindow( GetPlayer.Self )]"
+							tooltip = "SENATE_VACANT_SENATOR"
+						}
+						senate_vacant_slot = {
+							size = { 90 120 }
+							visible = "[LessThan_CFixedPoint( GetPlayer.MakeScope.ScriptValue('senate_senators_filled'), '(CFixedPoint)2' )]"
+							onclick = "[CourtPositionType.OpenAppointWindow( GetPlayer.Self )]"
+							tooltip = "SENATE_VACANT_SENATOR"
+						}
+						senate_vacant_slot = {
+							size = { 90 120 }
+							visible = "[LessThan_CFixedPoint( GetPlayer.MakeScope.ScriptValue('senate_senators_filled'), '(CFixedPoint)3' )]"
+							onclick = "[CourtPositionType.OpenAppointWindow( GetPlayer.Self )]"
+							tooltip = "SENATE_VACANT_SENATOR"
+						}
+						senate_vacant_slot = {
+							size = { 90 120 }
+							visible = "[LessThan_CFixedPoint( GetPlayer.MakeScope.ScriptValue('senate_senators_filled'), '(CFixedPoint)4' )]"
+							onclick = "[CourtPositionType.OpenAppointWindow( GetPlayer.Self )]"
+							tooltip = "SENATE_VACANT_SENATOR"
+						}
+						senate_vacant_slot = {
+							size = { 90 120 }
+							visible = "[LessThan_CFixedPoint( GetPlayer.MakeScope.ScriptValue('senate_senators_filled'), '(CFixedPoint)5' )]"
+							onclick = "[CourtPositionType.OpenAppointWindow( GetPlayer.Self )]"
+							tooltip = "SENATE_VACANT_SENATOR"
+						}
+					}
+
+					widget = { layoutpolicy_horizontal = expanding }
+				}
+			}
+
+			widget = { size = { 0 15 } }
+
+			# ============================================================
+			# (5) PATRICIANS SECTION
+			# ============================================================
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 4
+
+				# Section header
+				senate_section_header = {
+					blockoverride "icon" { texture = "gfx/interface/icons/court_position_types/patrician_court_position.dds" }
+					blockoverride "title" { text = "SENATE_PATRICIANS_HEADER" }
+					blockoverride "count" { raw_text = "([GetPlayer.MakeScope.ScriptValue('senate_patricians_filled')|0]/5)" }
+				}
+
+				# Patricians slot row
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 8
+					margin_bottom = 0
+					margin_top = 0
+
+					background = { 
+						using = Background_Area_Characterlist_Wait
+						alpha = 0.6 
+					}
+
+					widget = { layoutpolicy_horizontal = expanding }
+
+					flowcontainer = {
+						ignoreinvisible = yes
+						spacing = 5
+						datamodel = "[GetPlayer.GetEmployedCourtPositions]"
+						item = {
+							button = {
+								visible = "[ObjectsEqual( CourtPosition.GetPositionType.Self, GetCourtPositionType( 'patrician_court_position' ).Self )]"
+								size = { 90 120 }
+								alwaystransparent = no
+								onrightclick = "[CourtPosition.OpenRevokeConfirmation]"
+								tooltip = "SENATE_FILLED_PORTRAIT_TOOLTIP"
+
+								portrait_head_small = {
+									size = { 90 120 }
+									datacontext = "[CourtPosition.GetEmployee]"
+									alwaystransparent = yes
+								}
+							}
+						}
+					}
+
+					flowcontainer = {
+						ignoreinvisible = yes
+						spacing = 5
+						datacontext = "[GetCourtPositionType('patrician_court_position')]"
+
+						senate_vacant_slot = {
+							size = { 90 120 }
+							visible = "[LessThan_CFixedPoint( GetPlayer.MakeScope.ScriptValue('senate_patricians_filled'), '(CFixedPoint)1' )]"
+							onclick = "[CourtPositionType.OpenAppointWindow( GetPlayer.Self )]"
+							tooltip = "SENATE_VACANT_PATRICIAN"
+						}
+						senate_vacant_slot = {
+							size = { 90 120 }
+							visible = "[LessThan_CFixedPoint( GetPlayer.MakeScope.ScriptValue('senate_patricians_filled'), '(CFixedPoint)2' )]"
+							onclick = "[CourtPositionType.OpenAppointWindow( GetPlayer.Self )]"
+							tooltip = "SENATE_VACANT_PATRICIAN"
+						}
+						senate_vacant_slot = {
+							size = { 90 120 }
+							visible = "[LessThan_CFixedPoint( GetPlayer.MakeScope.ScriptValue('senate_patricians_filled'), '(CFixedPoint)3' )]"
+							onclick = "[CourtPositionType.OpenAppointWindow( GetPlayer.Self )]"
+							tooltip = "SENATE_VACANT_PATRICIAN"
+						}
+						senate_vacant_slot = {
+							size = { 90 120 }
+							visible = "[LessThan_CFixedPoint( GetPlayer.MakeScope.ScriptValue('senate_patricians_filled'), '(CFixedPoint)4' )]"
+							onclick = "[CourtPositionType.OpenAppointWindow( GetPlayer.Self )]"
+							tooltip = "SENATE_VACANT_PATRICIAN"
+						}
+						senate_vacant_slot = {
+							size = { 90 120 }
+							visible = "[LessThan_CFixedPoint( GetPlayer.MakeScope.ScriptValue('senate_patricians_filled'), '(CFixedPoint)5' )]"
+							onclick = "[CourtPositionType.OpenAppointWindow( GetPlayer.Self )]"
+							tooltip = "SENATE_VACANT_PATRICIAN"
+						}
+					}
+
+					widget = { layoutpolicy_horizontal = expanding }
+				}
+			}
+
+			widget = { size = { 0 12 } }
+		}
+	}
+}
+}

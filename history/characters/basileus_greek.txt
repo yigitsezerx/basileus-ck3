@@ -1,0 +1,101 @@
+# Historical scholar characters referenced by artifact-creation events
+# (basileus_pandects_events.txt: pandects_renovatio.0001, .0003, .0004).
+#
+# All five are flagged is_important_for_scripting at birth so the engine
+# never prunes them. Pruning would break artifact-history display (the
+# "created by X for Y in Z" panel) for any save that triggers the events
+# centuries after the historical figures died.
+
+9000001 = {
+	name = "Tribonianos"
+	religion = orthodox
+	culture = greek
+	trait = scholar
+	trait = diligent
+	trait = loyal
+	trait = greedy
+	trait = ambitious
+	trait = education_learning_4
+	stewardship = 20
+	learning = 20
+	485.1.1 = {
+		birth = yes
+		effect = { set_character_flag = is_important_for_scripting }
+	}
+	542.1.1 = {
+		death = yes
+	}
+}
+
+basileus_scholar_9000002 = {
+	name = "basileus_name_jordanes"
+	religion = orthodox
+	culture = gothic
+	trait = scholar
+	trait = shy
+	trait = temperate
+	trait = humble
+	trait = education_learning_4
+	diplomacy = 10
+	learning = 18
+	500.1.1 = {
+		birth = yes
+		effect = { set_character_flag = is_important_for_scripting }
+	}
+	560.1.1 = {
+		death = yes
+	}
+}
+
+# Cassiodorus — 6th-century Roman statesman and scholar.
+# Author of the lost twelve-volume History of the Goths, which served as the basis for Jordanes' Getica.
+9000003 = {
+	name = "Cassiodorus"
+	religion = orthodox
+	culture = roman
+	trait = scholar
+	trait = diligent
+	trait = patient
+	trait = calm
+	trait = education_learning_4
+	diplomacy = 15
+	learning = 22
+	stewardship = 15
+	485.1.1 = {
+		birth = yes
+		effect = { set_character_flag = is_important_for_scripting }
+	}
+	585.1.1 = {
+		death = yes
+	}
+}
+
+# Vigilius — Friend and associate of Jordanes, recipient of the Romana.
+basileus_scholar_9000004 = {
+	name = "basileus_name_vigilius"
+	religion = orthodox
+	culture = roman
+	trait = scholar
+	500.1.1 = {
+		birth = yes
+		effect = { set_character_flag = is_important_for_scripting }
+	}
+	555.6.7 = {
+		death = yes
+	}
+}
+
+# Castalius — Friend of Jordanes who requested the Getica.
+9000005 = {
+	name = "Castalius"
+	religion = orthodox
+	culture = roman
+	trait = scholar
+	500.1.1 = {
+		birth = yes
+		effect = { set_character_flag = is_important_for_scripting }
+	}
+	560.1.1 = {
+		death = yes
+	}
+}

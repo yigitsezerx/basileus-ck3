@@ -1,0 +1,40 @@
+# Custom text icons for the Eastern Reconquests struggle phases
+texticon = {
+	icon = struggle_eastern_reconquest_phase_resolve
+	iconsize = {
+		texture = "gfx/interface/icons/struggle_types/struggle_eastern_reconquest_phase_resolve.dds"
+		size = { 25 25 }
+		offset = { 0 0 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = struggle_eastern_reconquest_phase_reconquest
+	iconsize = {
+		texture = "gfx/interface/icons/struggle_types/struggle_eastern_reconquest_phase_reconquest.dds"
+		size = { 25 25 }
+		offset = { 0 0 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = struggle_eastern_reconquest_phase_triumph
+	iconsize = {
+		texture = "gfx/interface/icons/struggle_types/struggle_eastern_reconquest_phase_triumph.dds"
+		size = { 25 25 }
+		offset = { 0 0 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = struggle_eastern_reconquest_phase_setback
+	iconsize = {
+		texture = "gfx/interface/icons/struggle_types/struggle_eastern_reconquest_phase_setback.dds"
+		size = { 25 25 }
+		offset = { 0 0 }
+		fontsize = 16
+	}
+}
