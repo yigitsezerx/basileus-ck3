@@ -1,0 +1,145 @@
+﻿grant_nobilissimus_interaction = {
+    category = interaction_category_diplomacy
+    desc = grant_nobilissimus_interaction_desc
+    icon = icon_declare_me_regent
+    
+    # WHO CAN DO IT? (The Emperor)
+    is_shown = {
+        NOT = { scope:recipient = scope:actor }
+
+        scope:actor = { 
+            OR = {
+                has_title = title:e_byzantium
+                has_title = title:h_roman_empire
+            }
+            is_independent_ruler = yes
+            
+            # RESTRICTION: Only show if they haven't done it yet
+            # NOT = { has_character_flag = has_granted_nobilissimus } # tweaked the logic.
+        }
+    }
+
+    # WHO CAN RECEIVE IT? (Valid Heirs)
+    is_valid = {
+        scope:recipient = {
+            # You cannot give it to yourself.
+            # is_different_character = scope:actor
+                        
+            is_alive = yes
+            is_adult = yes
+            
+            # Must be Close Family
+            is_close_family_of = scope:actor
+            
+            # Must NOT already have it
+            NOT = { has_trait = nobilissimus_ercf }
+
+            # Must be capable
+            custom_description = {
+                text = character_is_capable_requirement
+                subject = scope:recipient
+                is_incapable = no
+            }            
+            
+            NOT = {
+                has_trait = eunuch
+                has_trait = disfigured
+            }
+            NOR = {
+                has_title = title:e_byzantium
+                has_title = title:h_roman_empire
+            }           
+        }
+        # NEW LOGIC
+        # Only valid if we don't have a designated heir, OR if that heir is dead.
+        custom_description = {
+            text = previous_nobilissimus_must_be_dead
+            subject = scope:actor
+            
+            trigger_if = {
+                limit = { 
+                    scope:actor = { has_variable = ercf_current_nobilissimus_heir } 
+                }
+                scope:actor = {
+                    var:ercf_current_nobilissimus_heir = { 
+                        is_alive = no 
+                    }
+                }
+            }
+        }        
+    }
+
+    # COST (It's a major thing)
+    cost = {
+        prestige = 1000
+		influence = {
+			value = {
+				add = 0
+				if = {
+					limit = {
+						scope:actor = {
+							government_allows = administrative
+							any_held_title = {
+								is_noble_family_title = yes
+							}
+						}
+					}
+					add = {
+						value = designate_heir_admin_influence_cost
+						desc = "[administrative_government|E]"
+					}
+				}
+			}
+		}        
+    }
+
+    # THE EFFECT
+    on_accept = {
+        # Mark the Emperor as "Used" (So they can't do it again)
+        #scope:actor = {
+        #    add_character_flag = has_granted_nobilissimus
+        #}
+
+        # NEW LOGIC
+        scope:actor = {
+            # Instead of a flag, we save the RECIPIENT as the variable
+            set_variable = {
+                name = ercf_current_nobilissimus_heir
+                value = scope:recipient
+            }
+        }        
+        
+        # Grant the Trait & Prestige
+        scope:recipient = {
+            add_trait = nobilissimus_ercf
+            add_prestige = 500
+            add_opinion = {
+                target = scope:actor
+                modifier = grateful_opinion
+                opinion = 50
+            }
+        }
+        
+        # Notification
+        send_interface_message = {
+            type = event_neutral_good
+            title = "Heir Designated"
+            desc = "You have used your single Imperial prerogative to proclaim [scope:recipient.GetShortName] as Nobilissimus."
+            left_icon = scope:actor
+            right_icon = scope:recipient
+        }
+    }
+    
+    auto_accept = yes
+    
+    # AI will ONLY give this to their Primary Heir
+    ai_will_do = {
+        base = 0
+        modifier = {
+            add = 100
+            scope:recipient = {
+                is_primary_heir_of = scope:actor
+            }
+        }
+    }
+}

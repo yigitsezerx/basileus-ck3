@@ -1,0 +1,27 @@
+﻿# Senate of Magnaura — runtime counts of filled senator / patrician slots.
+# Evaluated on a character (the employer). Used by the senate window GUI
+# to render empty-slot placeholders.
+
+senate_hypatus_filled = {
+	value = 0
+	every_court_position_holder = {
+		type = hypatus_court_position
+		add = 1
+	}
+}
+
+senate_senators_filled = {
+	value = 0
+	every_court_position_holder = {
+		type = senator_court_position
+		add = 1
+	}
+}
+
+senate_patricians_filled = {
+	value = 0
+	every_court_position_holder = {
+		type = patrician_court_position
+		add = 1
+	}
+}

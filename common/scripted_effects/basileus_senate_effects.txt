@@ -1,0 +1,455 @@
+# Senate of Magnaura — shared effects.
+# basileus_senate_recompute_counts: resets the three count variables and
+# recounts from the current state. Called from every senate position's
+# on_received / on_revoked / on_invalidated, and from init.
+
+# ============================================================================
+# Senate tenure trait helpers.
+# ----------------------------------------------------------------------------
+# basileus_senate_grant_tenure_trait: called from on_court_position_received.
+#   - Strips any existing tenure / emeritus trait of the same type.
+#   - Adds the tier-1 active trait.
+#   - Resets the years-served variable to 0.
+#
+# basileus_senate_strip_on_loss: called from on_court_position_revoked AND
+#   on_court_position_invalidated.
+#   - If employee is alive: strip active trait, grant emeritus.
+#   - If employee is dead: do nothing (trait remains as historical record).
+#
+# Each effect is parameterized by $POS$ (one of: hypatos, senator, patrician).
+# ============================================================================
+
+# ============================================================================
+# Peer opinion bonds.
+# ----------------------------------------------------------------------------
+# basileus_senate_grant_peer_opinions: called from on_court_position_received.
+#   Iterates every OTHER current senate member (hypatos / senator / patrician
+#   employed by scope:liege) and adds a bidirectional senate_peer_opinion bond.
+#
+# basileus_senate_strip_peer_opinions: called from on_court_position_revoked
+#   AND on_court_position_invalidated.
+#   Iterates every OTHER current senate member and removes the bond in both
+#   directions.
+# ============================================================================
+
+basileus_senate_grant_peer_opinions = {
+	scope:liege = {
+		every_court_position_holder = {
+			type = hypatus_court_position
+			limit = { NOT = { this = scope:employee } }
+			save_temporary_scope_as = peer
+			scope:employee = { add_opinion = { target = scope:peer modifier = senate_peer_opinion } }
+			scope:peer = { add_opinion = { target = scope:employee modifier = senate_peer_opinion } }
+		}
+		every_court_position_holder = {
+			type = senator_court_position
+			limit = { NOT = { this = scope:employee } }
+			save_temporary_scope_as = peer
+			scope:employee = { add_opinion = { target = scope:peer modifier = senate_peer_opinion } }
+			scope:peer = { add_opinion = { target = scope:employee modifier = senate_peer_opinion } }
+		}
+		every_court_position_holder = {
+			type = patrician_court_position
+			limit = { NOT = { this = scope:employee } }
+			save_temporary_scope_as = peer
+			scope:employee = { add_opinion = { target = scope:peer modifier = senate_peer_opinion } }
+			scope:peer = { add_opinion = { target = scope:employee modifier = senate_peer_opinion } }
+		}
+	}
+}
+
+basileus_senate_strip_peer_opinions = {
+	scope:liege = {
+		every_court_position_holder = {
+			type = hypatus_court_position
+			limit = { NOT = { this = scope:employee } }
+			save_temporary_scope_as = peer
+			scope:employee = { remove_opinion = { target = scope:peer modifier = senate_peer_opinion } }
+			scope:peer = { remove_opinion = { target = scope:employee modifier = senate_peer_opinion } }
+		}
+		every_court_position_holder = {
+			type = senator_court_position
+			limit = { NOT = { this = scope:employee } }
+			save_temporary_scope_as = peer
+			scope:employee = { remove_opinion = { target = scope:peer modifier = senate_peer_opinion } }
+			scope:peer = { remove_opinion = { target = scope:employee modifier = senate_peer_opinion } }
+		}
+		every_court_position_holder = {
+			type = patrician_court_position
+			limit = { NOT = { this = scope:employee } }
+			save_temporary_scope_as = peer
+			scope:employee = { remove_opinion = { target = scope:peer modifier = senate_peer_opinion } }
+			scope:peer = { remove_opinion = { target = scope:employee modifier = senate_peer_opinion } }
+		}
+	}
+}
+
+basileus_senate_grant_tenure_trait = {
+	scope:employee = {
+		# Clear any prior emeritus trait of this position type (re-appointed).
+		if = { limit = { has_trait = $POS$_emeritus }   remove_trait = $POS$_emeritus }
+
+		# Grant the tenure trait at baseline (Junior); XP accrues yearly.
+		if = { limit = { NOT = { has_trait = $POS$_tenure } }   add_trait = $POS$_tenure }
+	}
+}
+
+basileus_senate_strip_on_loss = {
+	if = {
+		limit = {
+			scope:employee = { is_alive = yes }
+		}
+		scope:employee = {
+			if = { limit = { has_trait = $POS$_tenure } remove_trait = $POS$_tenure }
+			# Grant the single base emeritus trait. Display name switches by
+			# culture automatically via the trait's name_block.
+			add_trait = $POS$_emeritus
+		}
+	}
+}
+
+# ============================================================================
+# Senate-from-throne demotion.
+# ----------------------------------------------------------------------------
+# Called when a character loses e_byzantium (via on_title_lost).
+# Strips any `_basileus` trait and reverts to the matching `_emeritus`.
+# Reflects the design choice that losing the throne returns the character
+# to "former senate dignitary" status — the basileus title becomes part of
+# their history rather than a permanent fame trait.
+# ============================================================================
+# ============================================================================
+# Save-compat migration: collapse any deprecated `_greek` / `_latin` variant
+# trait onto the single base trait. The base trait's name_block handles
+# culture-conditional display dynamically, so no per-character culture data
+# needs to be carried in the trait identity.
+# Idempotent — characters who already hold only the base trait are unchanged.
+# Runs in the character's own scope.
+# ============================================================================
+basileus_senate_resync_ascended_variant = {
+	# Basileus variants → base
+	if = {
+		limit = { has_trait = hypatos_basileus_greek }
+		remove_trait = hypatos_basileus_greek
+		if = { limit = { NOT = { has_trait = hypatos_basileus } } add_trait = hypatos_basileus }
+	}
+	if = {
+		limit = { has_trait = hypatos_basileus_latin }
+		remove_trait = hypatos_basileus_latin
+		if = { limit = { NOT = { has_trait = hypatos_basileus } } add_trait = hypatos_basileus }
+	}
+	if = {
+		limit = { has_trait = senator_basileus_greek }
+		remove_trait = senator_basileus_greek
+		if = { limit = { NOT = { has_trait = senator_basileus } } add_trait = senator_basileus }
+	}
+	if = {
+		limit = { has_trait = senator_basileus_latin }
+		remove_trait = senator_basileus_latin
+		if = { limit = { NOT = { has_trait = senator_basileus } } add_trait = senator_basileus }
+	}
+	if = {
+		limit = { has_trait = patrician_basileus_greek }
+		remove_trait = patrician_basileus_greek
+		if = { limit = { NOT = { has_trait = patrician_basileus } } add_trait = patrician_basileus }
+	}
+	if = {
+		limit = { has_trait = patrician_basileus_latin }
+		remove_trait = patrician_basileus_latin
+		if = { limit = { NOT = { has_trait = patrician_basileus } } add_trait = patrician_basileus }
+	}
+	# Emeritus variants → base
+	if = {
+		limit = { has_trait = hypatos_emeritus_greek }
+		remove_trait = hypatos_emeritus_greek
+		if = { limit = { NOT = { has_trait = hypatos_emeritus } } add_trait = hypatos_emeritus }
+	}
+	if = {
+		limit = { has_trait = hypatos_emeritus_latin }
+		remove_trait = hypatos_emeritus_latin
+		if = { limit = { NOT = { has_trait = hypatos_emeritus } } add_trait = hypatos_emeritus }
+	}
+	if = {
+		limit = { has_trait = senator_emeritus_greek }
+		remove_trait = senator_emeritus_greek
+		if = { limit = { NOT = { has_trait = senator_emeritus } } add_trait = senator_emeritus }
+	}
+	if = {
+		limit = { has_trait = senator_emeritus_latin }
+		remove_trait = senator_emeritus_latin
+		if = { limit = { NOT = { has_trait = senator_emeritus } } add_trait = senator_emeritus }
+	}
+	if = {
+		limit = { has_trait = patrician_emeritus_greek }
+		remove_trait = patrician_emeritus_greek
+		if = { limit = { NOT = { has_trait = patrician_emeritus } } add_trait = patrician_emeritus }
+	}
+	if = {
+		limit = { has_trait = patrician_emeritus_latin }
+		remove_trait = patrician_emeritus_latin
+		if = { limit = { NOT = { has_trait = patrician_emeritus } } add_trait = patrician_emeritus }
+	}
+}
+
+basileus_senate_revert_ascended_traits = {
+	# Hypatos lineage — strip any basileus variant, grant base emeritus.
+	if = {
+		limit = {
+			OR = {
+				has_trait = hypatos_basileus
+				has_trait = hypatos_basileus_greek
+				has_trait = hypatos_basileus_latin
+			}
+		}
+		if = { limit = { has_trait = hypatos_basileus }       remove_trait = hypatos_basileus }
+		if = { limit = { has_trait = hypatos_basileus_greek } remove_trait = hypatos_basileus_greek }
+		if = { limit = { has_trait = hypatos_basileus_latin } remove_trait = hypatos_basileus_latin }
+		add_trait = hypatos_emeritus
+	}
+	# Senator lineage
+	if = {
+		limit = {
+			OR = {
+				has_trait = senator_basileus
+				has_trait = senator_basileus_greek
+				has_trait = senator_basileus_latin
+			}
+		}
+		if = { limit = { has_trait = senator_basileus }       remove_trait = senator_basileus }
+		if = { limit = { has_trait = senator_basileus_greek } remove_trait = senator_basileus_greek }
+		if = { limit = { has_trait = senator_basileus_latin } remove_trait = senator_basileus_latin }
+		add_trait = senator_emeritus
+	}
+	# Patrician lineage
+	if = {
+		limit = {
+			OR = {
+				has_trait = patrician_basileus
+				has_trait = patrician_basileus_greek
+				has_trait = patrician_basileus_latin
+			}
+		}
+		if = { limit = { has_trait = patrician_basileus }       remove_trait = patrician_basileus }
+		if = { limit = { has_trait = patrician_basileus_greek } remove_trait = patrician_basileus_greek }
+		if = { limit = { has_trait = patrician_basileus_latin } remove_trait = patrician_basileus_latin }
+		add_trait = patrician_emeritus
+	}
+}
+
+# ============================================================================
+# Senate-to-throne ascension.
+# ----------------------------------------------------------------------------
+# Called from basileus_senate_on_title_gain when e_byzantium changes hands.
+# For each of the three senate roles, if the new holder has either the active
+# tenure trait OR the emeritus trait, both are stripped and the matching
+# `_basileus` ascended trait is granted in their place.
+# Robust to ordering: handles the case where on_title_gain fires before
+# on_court_position_invalidated (tenure still present) OR after (emeritus
+# already swapped in).
+# ============================================================================
+basileus_senate_ascend_senate_traits = {
+	if = {
+		limit = { exists = title:e_byzantium.holder }
+		title:e_byzantium.holder = {
+			# Hypatos lineage — strip any tenure/emeritus variant, grant base basileus.
+			if = {
+				limit = {
+					OR = {
+						has_trait = hypatos_tenure
+						has_trait = hypatos_emeritus
+						has_trait = hypatos_emeritus_greek
+						has_trait = hypatos_emeritus_latin
+					}
+				}
+				if = { limit = { has_trait = hypatos_tenure }         remove_trait = hypatos_tenure }
+				if = { limit = { has_trait = hypatos_emeritus }       remove_trait = hypatos_emeritus }
+				if = { limit = { has_trait = hypatos_emeritus_greek } remove_trait = hypatos_emeritus_greek }
+				if = { limit = { has_trait = hypatos_emeritus_latin } remove_trait = hypatos_emeritus_latin }
+				add_trait = hypatos_basileus
+			}
+			# Senator lineage
+			if = {
+				limit = {
+					OR = {
+						has_trait = senator_tenure
+						has_trait = senator_emeritus
+						has_trait = senator_emeritus_greek
+						has_trait = senator_emeritus_latin
+					}
+				}
+				if = { limit = { has_trait = senator_tenure }         remove_trait = senator_tenure }
+				if = { limit = { has_trait = senator_emeritus }       remove_trait = senator_emeritus }
+				if = { limit = { has_trait = senator_emeritus_greek } remove_trait = senator_emeritus_greek }
+				if = { limit = { has_trait = senator_emeritus_latin } remove_trait = senator_emeritus_latin }
+				add_trait = senator_basileus
+			}
+			# Patrician lineage
+			if = {
+				limit = {
+					OR = {
+						has_trait = patrician_tenure
+						has_trait = patrician_emeritus
+						has_trait = patrician_emeritus_greek
+						has_trait = patrician_emeritus_latin
+					}
+				}
+				if = { limit = { has_trait = patrician_tenure }         remove_trait = patrician_tenure }
+				if = { limit = { has_trait = patrician_emeritus }       remove_trait = patrician_emeritus }
+				if = { limit = { has_trait = patrician_emeritus_greek } remove_trait = patrician_emeritus_greek }
+				if = { limit = { has_trait = patrician_emeritus_latin } remove_trait = patrician_emeritus_latin }
+				add_trait = patrician_basileus
+			}
+		}
+	}
+}
+
+# ============================================================================
+# Dynasty dominance check.
+# ----------------------------------------------------------------------------
+# Iterates each senate-position holder, counts how many senate-position
+# holders (across all 3 types) share their dynasty, and if any group has 3+
+# applies senate_dynasty_dominance_modifier to the emperor.
+# Called yearly. Self-cleaning (removes old modifier first).
+# ============================================================================
+basileus_senate_check_dynasty_dominance = {
+	if = {
+		limit = { exists = title:e_byzantium.holder }
+		title:e_byzantium.holder = {
+			save_scope_as = senate_emperor
+			remove_character_modifier = senate_dynasty_dominance_modifier
+			set_variable = { name = senate_dyn_dom_found value = 0 }
+
+			# Check each senate-tier member. For each, count peers with matching dynasty.
+			every_court_position_holder = {
+				type = hypatus_court_position
+				save_temporary_scope_as = sm
+				basileus_senate_count_dynasty_peers_for = yes
+			}
+			every_court_position_holder = {
+				type = senator_court_position
+				save_temporary_scope_as = sm
+				basileus_senate_count_dynasty_peers_for = yes
+			}
+			every_court_position_holder = {
+				type = patrician_court_position
+				save_temporary_scope_as = sm
+				basileus_senate_count_dynasty_peers_for = yes
+			}
+
+			if = {
+				limit = { var:senate_dyn_dom_found = 1 }
+				add_character_modifier = senate_dynasty_dominance_modifier
+			}
+			remove_variable = senate_dyn_dom_found
+		}
+	}
+}
+
+# Helper — called from within every_court_position_holder iteration.
+# scope:sm = senate member being checked; scope:senate_emperor = the emperor.
+# We rescope into the EMPEROR so every_court_position_holder iterates the
+# emperor's positions (not the senate member's), and so the match-count var
+# lives on the emperor too — read & write in the same scope.
+basileus_senate_count_dynasty_peers_for = {
+	if = {
+		limit = { exists = scope:sm.dynasty }
+		scope:senate_emperor = {
+			set_variable = { name = senate_dyn_match_count value = 0 }
+
+			every_court_position_holder = {
+				type = hypatus_court_position
+				limit = { dynasty = scope:sm.dynasty }
+				scope:senate_emperor = { change_variable = { name = senate_dyn_match_count add = 1 } }
+			}
+			every_court_position_holder = {
+				type = senator_court_position
+				limit = { dynasty = scope:sm.dynasty }
+				scope:senate_emperor = { change_variable = { name = senate_dyn_match_count add = 1 } }
+			}
+			every_court_position_holder = {
+				type = patrician_court_position
+				limit = { dynasty = scope:sm.dynasty }
+				scope:senate_emperor = { change_variable = { name = senate_dyn_match_count add = 1 } }
+			}
+
+			if = {
+				limit = { var:senate_dyn_match_count >= 3 }
+				set_variable = { name = senate_dyn_dom_found value = 1 }
+			}
+			remove_variable = senate_dyn_match_count
+		}
+	}
+}
+
+# ============================================================================
+# Threshold modifier refresh.
+# ----------------------------------------------------------------------------
+# Re-evaluates senate_approval on title:e_byzantium and applies the correct
+# threshold modifier to the holder:
+#   >= 70 → senate_approval_high_modifier  (acclamation)
+#   < 45  → senate_approval_low_modifier   (hostility)
+#   45-69 → neither (neutral)
+# Always strips both modifiers first so the result is deterministic regardless
+# of prior state. Safe to call from anywhere that changes approval — yearly
+# pulse, succession event options, on_title_gain, etc.
+# ============================================================================
+basileus_senate_apply_threshold_modifiers = {
+	if = {
+		limit = { exists = title:e_byzantium.holder }
+		title:e_byzantium.holder = {
+			remove_character_modifier = senate_approval_high_modifier
+			remove_character_modifier = senate_approval_low_modifier
+			if = {
+				limit = {
+					title:e_byzantium = { var:senate_approval >= 70 }
+				}
+				add_character_modifier = { modifier = senate_approval_high_modifier }
+				if = {
+					limit = {
+						any_character_struggle = {
+							is_struggle_type = basileus_eastern_reconquest_struggle
+							is_struggle_phase = struggle_eastern_reconquest_phase_resolve
+						}
+					}
+					basileus_activate_roman_catalyst_effect = {
+						CATALYST = catalyst_basileus_senate_blessing
+						CHAR = title:e_byzantium.holder
+					}
+				}
+			}
+			else_if = {
+				# Hostile threshold lowered from 45 to 40 — brief slumps no
+				# longer instantly tip the senate into outright displeasure.
+				limit = {
+					title:e_byzantium = { var:senate_approval < 40 }
+				}
+				add_character_modifier = { modifier = senate_approval_low_modifier }
+			}
+		}
+	}
+}
+
+basileus_senate_recompute_counts = {
+	if = {
+		limit = { exists = title:e_byzantium.holder }
+		title:e_byzantium = {
+			set_variable = { name = senate_hypatus_count value = 0 }
+			set_variable = { name = senate_senators_count value = 0 }
+			set_variable = { name = senate_patricians_count value = 0 }
+		}
+		title:e_byzantium.holder = {
+			every_court_position_holder = {
+				type = hypatus_court_position
+				title:e_byzantium = { change_variable = { name = senate_hypatus_count add = 1 } }
+			}
+			every_court_position_holder = {
+				type = senator_court_position
+				title:e_byzantium = { change_variable = { name = senate_senators_count add = 1 } }
+			}
+			every_court_position_holder = {
+				type = patrician_court_position
+				title:e_byzantium = { change_variable = { name = senate_patricians_count add = 1 } }
+			}
+		}
+	}
+}
+

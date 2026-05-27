@@ -1,0 +1,15 @@
+# =====================================================================
+# BASILEUS — Titular kingdom for the Thrace theme.
+# d_thrace is attached de jure at runtime by basileus_form_theme_thrace_effect
+# (Restructure the Themes decision). Name is culture-dynamic via loc:
+# k_thrace / k_thrace_adj -> [GetPlayer.Custom('GetBasileusThemeThrake*')].
+# =====================================================================
+
+k_thrace = {
+	color = { 120 40 90 }
+
+	capital = c_byzantion   # Constantinople (in d_thrace)
+
+	# Titular — no de jure children defined here; d_thrace is re-parented to
+	# this kingdom at elevation.
+}

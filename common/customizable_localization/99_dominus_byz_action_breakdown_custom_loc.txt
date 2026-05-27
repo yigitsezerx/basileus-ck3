@@ -1,0 +1,152 @@
+GetMinisterGrandChancellorActionBreakdown = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = EMPTY_STRING
+	}
+	text = {
+		fallback = yes
+		localization_key = minister_grand_chancellor_action_breakdown_tgp
+	}
+}
+
+GetMinisterCensorActionBreakdown = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = EMPTY_STRING
+	}
+	text = {
+		fallback = yes
+		localization_key = minister_censor_action_breakdown_tgp
+	}
+}
+
+GetMinisterGrandMarshalActionBreakdown = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = EMPTY_STRING
+	}
+	text = {
+		fallback = yes
+		localization_key = minister_grand_marshal_action_breakdown_tgp
+	}
+}
+
+GetMinisterOfPersonnelActionBreakdown = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = EMPTY_STRING
+	}
+	text = {
+		fallback = yes
+		localization_key = minister_of_personnel_action_breakdown_tgp
+	}
+}
+
+GetMinisterOfRevenueActionBreakdown = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = EMPTY_STRING
+	}
+	text = {
+		fallback = yes
+		localization_key = minister_of_revenue_action_breakdown_tgp
+	}
+}
+
+GetMinisterOfRitesActionBreakdown = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = EMPTY_STRING
+	}
+	text = {
+		fallback = yes
+		localization_key = minister_of_rites_action_breakdown_tgp
+	}
+}
+
+GetMinisterOfWarActionBreakdown = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = EMPTY_STRING
+	}
+	text = {
+		fallback = yes
+		localization_key = minister_of_war_action_breakdown_tgp
+	}
+}
+
+GetMinisterOfJusticeActionBreakdown = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = EMPTY_STRING
+	}
+	text = {
+		fallback = yes
+		localization_key = minister_of_justice_action_breakdown_tgp
+	}
+}
+
+GetMinisterOfWorksActionBreakdown = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = EMPTY_STRING
+	}
+	text = {
+		fallback = yes
+		localization_key = minister_of_works_action_breakdown_tgp
+	}
+}

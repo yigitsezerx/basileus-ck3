@@ -1,0 +1,111 @@
+namespace = dominus_coronation
+
+####################################
+# EVENT 2: Choose Your Regnal Name #
+####################################
+dominus_coronation.0002 = {
+	type = character_event
+	title = dominus_coronation.0002.t
+	desc = dominus_coronation.0002.desc
+	theme = coronation_activity
+
+	left_portrait = {
+		character = root
+		animation = writing
+	}
+
+	immediate = {
+		save_scope_as = name_character_target
+		# CRITICAL: snapshot the birth name BEFORE any rename option can run.
+		# dominus_save_birth_name_effect creates an immortal donor character
+		# (template_character = root, current name) and stores it on the var
+		# dominus_birth_name_char. The DOMINUS_BIRTH_NAME_TOOLTIP loc key
+		# (and the dominus_regnal_throne_name modifier's desc) then resolve
+		# .Var('dominus_birth_name_char').GetFirstNameNoTooltip to display
+		# "Born: <oldname>" once the regnal name has been picked.
+		# Without this snapshot the Var is unset and the tooltip is empty —
+		# which is why it never displayed before.
+		dominus_save_birth_name_effect = yes
+	}
+
+	widgets = {
+		widget = {
+			is_shown = { is_ai = no }
+			gui = "event_window_widget_name_child"
+			container = "dynamic_birth_name"
+			controller = name_character
+			setup_scope = {
+				root = { save_scope_as = name_character_target }
+			}
+		}
+	}
+
+	# Confirm the name typed in the widget
+	option = {
+		name = dominus_coronation.0002.opt_confirm
+		add_character_flag = has_custom_regnal_name
+		add_character_modifier = {
+			modifier = dominus_forge_own_path
+			years = 10
+		}
+		# Permanent "Born: <birthname>" badge on the emperor.
+		add_character_modifier = {
+			modifier = dominus_regnal_throne_name
+		}
+	}
+
+	# Honor Father — visible to males who have a father
+	option = {
+		name = dominus_coronation.0002.opt_parent_father
+		trigger = {
+			NOT = { is_female = yes }
+			exists = father
+		}
+
+		change_first_name = { template_character = father }
+		hidden_effect = {
+			dominus_apply_ancestor_echo_effect = { ANCESTOR = father }
+		}
+		set_character_flag = has_custom_regnal_name
+		add_character_modifier = {
+			modifier = dominus_regnal_throne_name
+		}
+	}
+
+	# Honor Mother — visible to females who have a mother
+	option = {
+		name = dominus_coronation.0002.opt_parent_mother
+		trigger = {
+			is_female = yes
+			exists = mother
+		}
+
+		change_first_name = { template_character = mother }
+		hidden_effect = {
+			dominus_apply_ancestor_echo_effect = { ANCESTOR = mother }
+		}
+		set_character_flag = has_custom_regnal_name
+		add_character_modifier = {
+			modifier = dominus_regnal_throne_name
+		}
+	}
+
+	# Cancel — keep birth name
+	option = {
+		name = dominus_coronation.0002.opt_cancel
+		is_cancel_option = yes
+
+		hidden_effect = {
+			# Tidy up the donor character spawned by immediate — when no
+			# rename actually happened it serves no purpose.
+			if = {
+				limit = { exists = var:dominus_birth_name_char }
+				var:dominus_birth_name_char = {
+					death = { death_reason = death_vanished }
+				}
+			}
+			remove_variable = dominus_birth_name_char
+			remove_character_flag = has_custom_regnal_name
+		}
+	}
+}

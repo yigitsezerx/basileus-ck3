@@ -1,0 +1,81 @@
+basileus_delve_into_classics = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_golden_age.dds"
+	}
+	sort_order = 110
+	desc = basileus_delve_into_classics_desc
+	selection_tooltip = basileus_delve_into_classics_tooltip
+	decision_group_type = roman
+	is_shown = {
+		has_ep3_dlc_trigger = yes
+		has_title = title:e_byzantium
+		is_adult = yes
+		NOT = {
+			has_global_variable = pandects_renovatio_initiated_global
+		}
+		NOT = {
+			has_character_flag = pandects_renovatio_abandoned
+		}
+	}
+	is_valid_showing_failures_only = {
+		is_at_war = no
+		NOT = {
+			exists = involved_activity
+		}
+		is_imprisoned = no
+		has_contagious_deadly_disease_trigger = no
+	}
+	is_valid = {
+		prestige_level >= 2
+		culture = culture:greek
+		OR = {
+			has_trait = scholar
+			has_trait = administrator
+			has_trait = ambitious
+			knows_language = language_latin
+		}
+		OR = {
+			stewardship >= 20
+			learning >= 20
+		}
+		custom_description = {
+			text = delve_into_classics_pandidakterion_established_requirement
+			OR = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:refound_pandidakterion_decision
+				}
+				title:c_byzantion = { has_county_modifier = pandidakterion_university_modifier }
+			}
+		}
+	}
+	effect = {
+		set_global_variable = pandects_renovatio_initiated_global
+		set_character_flag = pandects_renovatio_initiated
+		trigger_event = pandects_renovatio.0001
+	}
+	cost = {
+		gold = {
+			value = 0
+			if = {
+				limit = {
+					has_treasury = no
+				}
+				add = 500
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					has_treasury = yes
+				}
+				add = 500
+			}
+		}
+	}
+
+	ai_will_do = {
+		base = 0
+	}	
+}

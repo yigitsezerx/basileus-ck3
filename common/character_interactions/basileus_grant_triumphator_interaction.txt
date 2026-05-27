@@ -1,0 +1,106 @@
+grant_triumphator_interaction = {
+	category = interaction_category_diplomacy
+	desc = grant_triumphator_interaction_desc
+	icon = icon_declare_me_regent
+	
+	# Actor constraints
+	is_shown = {
+		NOT = { scope:recipient = scope:actor }
+		scope:actor = {
+			has_title = title:e_byzantium
+			has_trait = basileus_triumphator
+		}
+	}
+	
+	# Recipient constraints
+	is_valid = {
+		# Once per ruler: the actor may bestow the honor only once during their
+		# reign. The flag is per-character, so a successor gets a fresh grant
+		# automatically.
+		custom_description = {
+			text = grant_triumphator_once_per_reign_requirement
+			subject = scope:actor
+			NOT = { scope:actor = { has_character_flag = basileus_granted_triumphator } }
+		}
+
+		scope:recipient = {
+			is_adult = yes
+			
+			# Must NOT already have it
+			NOT = { has_trait = basileus_triumphator }
+			
+			# Capable checking
+			custom_description = {
+				text = character_is_capable_requirement
+				subject = scope:recipient
+				is_incapable = no
+			}
+			
+			# Must be family (male only) OR powerful vassal
+			custom_description = {
+				text = grant_triumphator_eligible_candidate_requirement
+				subject = scope:recipient
+				OR = {
+					AND = {
+						is_close_family_of = scope:actor
+						is_male = yes
+					}
+					is_powerful_vassal_of = scope:actor
+				}
+			}
+			
+			# Must have distinguished themselves in a recent war. Read via the
+			# basileus_recent_war_hero character flag, applied directly (15-yr,
+			# auto-expiring) by the war/combat/siege hooks in
+			# basileus_war_on_actions.txt when they command/knight in a won
+			# battle, complete a siege, or join a won war as a co-belligerent.
+			custom_description = {
+				text = grant_triumphator_served_in_last_won_war_requirement
+				subject = scope:recipient
+				has_character_flag = basileus_recent_war_hero
+			}
+		}
+	}
+	
+	# Effect
+	on_accept = {
+		scope:recipient = {
+			add_trait = basileus_triumphator
+			add_prestige = 500
+			add_opinion = {
+				target = scope:actor
+				modifier = grateful_opinion
+				opinion = 50
+			}
+		}
+
+		# Mark this ruler as having bestowed the honor (once per reign).
+		scope:actor = { add_character_flag = basileus_granted_triumphator }
+
+		# Send a notification (event_toast_effect_good is a valid toast type;
+		# the previous event_neutral_good message type doesn't exist).
+		send_interface_toast = {
+			type = event_toast_effect_good
+			title = triumphator_granted_title
+			left_icon = scope:actor
+			right_icon = scope:recipient
+		}
+
+		if = {
+			limit = {
+				scope:actor = {
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+						is_struggle_phase = struggle_eastern_reconquest_phase_reconquest
+					}
+				}
+			}
+			basileus_activate_roman_catalyst_effect = {
+				CATALYST = catalyst_basileus_elevated_celebrated_general
+				CHAR = scope:actor
+			}
+		}
+	}
+	
+	auto_accept = yes
+}

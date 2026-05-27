@@ -1,0 +1,212 @@
+# =========================================================
+# Autocrator XP scripted effects
+# ---------------------------------------------------------
+# Naming conventions:
+#   autocrator_ercf_trait_add_xp_{small,medium,large}_effect
+#     - event-driven gains, with TWO soft caps:
+#         * 75+ XP : positive contribution halved
+#         * 90+ XP : positive contribution halved AGAIN
+#       (the closer to Isapostolos, the harder each push)
+#   ercf_autocrator_war_lost_regression_effect
+#     - tiered penalty scaled to the opposing side's tier
+#       (no longer a flat -15 for every war loss)
+#   ercf_autocrator_mandate_check_effect
+#     - 100 XP hard gate. Three valid worthiness paths:
+#         (A) prestige_level >= 4 AND piety_level >= 4
+#         (B) prestige_level >= 5 (single-axis legend)
+#         (C) piety_level >= 5    (single-axis saint)
+#       30-day grace window on first reaching 100 XP.
+#   ercf_autocrator_corruption_regression_effect
+#     - -1 XP/yr per councillor with greedy/deceitful/arbitrary,
+#       capped at -6/yr.
+# =========================================================
+
+# Small event gain. 75+ → halved, 90+ → unchanged at 1 (floor).
+autocrator_ercf_trait_add_xp_small_effect = {
+    if = {
+        limit = { has_trait_xp = { trait = autocrator_ercf value >= 75 } }
+        add_trait_xp = { trait = autocrator_ercf value = 1 }
+    }
+    else = {
+        add_trait_xp = { trait = autocrator_ercf value = 2 }
+    }
+    ercf_autocrator_mandate_check_effect = yes
+}
+
+# Medium event gain. Two soft caps.
+autocrator_ercf_trait_add_xp_medium_effect = {
+    if = {
+        limit = { has_trait_xp = { trait = autocrator_ercf value >= 90 } }
+        add_trait_xp = { trait = autocrator_ercf value = 1 }
+    }
+    else_if = {
+        limit = { has_trait_xp = { trait = autocrator_ercf value >= 75 } }
+        add_trait_xp = { trait = autocrator_ercf value = 3 }
+    }
+    else = {
+        add_trait_xp = { trait = autocrator_ercf value = 5 }
+    }
+    ercf_autocrator_mandate_check_effect = yes
+}
+
+# Large event gain. Two soft caps.
+autocrator_ercf_trait_add_xp_large_effect = {
+    if = {
+        limit = { has_trait_xp = { trait = autocrator_ercf value >= 90 } }
+        add_trait_xp = { trait = autocrator_ercf value = 2 }
+    }
+    else_if = {
+        limit = { has_trait_xp = { trait = autocrator_ercf value >= 75 } }
+        add_trait_xp = { trait = autocrator_ercf value = 5 }
+    }
+    else = {
+        add_trait_xp = { trait = autocrator_ercf value = 10 }
+    }
+    ercf_autocrator_mandate_check_effect = yes
+}
+
+# =========================================================
+# 100 XP gate (Isapostolos) — three worthiness paths + grace
+# =========================================================
+ercf_autocrator_mandate_check_effect = {
+    # First crossing into 100 XP grants a 30-day grace window
+    # so the player has time to scramble for the gate.
+    if = {
+        limit = {
+            has_trait = autocrator_ercf
+            has_trait_xp = { trait = autocrator_ercf value >= 100 }
+            NOT = { has_character_flag = ercf_isapostolos_grace_used }
+        }
+        add_character_flag = { flag = ercf_isapostolos_grace days = 30 }
+        add_character_flag = ercf_isapostolos_grace_used
+    }
+    # Hard gate — only fires once grace flag has expired AND none of the
+    # three worthiness paths are met.
+    if = {
+        limit = {
+            has_trait = autocrator_ercf
+            has_trait_xp = { trait = autocrator_ercf value >= 100 }
+            NOT = { has_character_flag = ercf_isapostolos_grace }
+            NOR = {
+                AND = { prestige_level >= 4  piety_level >= 4 }
+                prestige_level >= 5
+                piety_level >= 5
+            }
+        }
+        add_trait_xp = { trait = autocrator_ercf value = -1 }
+        custom_tooltip = ercf_autocrator_unworthy_isapostolos_tt
+    }
+}
+
+# =========================================================
+# Military defeat — tiered. Caller passes OTHER_SIDE.
+# Empire-tier opponent → -15  (true imperial humiliation)
+# Kingdom-tier         → -10
+# Below kingdom        → -5   (border skirmish, embarrassing
+#                              but not regime-shaking)
+# =========================================================
+ercf_autocrator_war_lost_regression_effect = {
+    if = {
+        limit = { has_trait = autocrator_ercf }
+        if = {
+            limit = { $OTHER_SIDE$ = { highest_held_title_tier >= tier_empire } }
+            add_trait_xp = { trait = autocrator_ercf value = -15 }
+        }
+        else_if = {
+            limit = { $OTHER_SIDE$ = { highest_held_title_tier >= tier_kingdom } }
+            add_trait_xp = { trait = autocrator_ercf value = -10 }
+        }
+        else = {
+            add_trait_xp = { trait = autocrator_ercf value = -5 }
+        }
+        custom_tooltip = ercf_autocrator_war_lost_regression_tt
+    }
+}
+
+# =========================================================
+# Regency penalty (small extra on top of pulse stagnation)
+# Lowered from -5 to -2 — the pulse already withholds the climb
+# while a regent is in place; this is the named flavour penalty.
+# =========================================================
+ercf_autocrator_regency_stagnation_effect = {
+    if = {
+        limit = {
+            has_trait = autocrator_ercf
+            has_regent = yes
+        }
+        add_trait_xp = { trait = autocrator_ercf value = -2 }
+        custom_tooltip = ercf_autocrator_regency_stagnation_tt
+    }
+}
+
+# =========================================================
+# Ruthless dominance — execution reward, 30-day cooldown
+# (prevents same-day mass executions farming XP)
+# =========================================================
+ercf_autocrator_ruthless_dominance_effect = {
+    if = {
+        limit = {
+            has_trait = autocrator_ercf
+            NOT = { has_character_flag = ercf_ruthless_cooldown }
+        }
+        add_trait_xp = { trait = autocrator_ercf value = 1 }
+        add_character_flag = { flag = ercf_ruthless_cooldown days = 30 }
+        ercf_autocrator_mandate_check_effect = yes
+    }
+}
+
+# =========================================================
+# Traditional mutilation — blinding/castrating reward,
+# 30-day cooldown (same anti-farming reasoning)
+# =========================================================
+ercf_autocrator_traditional_mutilation_effect = {
+    if = {
+        limit = {
+            has_trait = autocrator_ercf
+            NOT = { has_character_flag = ercf_mutilation_cooldown }
+        }
+        add_trait_xp = { trait = autocrator_ercf value = 1 }
+        add_character_flag = { flag = ercf_mutilation_cooldown days = 30 }
+        ercf_autocrator_mandate_check_effect = yes
+    }
+}
+
+# =========================================================
+# Administrative corruption — soft penalty.
+# Three+ corrupt councillors → -1/yr; lower counts are flavour only.
+# Capped at -2/yr (5+ corrupt councillors = full court rot).
+# Lowered from a -6 max — too brutal stacked with everything else.
+# =========================================================
+ercf_autocrator_corruption_regression_effect = {
+    if = {
+        limit = { has_trait = autocrator_ercf }
+
+        # Count corrupt councillors into a temp variable on root.
+        set_variable = { name = ercf_corrupt_count value = 0 }
+        every_councillor = {
+            limit = {
+                OR = {
+                    has_trait = greedy
+                    has_trait = deceitful
+                    has_trait = arbitrary
+                }
+            }
+            prev = {
+                change_variable = { name = ercf_corrupt_count add = 1 }
+            }
+        }
+
+        # Two tiers: 3-4 corrupt → -1, 5+ → -2. Fewer than 3 is "normal
+        # palace life" and costs nothing — only systemic rot bites.
+        if = {
+            limit = { var:ercf_corrupt_count >= 5 }
+            add_trait_xp = { trait = autocrator_ercf value = -2 }
+        }
+        else_if = {
+            limit = { var:ercf_corrupt_count >= 3 }
+            add_trait_xp = { trait = autocrator_ercf value = -1 }
+        }
+
+        remove_variable = ercf_corrupt_count
+    }
+}

@@ -1,0 +1,67 @@
+# Senate of Magnaura — character modifiers applied to the holder of e_byzantium
+# based on the senate_approval scripted variable.
+# Applied / removed by basileus_senate_yearly_pulse.
+
+senate_approval_high_modifier = {
+	icon = diplomacy_positive
+
+	# General opinion / prestige carryovers
+	vassal_opinion = 5
+	monthly_prestige = 0.1
+	monthly_influence = 0.1
+	courtier_and_guest_opinion = 5
+
+	# Faction-strength gating — backed senate isolates would-be rebels.
+	hostile_scheme_resistance_add = 5
+
+	# Court-grandeur eased: a well-managed senate makes hosting cheaper.
+	# court_grandeur_baseline_add = -1
+}
+
+senate_approval_low_modifier = {
+	icon = diplomacy_negative
+
+	# General opinion / prestige carryovers
+	vassal_opinion = -5
+	monthly_prestige = -0.1
+	monthly_influence = -0.1
+	courtier_and_guest_opinion = -5
+
+	# Faction-strength gating — hostile senate emboldens powerful vassals.
+	hostile_scheme_resistance_add = -5
+
+	# Court-grandeur strained: dignitaries demand more pomp when displeased.
+	# court_grandeur_baseline_add = 1
+}
+
+# Applied to the emperor when >2 senate members share a single dynasty.
+# Models the realm noticing factional capture of the senate.
+senate_dynasty_dominance_modifier = {
+	icon = diplomacy_negative
+
+	vassal_opinion = -5
+	courtier_and_guest_opinion = -5
+}
+
+# Applied to the new Basileus on succession IF the previous reign ended
+# with senate_approval >= 70. Represents the senate's public endorsement
+# carrying weight into the new reign. 5-year duration.
+senate_anointed_modifier = {
+	icon = diplomacy_positive
+
+	monthly_legitimacy_add = 1
+	diplomacy = 2
+	monthly_prestige = 0.5
+	powerful_vassal_opinion = 5
+}
+
+# Applied to the Basileus when they declare an offensive war against a
+# kingdom-tier+ target while senate_approval >= 70. Lasts 5 years (covers
+# the vast majority of war durations).
+senate_war_blessed_modifier = {
+	icon = diplomacy_positive
+
+	monthly_legitimacy_add = 0.5
+	hostile_scheme_resistance_add = 10
+}
+

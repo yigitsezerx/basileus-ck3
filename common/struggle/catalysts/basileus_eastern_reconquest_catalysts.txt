@@ -1,0 +1,119 @@
+# =====================================================================
+# BASILEUS — EASTERN RECONQUEST — custom struggle catalysts.
+# ---------------------------------------------------------------------
+# Vanilla catalysts are defined as empty `name = {}` blocks; they're
+# pure identifiers and the actual gain values are set per-phase in the
+# struggle file. The triggering logic for each catalyst lives in
+# common/on_action/basileus_eastern_reconquest_on_actions.txt.
+# =====================================================================
+
+# Fires when a county inside custom_theodosian_ere changes hands and
+# the new holder is the Basileus or one of his vassals.
+catalyst_basileus_reconquered_eastern_county = {}
+
+# Fires when a county inside custom_theodosian_ere has its culture
+# converted to a Roman culture (greek / eastern_roman / roman).
+catalyst_basileus_eastern_culture_flipped = {}
+
+# Fires when one of the great eastern cities — Antioch, Alexandria,
+# or Jerusalem — is recovered by the Basileus's side. Massive gain;
+# narrative landmark moments.
+catalyst_basileus_great_eastern_city_recovered = {}
+
+# ----- Roman-side, parallel to culture flip -----
+# Fires when a county in custom_theodosian_ere converts to a Christian
+# faith (orthodox / catholic / nestorian / miaphysite / monothelite /
+# bogomilist / paulician / iconoclast — the Christian umbrella).
+catalyst_basileus_eastern_county_faith_flipped_christian = {}
+
+# ----- Defender-side, push phases backward -----
+
+# Fires when a county in custom_theodosian_ere transfers FROM a Roman
+# holder (Basileus or in-realm vassal) TO a non-Roman ruler. Mirror of
+# catalyst_basileus_reconquered_eastern_county.
+catalyst_basileus_roman_county_lost = {}
+
+# Fires when one of the great eastern cities (Antioch, Alexandria,
+# Jerusalem) is lost from Roman to non-Roman hands. Mirror of
+# catalyst_basileus_great_eastern_city_recovered.
+catalyst_basileus_great_eastern_city_lost = {}
+
+# Fires when the holder of e_byzantium dies while the struggle is
+# active. The leader of the campaign is gone; momentum stalls.
+catalyst_basileus_basileus_died_during_struggle = {}
+
+# ----- Wave 3: immersion + balance (Roman) -----
+
+# Roman side wins a field battle against an involved defender, inside
+# the region. Minor — battles are frequent, so kept small.
+catalyst_basileus_won_eastern_battle = {}
+
+# Roman side recovers a county that contains a holy site of the
+# Basileus's faith. Major — sacred landmarks.
+catalyst_basileus_recovered_holy_site = {}
+
+# An involved defender ruler holding land in the region converts TO a
+# Christian faith. Medium — a soul, and a realm, won without the sword.
+catalyst_basileus_converted_eastern_ruler = {}
+
+# ----- Wave 3: immersion + balance (defender) -----
+
+# Defender side wins a field battle against an involved Roman, inside
+# the region. Minor.
+catalyst_basileus_lost_eastern_battle = {}
+
+# A Roman vassal rises in revolt against the Basileus while the struggle
+# is active. Medium — the home front cracks.
+catalyst_basileus_roman_vassal_revolt = {}
+
+# ----- Frontier Fortification -----
+# Roman-side completes construction of a primary holding building in the region.
+catalyst_basileus_built_frontier_holding = {}
+
+# ----- The Imperial War Chest -----
+# Basileus reaches 1000 gold/treasury.
+catalyst_basileus_filled_imperial_coffers = {}
+
+# ----- Noble Captives -----
+# Roman-side captures a landed defender or their close family member.
+catalyst_basileus_captured_high_value_defender = {}
+
+# ----- The Basileus Captive -----
+# Defender captures the Basileus.
+catalyst_basileus_basileus_captured_in_battle = {}
+
+# ----- Imperial Bankruptcy -----
+# Basileus goes into debt (personal/realm).
+catalyst_basileus_roman_bankrupt_in_struggle = {}
+
+# ----- Assassinating the Caliph -----
+# Roman-side kills/assassinates Sunni or Shia Caliph.
+catalyst_basileus_assassinated_eastern_caliph = {}
+
+# =====================================================================
+# Wave 4: New Catalysts (Transitions)
+# =====================================================================
+
+# ----- Phase 1 (Resolve) new catalysts -----
+catalyst_basileus_senate_blessing = {}
+catalyst_basileus_secured_western_frontier = {}
+catalyst_basileus_banners_consecrated = {}
+
+# ----- Phase 2 (Reconquest) new catalysts -----
+catalyst_basileus_elevated_celebrated_general = {}
+catalyst_basileus_theological_dispute_flared = {}
+catalyst_basileus_jihad_declared = {}
+
+# ----- Phase 3a (Triumph) new catalysts -----
+catalyst_basileus_eastern_coalition_formed = {}
+catalyst_basileus_plague_outbreak = {}
+catalyst_basileus_senate_conspiracy = {}
+catalyst_basileus_legion_mutiny = {}
+catalyst_basileus_eastern_lord_defected = {}
+
+# ----- Phase 3b (Setback) new catalysts -----
+catalyst_basileus_defender_alliance_shattered = {}
+catalyst_basileus_miracle_battle = {}
+
+
+

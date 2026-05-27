@@ -1,0 +1,643 @@
+﻿# Senate of Magnaura — hypatus, senator and patrician court positions.
+# Restricted to the holder of e_byzantium. Eligibility: direct vassals only.
+# Appointment cost: prestige & influence (deducted on appointment).
+
+# Exclusivity rule: a character may hold at most one senate-tier
+# position (hypatus / senator / patrician). Encoded in each position's
+# valid_character with custom_description for tooltip clarity.
+
+hypatus_court_position = {
+	sort_order = 370
+	max_available_positions = 1
+	minimum_rank = empire
+	skill = diplomacy
+
+	court_position_asset = {
+		animation = personality_bold
+		background = "gfx/interface/illustrations/event_scenes/ep3_constantinople.dds"
+	}
+
+	opinion = {
+		value = 25
+	}
+
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	aptitude = {
+		value = 1
+		# Primary skill — diplomacy, scaled at 1.75× like vanilla advisors.
+		add = {
+			value = diplomacy
+			multiply = 2
+			max = 50
+			desc = court_position_skill_diplomacy
+		}
+		# Secondary skill — learning, scaled at 1× as supporting competency.
+		add = {
+			value = learning
+			multiply = 1.2
+			max = 30
+			desc = court_position_skill_learning
+		}
+		add = {
+			value = stewardship
+			multiply = 2
+			max = 30
+			desc = court_position_skill_stewardship
+		}		
+		add = {
+			value = martial
+			multiply = 1.2
+			max = 30
+			desc = court_position_skill_martial
+		}		
+		# Trait bonuses — scholarly / educated / honor-bound traits aid the role.
+		if = {
+			limit = { has_trait = scholar }
+			add = { value = 10  desc = court_position_scholar_trait }
+		}
+		if = {
+			limit = { has_trait = just }
+			add = { value = 10  desc = court_position_just_trait }
+		}
+		if = {
+			limit = {
+				has_trait = blind
+			}
+			add = {
+				value = -50
+				desc = court_position_blind_trait
+			}
+		}		
+		if = {
+			limit = {
+				has_trait = administrator
+			}
+			add = {
+				value = 20
+				desc = court_position_administrator_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = overseer
+			}
+			add = {
+				value = 20
+				desc = court_position_overseer_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = organizer
+			}
+			add = {
+				value = 20
+				desc = court_position_organizer_trait
+			}
+		}		
+		add = general_aptitude_bonus
+	}
+
+	is_shown = {
+		has_title = title:e_byzantium
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			OR = {
+				is_vassal_of = scope:liege
+				is_close_or_extended_family_of = scope:liege
+				# Catch dynastic kin even if they're not "close/extended family"
+				# per the engine's definition (e.g., grand-nephews, cousins-twice-
+				# removed) and any courtier physically at the Basileus's court.
+				dynasty = scope:liege.dynasty
+				is_at_same_court_as = scope:liege
+			}
+		}
+	}
+
+	valid_position = {
+		has_title = title:e_byzantium
+	}
+
+	valid_character = {
+		scope:employee = {
+			OR = {
+				is_vassal_of = scope:liege
+				is_close_or_extended_family_of = scope:liege
+				dynasty = scope:liege.dynasty
+				is_at_same_court_as = scope:liege
+			}
+			is_lowborn = no
+			is_male = yes   # Senate dignities are male-only.
+			NOT = { has_court_position = senator_court_position }
+			NOT = { has_court_position = patrician_court_position }
+		}
+	}
+
+	revoke_cost = {
+		prestige = { value = 75 }
+	}
+
+	# Always-on bonus for the Hypatos (the senator gets these regardless of aptitude).
+	base_employee_modifier = {
+		monthly_prestige = 0.3
+		general_opinion = 5
+	}
+
+	# Better employee gets better personal bonuses.
+	scaling_employee_modifiers = {
+		terrible = {
+			monthly_prestige = 0
+		}
+		poor = {
+			monthly_prestige = 0.05
+		}
+		average = {
+			monthly_prestige = 0.1
+		}
+		good = {
+			monthly_prestige = 0.15
+		}
+		excellent = {
+			monthly_prestige = 0.2
+			diplomacy = 1
+			courtier_and_guest_opinion = 5
+		}
+	}
+
+	salary = {
+		gold = {
+			value = 0
+			if = {
+				limit = { scope:liege = { has_treasury = no } }
+				add = 0.20
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = { scope:liege = { has_treasury = yes } }
+				add = 0.20
+			}
+		}
+		prestige = { value = 0.05 }
+		round = no
+	}
+
+	received_salary = {
+		gold = { value = 0.20 }
+		round = no
+	}
+
+	# Aptitude → emperor stats. Higher aptitude = better counsel.
+	# Hypatos also contributes to monthly_legitimacy_add — the foremost
+	# dignitary's endorsement strengthens the imperial claim.
+	scaling_employer_modifiers = {
+		terrible = {
+			diplomacy = -1
+			monthly_legitimacy_add = -0.5
+		}
+		poor = {
+			monthly_legitimacy_add = 0.2
+		}
+		average = {
+			monthly_legitimacy_add = 0.5
+		}
+		good = {
+			diplomacy = 1
+			monthly_legitimacy_add = 1.0
+		}
+		excellent = {
+			diplomacy = 2
+			vassal_opinion = 5
+			monthly_legitimacy_add = 1.5
+		}
+	}
+
+	on_court_position_received = {
+		scope:liege = {
+			add_prestige = -100
+			add_influence = -50
+		}
+		basileus_senate_recompute_counts = yes
+		basileus_senate_grant_tenure_trait = { POS = hypatos }
+		basileus_senate_grant_peer_opinions = yes
+		basic_gained_court_position_effect = yes
+	}
+	on_court_position_revoked = {
+		basileus_senate_recompute_counts = yes
+		basileus_senate_strip_on_loss = { POS = hypatos }
+		basileus_senate_strip_peer_opinions = yes
+		basic_revoked_court_position_effect = yes
+	}
+	on_court_position_invalidated = {
+		basileus_senate_recompute_counts = yes
+		basileus_senate_strip_on_loss = { POS = hypatos }
+		basileus_senate_strip_peer_opinions = yes
+		basic_invalidated_court_position_effect = yes
+	}
+}
+
+senator_court_position = {
+	sort_order = 360
+	max_available_positions = 5
+	minimum_rank = empire
+	skill = diplomacy
+
+	court_position_asset = {
+		animation = personality_zealous
+		background = "gfx/interface/illustrations/event_scenes/ep3_constantinople.dds"
+	}
+
+	opinion = {
+		value = 15
+	}
+
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	aptitude = {
+		value = 1
+		add = {
+			value = diplomacy
+			multiply = 2
+			max = 50
+			desc = court_position_skill_diplomacy
+		}
+		add = {
+			value = learning
+			multiply = 1.5
+			max = 30
+			desc = court_position_skill_learning
+		}
+		add = {
+			value = stewardship
+			multiply = 1.5
+			max = 30
+			desc = court_position_skill_stewardship
+		}		
+		add = {
+			value = intrigue
+			multiply = 1.5
+			max = 30
+			desc = court_position_skill_intrigue
+		}		
+		if = {
+			limit = { has_trait = scholar }
+			add = { value = 10  desc = court_position_trait_scholar }
+		}
+		if = {
+			limit = { has_trait = honest }
+			add = { value = 5   desc = court_position_trait_honest }
+		}
+		if = {
+			limit = {
+				has_trait = trusting
+			}
+			add = {
+				value = 5
+				desc = court_position_trusting_trait
+			}
+		}
+		if = {
+			limit = {
+				has_trait = loyal
+			}
+			add = {
+				value = 5
+				desc = court_position_loyal_trait
+			}
+		}		
+		add = general_aptitude_bonus
+	}
+
+	is_shown = {
+		has_title = title:e_byzantium
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			OR = {
+				is_vassal_of = scope:liege
+				is_close_or_extended_family_of = scope:liege
+				# Catch dynastic kin even if they're not "close/extended family"
+				# per the engine's definition (e.g., grand-nephews, cousins-twice-
+				# removed) and any courtier physically at the Basileus's court.
+				dynasty = scope:liege.dynasty
+				is_at_same_court_as = scope:liege
+			}
+		}
+	}
+
+	valid_position = {
+		has_title = title:e_byzantium
+	}
+
+	valid_character = {
+		scope:employee = {
+			OR = {
+				is_vassal_of = scope:liege
+				is_close_or_extended_family_of = scope:liege
+				dynasty = scope:liege.dynasty
+				is_at_same_court_as = scope:liege
+			}
+			is_lowborn = no
+			is_male = yes   # Senate dignities are male-only.
+			NOT = { has_court_position = hypatus_court_position }
+			NOT = { has_court_position = patrician_court_position }
+		}
+	}
+
+	revoke_cost = {
+		prestige = { value = 50 }
+	}
+
+	base_employee_modifier = {
+		monthly_prestige = 0.15
+		general_opinion = 3
+	}
+
+	scaling_employee_modifiers = {
+		terrible = {
+			monthly_prestige = 0
+		}
+		poor = {
+			monthly_prestige = 0.05
+		}
+		average = {
+			monthly_prestige = 0.08
+		}
+		good = {
+			monthly_prestige = 0.1
+		}
+		excellent = {
+			monthly_prestige = 0.15
+			diplomacy = 1
+			courtier_and_guest_opinion = 3
+		}
+	}
+
+	salary = {
+		gold = {
+			value = 0
+			if = {
+				limit = { scope:liege = { has_treasury = no } }
+				add = 0.10
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = { scope:liege = { has_treasury = yes } }
+				add = 0.10
+			}
+		}
+		prestige = { value = 0.02 }
+		round = no
+	}
+
+	received_salary = {
+		gold = { value = 0.10 }
+		round = no
+	}
+
+	# Aptitude → emperor stats.
+	scaling_employer_modifiers = {
+		terrible = {
+			vassal_opinion = -2
+		}
+		poor = {
+			monthly_prestige = 0.03
+		}
+		average = {
+			monthly_prestige = 0.05
+		}
+		good = {
+			monthly_prestige = 0.1
+			monthy_influence = 0.1
+		}
+		excellent = {
+			diplomacy = 1
+			stewardship = 1
+			monthly_prestige = 0.15
+			monthly_influence = 0.15
+		}
+	}
+
+	on_court_position_received = {
+		scope:liege = {
+			add_prestige = -50
+			add_influence = -25
+		}
+		basileus_senate_recompute_counts = yes
+		basileus_senate_grant_tenure_trait = { POS = senator }
+		basileus_senate_grant_peer_opinions = yes
+		basic_gained_court_position_effect = yes
+	}
+	on_court_position_revoked = {
+		basileus_senate_recompute_counts = yes
+		basileus_senate_strip_on_loss = { POS = senator }
+		basileus_senate_strip_peer_opinions = yes
+		basic_revoked_court_position_effect = yes
+	}
+	on_court_position_invalidated = {
+		basileus_senate_recompute_counts = yes
+		basileus_senate_strip_on_loss = { POS = senator }
+		basileus_senate_strip_peer_opinions = yes
+		basic_invalidated_court_position_effect = yes
+	}
+}
+
+patrician_court_position = {
+	sort_order = 350
+	max_available_positions = 5
+	minimum_rank = empire
+	skill = diplomacy
+
+	court_position_asset = {
+		animation = personality_content
+		background = "gfx/interface/illustrations/event_scenes/ep3_constantinople.dds"
+	}
+
+	opinion = {
+		value = 10
+	}
+
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	aptitude = {
+		value = 1
+		# Primary skill — stewardship at 1.75× (the patrician is fiscal aristocracy).
+		add = {
+			value = stewardship
+			multiply = 2
+			max = 50
+			desc = court_position_skill_stewardship
+		}
+		# Secondary — diplomacy aids the role.
+		add = {
+			value = martial
+			multiply = 2.5
+			max = 30
+			desc = court_position_skill_martial
+		}		
+		add = {
+			value = diplomacy
+			multiply = 1.5
+			max = 30
+			desc = court_position_skill_diplomacy
+		}
+		if = {
+			limit = { has_trait = administrator }
+			add = { value = 10  desc = court_position_trait_administrator }
+		}
+		if = {
+			limit = { has_trait = diligent }
+			add = { value = 10   desc = court_position_diligent_trait }
+		}
+		if = {
+			limit = { has_trait = patient }
+			add = { value = 10   desc = court_position_patient_trait }
+		}
+		add = general_aptitude_bonus
+	}
+
+	is_shown = {
+		has_title = title:e_byzantium
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			OR = {
+				is_vassal_of = scope:liege
+				is_close_or_extended_family_of = scope:liege
+				# Catch dynastic kin even if they're not "close/extended family"
+				# per the engine's definition (e.g., grand-nephews, cousins-twice-
+				# removed) and any courtier physically at the Basileus's court.
+				dynasty = scope:liege.dynasty
+				is_at_same_court_as = scope:liege
+			}
+		}
+	}
+
+	valid_position = {
+		has_title = title:e_byzantium
+	}
+
+	valid_character = {
+		scope:employee = {
+			OR = {
+				is_vassal_of = scope:liege
+				is_close_or_extended_family_of = scope:liege
+				dynasty = scope:liege.dynasty
+				is_at_same_court_as = scope:liege
+			}
+			is_lowborn = no
+			is_male = yes   # Senate dignities are male-only.
+			NOT = { has_court_position = hypatus_court_position }
+			NOT = { has_court_position = senator_court_position }
+		}
+	}
+
+	revoke_cost = {
+		prestige = { value = 25 }
+	}
+
+	base_employee_modifier = {
+		monthly_prestige = 0.1
+		general_opinion = 2
+	}
+
+	scaling_employee_modifiers = {
+		terrible = {
+			monthly_prestige = 0
+		}
+		poor = {
+			monthly_prestige = 0.03
+		}
+		average = {
+			monthly_prestige = 0.05
+		}
+		good = {
+			monthly_prestige = 0.08
+		}
+		excellent = {
+			monthly_prestige = 0.12
+			stewardship = 1
+			courtier_and_guest_opinion = 3
+		}
+	}
+
+	salary = {
+		gold = {
+			value = 0
+			if = {
+				limit = { scope:liege = { has_treasury = no } }
+				add = 0.02
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = { scope:liege = { has_treasury = yes } }
+				add = 0.02
+			}
+		}
+		prestige = { value = 0.02 }
+		round = no
+	}
+
+	received_salary = {
+		gold = { value = 0.02 }
+		round = no
+	}
+
+	# Aptitude → emperor stats.
+	# Patricians' stewardship contributes to empire-wide domain_tax_mult —
+	# they are the fiscal aristocracy whose competence shows in the treasury.
+	scaling_employer_modifiers = {
+		terrible = {
+			courtier_and_guest_opinion = -2
+		}
+		poor = {
+			monthly_prestige = 0.02
+		}
+		average = {
+			monthly_prestige = 0.05
+		}
+		good = {
+			monthly_prestige = 0.1
+			courtier_and_guest_opinion = 2
+			domain_tax_mult = 0.01
+		}
+		excellent = {
+			monthly_prestige = 0.15
+			courtier_and_guest_opinion = 5
+			domain_tax_mult = 0.02
+		}
+	}
+
+	on_court_position_received = {
+		scope:liege = {
+			add_prestige = -20
+			add_influence = -10
+		}
+		basileus_senate_recompute_counts = yes
+		basileus_senate_grant_tenure_trait = { POS = patrician }
+		basileus_senate_grant_peer_opinions = yes
+		basic_gained_court_position_effect = yes
+	}
+	on_court_position_revoked = {
+		basileus_senate_recompute_counts = yes
+		basileus_senate_strip_on_loss = { POS = patrician }
+		basileus_senate_strip_peer_opinions = yes
+		basic_revoked_court_position_effect = yes
+	}
+	on_court_position_invalidated = {
+		basileus_senate_recompute_counts = yes
+		basileus_senate_strip_on_loss = { POS = patrician }
+		basileus_senate_strip_peer_opinions = yes
+		basic_invalidated_court_position_effect = yes
+	}
+}

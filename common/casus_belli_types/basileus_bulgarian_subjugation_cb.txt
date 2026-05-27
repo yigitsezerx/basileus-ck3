@@ -1,0 +1,309 @@
+# =====================================================================
+# BASILEUS — BULGARIAN GAMBIT — Subjugation casus belli.
+# ---------------------------------------------------------------------
+# A single "total war" against the Bulgarian ruler for the whole Bulgarian
+# heartland (custom_roman_haemimontus + custom_roman_paristrion). On victory
+# the targeted duchies + their de jure counties held by the defender (and
+# vassals) pass to the Basileus. The story climax then fires once both
+# regions are fully controlled, dismantling k_bulgaria.
+#
+# Availability is throne-bound: unlocked by the global variable
+# bulgarian_subjugation_unlocked, set at the "Sword Drawn" beat
+# (event bulgarian_gambit.0005) and cleared when the story ends.
+# Usable only by the e_byzantium holder, only against the k_bulgaria holder.
+# Plumbing mirrors basileus_roman_reclamation_cb / vanilla duchy_conquest_cb.
+# =====================================================================
+
+basileus_bulgarian_subjugation_cb = {
+	icon = roman_reclamation
+	group = conquest
+
+	combine_into_one = yes
+	should_show_war_goal_subview = yes
+	mutually_exclusive_titles = { always = yes }
+
+	attacker_score_from_occupation_scale = 150
+	attacker_score_from_battles_scale = 150
+	defender_score_from_battles_scale = 150
+
+	allowed_for_character = {
+		has_title = title:e_byzantium
+		has_global_variable = bulgarian_subjugation_unlocked
+		NOT = {
+			government_has_flag = government_is_landless_adventurer
+		}
+	}
+
+	allowed_against_character = {
+		# Only against the reigning Bulgarian crown.
+		scope:defender = { this = title:k_bulgaria.holder }
+		NOR = {
+			scope:defender = { target_is_liege_or_above = scope:attacker }
+			scope:attacker = { target_is_liege_or_above = scope:defender }
+		}
+		# Defender must hold at least one county in the Bulgarian heartland.
+		scope:defender = {
+			any_realm_county = {
+				title_province = {
+					OR = {
+						geographical_region = custom_roman_haemimontus
+						geographical_region = custom_roman_paristrion
+					}
+				}
+			}
+		}
+	}
+
+	target_titles = all
+	target_title_tier = duchy
+	target_de_jure_regions_above = yes
+	ignore_effect = change_title_holder
+	ai_only_against_neighbors = yes
+
+	valid_to_start = {
+		scope:target = {
+			is_landless_type_title = no
+			# Target duchy must include at least one county inside the heartland.
+			any_de_jure_county = {
+				title_province = {
+					OR = {
+						geographical_region = custom_roman_haemimontus
+						geographical_region = custom_roman_paristrion
+					}
+				}
+			}
+		}
+	}
+
+	should_invalidate = {
+		NOT = {
+			any_in_list = {
+				list = target_titles
+				any_in_de_jure_hierarchy = {
+					tier = tier_county
+					holder = {
+						target_is_same_character_or_above = scope:defender
+					}
+				}
+			}
+		}
+	}
+
+	on_invalidated_desc = msg_invalidate_war_title
+	on_invalidated = {}
+
+	cost = {
+		prestige = {
+			value = major_prestige_value
+			multiply = common_cb_prestige_cost_multiplier
+		}
+	}
+
+	on_declaration = {
+		on_declared_war = yes
+		# "The Eagles March" — flavor for both sides.
+		scope:attacker = { trigger_event = bulgarian_gambit.0007 }
+		scope:defender = { trigger_event = bulgarian_gambit.0008 }
+	}
+
+	# -----------------------------------------------------------------
+	# VICTORY — transfer the heartland duchies + de jure counties.
+	# Mirrors basileus_roman_reclamation_cb on_victory.
+	# -----------------------------------------------------------------
+	on_victory_desc = {
+		desc = basileus_bulgarian_subjugation_cb_victory_desc
+	}
+
+	on_victory = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+
+		add_legitimacy_attacker_victory_effect = yes
+
+		scope:attacker = { accolade_attacker_war_end_glory_gain_med_effect = yes }
+
+		create_title_and_vassal_change = {
+			type = conquest
+			save_scope_as = change
+			add_claim_on_loss = yes
+		}
+
+		# Take the ENTIRE Bulgarian heartland — every county in both regions
+		# held by the defender or their vassals — regardless of which duchy was
+		# the declared war goal.
+		every_county_in_region = {
+			region = custom_roman_haemimontus
+			limit = {
+				holder ?= {
+					OR = {
+						this = scope:defender
+						target_is_liege_or_above = scope:defender
+					}
+				}
+			}
+			add_to_list = titles_taken
+		}
+		every_county_in_region = {
+			region = custom_roman_paristrion
+			limit = {
+				holder ?= {
+					OR = {
+						this = scope:defender
+						target_is_liege_or_above = scope:defender
+					}
+				}
+			}
+			add_to_list = titles_taken
+		}
+
+		# And the duchy titles of both regions, if held by the defender or
+		# vassals. Haemimontus: d_bulgaria, d_philippopolis. Paristrion:
+		# d_turnovo, d_dobrudja. (d_vidin is intentionally excluded from the
+		# gambit — see the region definition and the commented block below.)
+		title:d_bulgaria = {
+			if = {
+				limit = { holder ?= { OR = { this = scope:defender  target_is_liege_or_above = scope:defender } } }
+				add_to_list = titles_taken
+			}
+		}
+		title:d_philippopolis = {
+			if = {
+				limit = { holder ?= { OR = { this = scope:defender  target_is_liege_or_above = scope:defender } } }
+				add_to_list = titles_taken
+			}
+		}
+		#title:d_vidin = {
+		#	if = {
+		#		limit = { holder ?= { OR = { this = scope:defender  target_is_liege_or_above = scope:defender } } }
+		#		add_to_list = titles_taken
+		#	}
+		#}
+		title:d_turnovo = {
+			if = {
+				limit = { holder ?= { OR = { this = scope:defender  target_is_liege_or_above = scope:defender } } }
+				add_to_list = titles_taken
+			}
+		}
+		title:d_dobrudja = {
+			if = {
+				limit = { holder ?= { OR = { this = scope:defender  target_is_liege_or_above = scope:defender } } }
+				add_to_list = titles_taken
+			}
+		}
+
+		every_in_list = {
+			list = titles_taken
+			change_title_holder = {
+				holder = scope:attacker
+				change = scope:change
+				take_baronies = yes
+			}
+		}
+
+		resolve_title_and_vassal_change = scope:change
+
+		scope:attacker = {
+			add_prestige_experience = major_prestige_value
+		}
+
+		modify_allies_of_participants_fame_values = {
+			WINNER = scope:attacker
+			FAME_BASE = medium_prestige_value
+			IS_RELIGIOUS_WAR = no
+			WINNER_ALLY_FAME_SCALE = 1
+			LOSER_ALLY_FAME_SCALE = 1
+		}
+
+		add_truce_attacker_victory_effect = yes
+	}
+
+	on_white_peace_desc = {
+		desc = basileus_bulgarian_subjugation_cb_white_peace_desc
+	}
+
+	on_white_peace = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+
+		scope:defender = { accolade_defender_war_end_glory_gain_low_effect = yes }
+
+		scope:attacker = {
+			add_prestige = {
+				value = minor_prestige_value
+				multiply = -1.0
+			}
+		}
+
+		modify_allies_of_participants_fame_values = {
+			WINNER = scope:attacker
+			FAME_BASE = medium_prestige_value
+			IS_RELIGIOUS_WAR = no
+			WINNER_ALLY_FAME_SCALE = 1
+			LOSER_ALLY_FAME_SCALE = 1
+		}
+
+		add_truce_white_peace_effect = yes
+
+		# The gambit fails — end the story (permanent; no retry).
+		scope:attacker = { trigger_event = bulgarian_gambit.0051 }
+	}
+
+	on_defeat_desc = {
+		desc = basileus_bulgarian_subjugation_cb_defeat_desc
+	}
+
+	on_defeat = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+
+		add_legitimacy_attacker_defeat_effect = yes
+
+		scope:defender = {
+			accolade_defender_war_end_glory_gain_med_effect = yes
+			add_prestige_war_defender_effect = {
+				PRESTIGE_VALUE = major_prestige_value
+			}
+		}
+
+		scope:attacker = {
+			pay_short_term_gold_reparations_effect = { GOLD_VALUE = 5 }
+			add_prestige = {
+				value = major_prestige_value
+				multiply = -1.0
+			}
+		}
+
+		modify_allies_of_participants_fame_values = {
+			WINNER = scope:defender
+			FAME_BASE = medium_prestige_value
+			IS_RELIGIOUS_WAR = no
+			WINNER_ALLY_FAME_SCALE = 1
+			LOSER_ALLY_FAME_SCALE = 1
+		}
+
+		add_truce_attacker_defeat_effect = yes
+
+		scope:attacker = { save_temporary_scope_as = loser }
+		on_lost_aggression_war_discontent_loss = yes
+
+		# The gambit fails — end the story (permanent; no retry).
+		scope:attacker = { trigger_event = bulgarian_gambit.0051 }
+	}
+
+	transfer_behavior = transfer
+
+	on_primary_attacker_death = inherit
+	on_primary_defender_death = inherit
+
+	attacker_allies_inherit = yes
+	defender_allies_inherit = yes
+
+	war_name      = "BASILEUS_BULGARIAN_SUBJUGATION_WAR_NAME"
+	war_name_base = "BASILEUS_BULGARIAN_SUBJUGATION_WAR_NAME_BASE"
+	cb_name       = "BASILEUS_BULGARIAN_SUBJUGATION_CB_NAME"
+
+	interface_priority = 110
+
+	max_defender_score_from_occupation = 150
+
+	ai_score_mult = {
+		value = 1
+	}
+}

@@ -1,0 +1,70 @@
+# =====================================================================
+# BASILEUS — HOLY WAR BLOCK OVERRIDE (struggle-aware).
+# ---------------------------------------------------------------------
+# Vanilla scripted trigger lives at:
+#   common/scripted_triggers/03_fp2_scripted_triggers.txt:400
+# Vanilla purpose: blocks holy wars when the Iberian struggle has reached
+# the Conciliation ending and both attacker + defender faiths are in
+# the conciliation list. It's referenced as
+#   are_holy_wars_disabled_by_struggle_conciliation_trigger = no
+# inside the valid_to_start of each holy war CB
+# (minor_religious_war / religious_war / major_religious_war) WITHOUT
+# any iberian-involvement guard — meaning it's evaluated for every
+# holy war declaration regardless of struggle type.
+#
+# That makes it the perfect single-point hook for our holy-war block.
+# We override the trigger here to ALSO return true when:
+#   - the war target sits inside custom_theodosian_ere AND
+#   - our basileus_eastern_reconquest_struggle's current phase has the
+#     holy_wars_in_region_cannot_be_declared parameter (set on
+#     Reconquest / Triumph / Setback).
+#
+# The vanilla iberian-conciliation behaviour is preserved verbatim.
+# This is the lightweight alternative to overriding the three holy war
+# CBs (which would clone ~1700 lines of vanilla code).
+#
+# File loads after vanilla's 03_fp2_scripted_triggers.txt by virtue of
+# the 05_ numeric prefix.
+# =====================================================================
+
+are_holy_wars_disabled_by_struggle_conciliation_trigger = {
+	OR = {
+		# --- Vanilla Iberian Conciliation branch (preserved verbatim) ---
+		AND = {
+			has_global_variable = fp2_struggle_conciliation_ending
+			any_in_global_list = {
+				variable = fp2_struggle_ending_faith_list
+				this = scope:attacker.faith
+			}
+			any_in_global_list = {
+				variable = fp2_struggle_ending_faith_list
+				this = scope:defender.faith
+			}
+		}
+		# --- Basileus Eastern Reconquest branch (new) ---
+		# Block any holy war whose target sits in custom_theodosian_ere
+		# while our struggle's current phase carries the parameter.
+		AND = {
+			# 1) The struggle must exist (has been started via decision).
+			exists = struggle:basileus_eastern_reconquest_struggle
+			# 2) The war target must touch our region.
+			exists = scope:target
+			scope:target = {
+				OR = {
+					AND = {
+						tier = tier_county
+						title_province = {
+							geographical_region = custom_theodosian_ere
+						}
+					}
+					any_in_de_jure_hierarchy = {
+						tier = tier_county
+						title_province = {
+							geographical_region = custom_theodosian_ere
+						}
+					}
+				}
+			}
+		}
+	}
+}

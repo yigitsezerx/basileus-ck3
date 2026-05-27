@@ -1,0 +1,1044 @@
+# =====================================================================
+# BASILEUS — EASTERN RECONQUEST — catalyst activation hooks.
+# ---------------------------------------------------------------------
+# Wires three custom catalysts to the events that should trigger them:
+#
+#   on_title_gain (county-tier, target in custom_theodosian_ere, new
+#                  holder is Roman side):
+#     → catalyst_basileus_reconquered_eastern_county
+#     → catalyst_basileus_great_eastern_city_recovered (if title is
+#       Antioch / Alexandria / Jerusalem)
+#
+#   on_county_culture_change (county in custom_theodosian_ere, new
+#                             culture is Roman):
+#     → catalyst_basileus_eastern_culture_flipped
+#
+# All activations are gated on the receiver being involved in the
+# basileus_eastern_reconquest_struggle.
+# =====================================================================
+
+# ---------------------------------------------------------------------
+# Vanilla on_title_gain hook — append our handler.
+# scope:title = the title gained
+# root        = the new holder (character)
+# ---------------------------------------------------------------------
+on_title_gain = {
+	on_actions = {
+		basileus_eastern_reconquest_on_title_gain
+	}
+}
+
+# ---------------------------------------------------------------------
+# Vanilla on_county_culture_change hook.
+# root            = the county that changed
+# scope:old_culture, scope:new_culture (per vanilla)
+# ---------------------------------------------------------------------
+on_county_culture_change = {
+	on_actions = {
+		basileus_eastern_reconquest_on_county_culture_change
+	}
+}
+
+# ---------------------------------------------------------------------
+# Vanilla on_county_faith_change hook.
+# root           = the county that changed
+# scope:old_faith, scope:new_faith
+# ---------------------------------------------------------------------
+on_county_faith_change = {
+	on_actions = {
+		basileus_eastern_reconquest_on_county_faith_change
+	}
+}
+
+# ---------------------------------------------------------------------
+# Vanilla on_death hook — for the basileus_died_during_struggle catalyst.
+# root = the character who died.
+# ---------------------------------------------------------------------
+on_death = {
+	on_actions = {
+		basileus_eastern_reconquest_on_death
+	}
+}
+
+# ---------------------------------------------------------------------
+# Combat hooks — Roman / defender battle catalysts.
+# Scope: this combat side; side_primary_participant = this side's leader,
+# enemy_side.side_primary_participant = the other side's leader.
+#
+# Registered via on_actions LISTS (which accumulate across files), never
+# via `effect` blocks — vanilla already owns the `effect` for these
+# on_actions and extra `effect` blocks are silently discarded.
+# ---------------------------------------------------------------------
+on_combat_end_winner = {
+	on_actions = {
+		basileus_eastern_reconquest_on_combat_end_winner
+	}
+}
+on_combat_end_loser = {
+	on_actions = {
+		basileus_eastern_reconquest_on_combat_end_loser
+	}
+}
+
+# ---------------------------------------------------------------------
+# Character faith change — defender ruler converts to Christianity.
+# root = the character; scope:old_faith available.
+# ---------------------------------------------------------------------
+on_character_faith_change = {
+	on_actions = {
+		basileus_eastern_reconquest_on_character_faith_change
+	}
+}
+
+# ---------------------------------------------------------------------
+# War started — Roman vassal revolt.
+# scope:attacker, scope:defender, scope:war.
+# ---------------------------------------------------------------------
+on_war_started = {
+	on_actions = {
+		basileus_eastern_reconquest_on_war_started
+	}
+}
+
+on_building_completed = {
+	on_actions = {
+		basileus_eastern_reconquest_on_building_completed
+	}
+}
+
+on_building_started = {
+	on_actions = {
+		basileus_eastern_reconquest_on_building_started
+	}
+}
+
+on_building_cancelled = {
+	on_actions = {
+		basileus_eastern_reconquest_on_building_cancelled
+	}
+}
+
+on_imprison = {
+	on_actions = {
+		basileus_eastern_reconquest_on_imprison
+	}
+}
+
+on_alliance_added = {
+	on_actions = {
+		basileus_eastern_reconquest_on_alliance_added
+	}
+}
+
+on_war_won_attacker = {
+	on_actions = {
+		basileus_eastern_reconquest_on_war_won_attacker
+	}
+}
+
+on_war_won_defender = {
+	on_actions = {
+		basileus_eastern_reconquest_on_war_won_defender
+	}
+}
+
+on_war_white_peace = {
+	on_actions = {
+		basileus_eastern_reconquest_on_war_white_peace
+	}
+}
+
+on_alliance_removed = {
+	on_actions = {
+		basileus_eastern_reconquest_on_alliance_removed
+	}
+}
+
+on_alliance_broken = {
+	on_actions = {
+		basileus_eastern_reconquest_on_alliance_broken
+	}
+}
+
+
+
+# =====================================================================
+# Handlers
+# =====================================================================
+
+basileus_eastern_reconquest_on_title_gain = {
+	effect = {
+		# Only act if this is a county-tier title within the target region.
+		if = {
+			limit = {
+				scope:title.tier = tier_county
+				scope:title.title_province = {
+					geographical_region = custom_theodosian_ere
+				}
+			}
+
+			# -----------------------------------------------------------------
+			# ROMAN SIDE — county RECONQUERED (gained by Roman holder)
+			# -----------------------------------------------------------------
+			if = {
+				limit = {
+					root = {
+						OR = {
+							has_title = title:e_byzantium
+							any_liege_or_above = { has_title = title:e_byzantium }
+						}
+						any_character_struggle = {
+							is_struggle_type = basileus_eastern_reconquest_struggle
+						}
+					}
+				}
+
+				# Generic eastern-county reconquest catalyst.
+				root = {
+					every_character_struggle = {
+						limit = { is_struggle_type = basileus_eastern_reconquest_struggle }
+						activate_struggle_catalyst = {
+							catalyst = catalyst_basileus_reconquered_eastern_county
+							character = root
+						}
+					}
+				}
+				# Rubber-band tally: +1 net Roman gain.
+				if = {
+					limit = { has_global_variable = basileus_reconquest_net_gains }
+					change_global_variable = { name = basileus_reconquest_net_gains add = 1 }
+				}
+
+				# Holy site recovered? Fire the holy-site catalyst if the
+				# county contains a holy site of the Basileus's faith.
+				if = {
+					limit = {
+						title:e_byzantium.holder.faith = {
+							any_holy_site = {
+								de_jure_liege = scope:title
+							}
+						}
+					}
+					root = {
+						every_character_struggle = {
+							limit = { is_struggle_type = basileus_eastern_reconquest_struggle }
+							activate_struggle_catalyst = {
+								catalyst = catalyst_basileus_recovered_holy_site
+								character = root
+							}
+						}
+					}
+
+				}
+
+				# Bonus catalyst if the title is one of the great eastern cities.
+				if = {
+					limit = {
+						OR = {
+							scope:title = title:c_antiocheia
+							scope:title = title:c_alexandria
+							scope:title = title:c_jerusalem
+						}
+					}
+					root = {
+						every_character_struggle = {
+							limit = { is_struggle_type = basileus_eastern_reconquest_struggle }
+							activate_struggle_catalyst = {
+								catalyst = catalyst_basileus_great_eastern_city_recovered
+								character = root
+							}
+						}
+					}
+					# Rubber-band tally: +3 net (great city counts triple).
+					if = {
+						limit = { has_global_variable = basileus_reconquest_net_gains }
+						change_global_variable = { name = basileus_reconquest_net_gains add = 3 }
+					}
+				}
+			}
+
+			# -----------------------------------------------------------------
+			# DEFENDER SIDE — county LOST (was Roman, now non-Roman)
+			# Mirror logic: previous holder was Roman, new holder is not.
+			# -----------------------------------------------------------------
+			else_if = {
+				limit = {
+					exists = scope:previous_holder
+					scope:previous_holder = {
+						OR = {
+							has_title = title:e_byzantium
+							any_liege_or_above = { has_title = title:e_byzantium }
+						}
+					}
+					# New holder NOT Roman.
+					root = {
+						NOR = {
+							has_title = title:e_byzantium
+							any_liege_or_above = { has_title = title:e_byzantium }
+						}
+					}
+					# The Basileus must still be involved in the struggle for
+					# any of this to push the phase counter — credit goes to him.
+					title:e_byzantium.holder = {
+						any_character_struggle = {
+							is_struggle_type = basileus_eastern_reconquest_struggle
+						}
+					}
+				}
+
+				# Defender-side: roman county lost catalyst (rubber-banded).
+				basileus_activate_defender_catalyst_effect = {
+					CATALYST = catalyst_basileus_roman_county_lost
+					CHAR = title:e_byzantium.holder
+				}
+				# Rubber-band tally: -1 net Roman gain.
+				if = {
+					limit = { has_global_variable = basileus_reconquest_net_gains }
+					change_global_variable = { name = basileus_reconquest_net_gains subtract = 1 }
+				}
+
+				# Massive defender catalyst if it's a great eastern city.
+				if = {
+					limit = {
+						OR = {
+							scope:title = title:c_antiocheia
+							scope:title = title:c_alexandria
+							scope:title = title:c_jerusalem
+						}
+					}
+					basileus_activate_defender_catalyst_effect = {
+						CATALYST = catalyst_basileus_great_eastern_city_lost
+						CHAR = title:e_byzantium.holder
+					}
+					# Rubber-band tally: -3 net (great city counts triple).
+					if = {
+						limit = { has_global_variable = basileus_reconquest_net_gains }
+						change_global_variable = { name = basileus_reconquest_net_gains subtract = 3 }
+					}
+				}
+			}
+		}
+	}
+}
+
+basileus_eastern_reconquest_on_county_faith_change = {
+	effect = {
+		# Fire eastern_county_faith_flipped_christian when a county in
+		# the region converts to one of the Christian faiths.
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				root.title_province = {
+					geographical_region = custom_theodosian_ere
+				}
+				root.faith = {
+					OR = {
+						this = faith:orthodox
+						this = faith:catholic
+						this = faith:nestorian
+						this = faith:miaphysite
+						this = faith:monothelite
+						this = faith:bogomilist
+						this = faith:paulician
+						this = faith:iconoclast
+					}
+				}
+				# County must belong to the Basileus or a vassal
+				holder = {
+					OR = {
+						this = title:e_byzantium.holder
+						any_liege_or_above = { this = title:e_byzantium.holder }
+					}
+				}
+			}
+
+			# Credit goes to the Basileus, who is always involved
+			title:e_byzantium.holder = {
+				every_character_struggle = {
+					limit = { is_struggle_type = basileus_eastern_reconquest_struggle }
+					activate_struggle_catalyst = {
+						catalyst = catalyst_basileus_eastern_county_faith_flipped_christian
+						character = title:e_byzantium.holder
+					}
+				}
+			}
+		}
+	}
+}
+
+basileus_eastern_reconquest_on_death = {
+	effect = {
+		# Defender-side catalyst: e_byzantium holder dies while the
+		# struggle is active. Credit-bearer is the heir (the new holder
+		# of e_byzantium), since the dying character can no longer hold
+		# struggle membership.
+		if = {
+			limit = {
+				root = {
+					has_title = title:e_byzantium
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+					}
+				}
+			}
+			# Run the activation now while root still has the struggle —
+			# the engine processes on_death before title transfer.
+			# Rubber-banded (a leadership void hurts more when you're winning).
+			basileus_activate_defender_catalyst_effect = {
+				CATALYST = catalyst_basileus_basileus_died_during_struggle
+				CHAR = root
+			}
+		}
+
+		# Assassinating the Caliph: Roman kills Caliph (Sunni or Shia)
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				root = {
+					OR = {
+						has_title = title:d_sunni
+						has_title = title:d_shia
+					}
+				}
+				exists = scope:killer
+				scope:killer = {
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+					}
+					OR = {
+						has_title = title:e_byzantium
+						any_liege_or_above = { has_title = title:e_byzantium }
+					}
+				}
+			}
+			# Roman side catalyst: credited to the killer
+			scope:killer = {
+				every_character_struggle = {
+					limit = { is_struggle_type = basileus_eastern_reconquest_struggle }
+					activate_struggle_catalyst = {
+						catalyst = catalyst_basileus_assassinated_eastern_caliph
+						character = scope:killer
+					}
+				}
+			}
+		}
+	}
+}
+
+# =====================================================================
+# WAVE 3 HANDLERS — battles, ruler conversion, vassal revolt.
+# All gated early on `has_global_variable = basileus_reconquest_net_gains`
+# (which only exists while our struggle is active) so they short-circuit
+# cheaply when there's no ongoing reconquest — important for the combat
+# hooks, which fire very frequently.
+# =====================================================================
+
+# Roman side wins a battle vs an involved defender, in the region.
+basileus_eastern_reconquest_on_combat_end_winner = {
+	effect = {
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				# Winner (this side's primary participant) is Roman + involved.
+				side_primary_participant = {
+					OR = {
+						has_title = title:e_byzantium
+						any_liege_or_above = { has_title = title:e_byzantium }
+					}
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+					}
+				}
+				# Loser is involved but NOT Roman (a defender).
+				enemy_side.side_primary_participant = {
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+					}
+					NOR = {
+						has_title = title:e_byzantium
+						any_liege_or_above = { has_title = title:e_byzantium }
+					}
+				}
+			}
+			side_primary_participant = {
+				save_scope_as = roman_victor
+				every_character_struggle = {
+					limit = { is_struggle_type = basileus_eastern_reconquest_struggle }
+					activate_struggle_catalyst = {
+						catalyst = catalyst_basileus_won_eastern_battle
+						character = scope:roman_victor
+					}
+				}
+			}
+		}
+
+		# Miracle Battle: Win a battle in the struggle region when outnumbered at least 2:1 during Setback phase.
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				combat.location = { geographical_region = custom_theodosian_ere }
+				basileus_is_outnumbered_two_to_one >= 2
+				side_primary_participant = {
+					OR = {
+						has_title = title:e_byzantium
+						any_liege_or_above = { has_title = title:e_byzantium }
+					}
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+						is_struggle_phase = struggle_eastern_reconquest_phase_setback
+					}
+				}
+			}
+			side_primary_participant = {
+				basileus_activate_roman_catalyst_effect = {
+					CATALYST = catalyst_basileus_miracle_battle
+					CHAR = side_primary_participant
+				}
+			}
+		}
+	}
+}
+
+# Defender side wins a battle vs an involved Roman (Roman lost).
+# In on_combat_end_loser, side_primary_participant = the loser.
+basileus_eastern_reconquest_on_combat_end_loser = {
+	effect = {
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				# Loser (this side) is Roman + involved.
+				side_primary_participant = {
+					OR = {
+						has_title = title:e_byzantium
+						any_liege_or_above = { has_title = title:e_byzantium }
+					}
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+					}
+				}
+				# Winner is an involved defender.
+				enemy_side.side_primary_participant = {
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+					}
+					NOR = {
+						has_title = title:e_byzantium
+						any_liege_or_above = { has_title = title:e_byzantium }
+					}
+				}
+			}
+			# Rubber-banded defender catalyst — credited to the Basileus.
+			basileus_activate_defender_catalyst_effect = {
+				CATALYST = catalyst_basileus_lost_eastern_battle
+				CHAR = title:e_byzantium.holder
+			}
+		}
+	}
+}
+
+# An involved defender ruler holding land in the region converts TO a
+# Christian faith. root = the character who changed faith.
+basileus_eastern_reconquest_on_character_faith_change = {
+	effect = {
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				# New faith is Christian.
+				root.faith = {
+					OR = {
+						this = faith:orthodox
+						this = faith:catholic
+						this = faith:nestorian
+						this = faith:miaphysite
+						this = faith:monothelite
+						this = faith:bogomilist
+						this = faith:paulician
+						this = faith:iconoclast
+					}
+				}
+				# Was a defender: involved, not Roman, holds land in the region.
+				root = {
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+					}
+					NOR = {
+						has_title = title:e_byzantium
+						any_liege_or_above = { has_title = title:e_byzantium }
+					}
+					any_held_title = {
+						tier = tier_county
+						title_province = { geographical_region = custom_theodosian_ere }
+					}
+				}
+			}
+			# Roman-side catalyst — credited to the Basileus.
+			title:e_byzantium.holder = {
+				every_character_struggle = {
+					limit = { is_struggle_type = basileus_eastern_reconquest_struggle }
+					activate_struggle_catalyst = {
+						catalyst = catalyst_basileus_converted_eastern_ruler
+						character = title:e_byzantium.holder
+					}
+				}
+			}
+		}
+	}
+}
+
+# A Roman vassal rises in revolt against the Basileus during the struggle.
+# scope:attacker, scope:defender, scope:war (vanilla on_war_started).
+basileus_eastern_reconquest_on_war_started = {
+	effect = {
+		# Vassal revolt against the Basileus
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				# Defender is the Basileus.
+				scope:defender = { has_title = title:e_byzantium }
+				# The war is a civil war, faction war, or rebellion.
+				scope:war = {
+					OR = {
+						is_civil_war = yes
+						using_civil_war_cb_trigger = yes
+					}
+				}
+			}
+			# Rubber-banded defender catalyst.
+			basileus_activate_defender_catalyst_effect = {
+				CATALYST = catalyst_basileus_roman_vassal_revolt
+				CHAR = title:e_byzantium.holder
+			}
+		}
+
+		# Jihad Declared: GHW targeted at the struggle region against the Roman Empire during Reconquest phase
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				scope:defender = { has_title = title:e_byzantium }
+				scope:defender = {
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+						is_struggle_phase = struggle_eastern_reconquest_phase_reconquest
+					}
+				}
+				scope:war = {
+					OR = {
+						using_cb = undirected_great_holy_war
+						using_cb = directed_great_holy_war
+					}
+				}
+				scope:target_title = {
+					any_in_de_jure_hierarchy = {
+						tier = tier_county
+						title_province = {
+							geographical_region = custom_theodosian_ere
+						}
+					}
+				}
+			}
+			basileus_activate_defender_catalyst_effect = {
+				CATALYST = catalyst_basileus_jihad_declared
+				CHAR = title:e_byzantium.holder
+			}
+		}
+
+		# Eastern Border Lord Defects: vassal holding territory in struggle region rebels during Triumph phase
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				scope:defender = { has_title = title:e_byzantium }
+				scope:defender = {
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+						is_struggle_phase = struggle_eastern_reconquest_phase_triumph
+					}
+				}
+				scope:attacker = {
+					# Vassal of the Basileus (direct or indirect)
+					any_liege_or_above = { this = title:e_byzantium.holder }
+					# Holds territory in the struggle region
+					any_held_title = {
+						tier = tier_county
+						title_province = {
+							geographical_region = custom_theodosian_ere
+						}
+					}
+				}
+			}
+			basileus_activate_defender_catalyst_effect = {
+				CATALYST = catalyst_basileus_eastern_lord_defected
+				CHAR = title:e_byzantium.holder
+			}
+		}
+	}
+}
+
+basileus_eastern_reconquest_on_county_culture_change = {
+	effect = {
+		# Only act if the county is in the target region AND the new
+		# culture is one of the Roman cultures.
+		if = {
+			limit = {
+				root.title_province = {
+					geographical_region = custom_theodosian_ere
+				}
+				scope:new_culture = {
+					OR = {
+						this = culture:greek
+						this = culture:eastern_roman
+						this = culture:roman
+					}
+				}
+				# Credit goes to the county's current holder; they must
+				# be involved in the struggle for the catalyst to count.
+				root.holder = {
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+					}
+				}
+			}
+
+			root.holder = {
+				every_character_struggle = {
+					limit = { is_struggle_type = basileus_eastern_reconquest_struggle }
+					activate_struggle_catalyst = {
+						catalyst = catalyst_basileus_eastern_culture_flipped
+						character = root.holder
+					}
+				}
+			}
+		}
+	}
+}
+
+basileus_eastern_reconquest_on_building_completed = {
+	effect = {
+		# Frontier Fortification: variable was set in on_building_started
+		# when a new holding began construction. Now that it completed,
+		# fire the catalyst and clean up the variable.
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				root = { has_variable = basileus_is_constructing_holding }
+			}
+			root = { remove_variable = basileus_is_constructing_holding }
+			title:e_byzantium.holder = {
+				every_character_struggle = {
+					limit = { is_struggle_type = basileus_eastern_reconquest_struggle }
+					activate_struggle_catalyst = {
+						catalyst = catalyst_basileus_built_frontier_holding
+						character = title:e_byzantium.holder
+					}
+				}
+			}
+		}
+	}
+}
+
+basileus_eastern_reconquest_on_building_started = {
+	effect = {
+		# Save character if not exists (fallback for non-GUI / script starts)
+		if = {
+			limit = {
+				NOT = { exists = scope:character }
+			}
+			root.county.holder = {
+				save_scope_as = character
+			}
+		}
+		# When a new holding (castle/city/temple) starts construction in the
+		# struggle region by a Roman character, mark the province so we can
+		# fire the catalyst on completion.
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				OR = {
+					has_construction_with_flag = castle
+					has_construction_with_flag = city
+					has_construction_with_flag = temple
+				}
+				root = {
+					geographical_region = custom_theodosian_ere
+				}
+				exists = scope:character
+				scope:character = {
+					OR = {
+						this = title:e_byzantium.holder
+						any_liege_or_above = { this = title:e_byzantium.holder }
+					}
+				}
+			}
+			root = {
+				set_variable = {
+					name = basileus_is_constructing_holding
+					value = yes
+				}
+			}
+		}
+	}
+}
+
+basileus_eastern_reconquest_on_building_cancelled = {
+	effect = {
+		if = {
+			limit = {
+				root = { has_variable = basileus_is_constructing_holding }
+			}
+			root = { remove_variable = basileus_is_constructing_holding }
+		}
+	}
+}
+
+basileus_eastern_reconquest_on_imprison = {
+	effect = {
+		# Noble Captives: Roman captures defender ruler or their close family
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				exists = scope:imprisoner
+				# Imprisoner is Roman
+				scope:imprisoner = {
+					OR = {
+						this = title:e_byzantium.holder
+						any_liege_or_above = { this = title:e_byzantium.holder }
+					}
+				}
+				# Prisoner is NOT Roman
+				root = {
+					NOR = {
+						this = title:e_byzantium.holder
+						any_liege_or_above = { this = title:e_byzantium.holder }
+					}
+					# Must be a high-value target: struggle-involved,
+					# holds land in the region, or close family of such a ruler.
+					OR = {
+						any_character_struggle = {
+							is_struggle_type = basileus_eastern_reconquest_struggle
+						}
+						any_held_title = {
+							tier = tier_county
+							title_province = { geographical_region = custom_theodosian_ere }
+						}
+						any_close_family_member = {
+							OR = {
+								any_character_struggle = {
+									is_struggle_type = basileus_eastern_reconquest_struggle
+								}
+								any_held_title = {
+									tier = tier_county
+									title_province = { geographical_region = custom_theodosian_ere }
+								}
+							}
+							NOR = {
+								this = title:e_byzantium.holder
+								any_liege_or_above = { this = title:e_byzantium.holder }
+							}
+						}
+					}
+				}
+			}
+			# Credit to the Basileus
+			title:e_byzantium.holder = {
+				every_character_struggle = {
+					limit = { is_struggle_type = basileus_eastern_reconquest_struggle }
+					activate_struggle_catalyst = {
+						catalyst = catalyst_basileus_captured_high_value_defender
+						character = title:e_byzantium.holder
+					}
+				}
+			}
+		}
+
+		# The Basileus Captive: Defender captures the Basileus
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				root = {
+					has_title = title:e_byzantium
+				}
+				exists = scope:imprisoner
+				# Imprisoner is NOT Roman
+				scope:imprisoner = {
+					NOR = {
+						this = title:e_byzantium.holder
+						any_liege_or_above = { this = title:e_byzantium.holder }
+					}
+				}
+			}
+			basileus_activate_defender_catalyst_effect = {
+				CATALYST = catalyst_basileus_basileus_captured_in_battle
+				CHAR = root
+			}
+		}
+	}
+}
+
+basileus_eastern_reconquest_on_alliance_added = {
+	effect = {
+		# Secured Western Frontier (marriage/alliance/peace with HRE/Hungary/Bulgaria during Resolve phase)
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				title:e_byzantium.holder = {
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+						is_struggle_phase = struggle_eastern_reconquest_phase_resolve
+					}
+				}
+				OR = {
+					AND = {
+						root = { has_title = title:e_byzantium }
+						scope:character = {
+							OR = {
+								has_title = title:e_hre
+								has_title = title:k_hungary
+								has_title = title:k_bulgaria
+							}
+						}
+					}
+					AND = {
+						scope:character = { has_title = title:e_byzantium }
+						root = {
+							OR = {
+								has_title = title:e_hre
+								has_title = title:k_hungary
+								has_title = title:k_bulgaria
+							}
+						}
+					}
+				}
+			}
+			title:e_byzantium.holder = {
+				basileus_activate_roman_catalyst_effect = {
+					CATALYST = catalyst_basileus_secured_western_frontier
+					CHAR = title:e_byzantium.holder
+				}
+			}
+		}
+
+		# Eastern Coalition Formed: two non-Christian rulers holding land in the region form an alliance during Triumph phase
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				title:e_byzantium.holder = {
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+						is_struggle_phase = struggle_eastern_reconquest_phase_triumph
+					}
+				}
+				root = {
+					NOT = { religion = religion:christianity_religion }
+					any_held_title = {
+						tier = tier_county
+						title_province = { geographical_region = custom_theodosian_ere }
+					}
+				}
+				scope:character = {
+					NOT = { religion = religion:christianity_religion }
+					any_held_title = {
+						tier = tier_county
+						title_province = { geographical_region = custom_theodosian_ere }
+					}
+				}
+			}
+			title:e_byzantium.holder = {
+				basileus_activate_defender_catalyst_effect = {
+					CATALYST = catalyst_basileus_eastern_coalition_formed
+					CHAR = title:e_byzantium.holder
+				}
+			}
+		}
+	}
+}
+
+basileus_eastern_reconquest_on_war_won_attacker = {
+	effect = {
+		basileus_eastern_reconquest_check_secured_western_frontier = yes
+	}
+}
+
+basileus_eastern_reconquest_on_war_won_defender = {
+	effect = {
+		basileus_eastern_reconquest_check_secured_western_frontier = yes
+	}
+}
+
+basileus_eastern_reconquest_on_war_white_peace = {
+	effect = {
+		basileus_eastern_reconquest_check_secured_western_frontier = yes
+	}
+}
+
+basileus_eastern_reconquest_on_alliance_removed = {
+	effect = {
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				title:e_byzantium.holder = {
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+						is_struggle_phase = struggle_eastern_reconquest_phase_setback
+					}
+				}
+				scope:first = {
+					NOT = { religion = religion:christianity_religion }
+					any_held_title = {
+						tier = tier_county
+						title_province = { geographical_region = custom_theodosian_ere }
+					}
+				}
+				scope:second = {
+					NOT = { religion = religion:christianity_religion }
+					any_held_title = {
+						tier = tier_county
+						title_province = { geographical_region = custom_theodosian_ere }
+					}
+				}
+			}
+			title:e_byzantium.holder = {
+				basileus_activate_roman_catalyst_effect = {
+					CATALYST = catalyst_basileus_defender_alliance_shattered
+					CHAR = title:e_byzantium.holder
+				}
+			}
+		}
+	}
+}
+
+basileus_eastern_reconquest_on_alliance_broken = {
+	effect = {
+		if = {
+			limit = {
+				has_global_variable = basileus_reconquest_net_gains
+				title:e_byzantium.holder = {
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+						is_struggle_phase = struggle_eastern_reconquest_phase_setback
+					}
+				}
+				scope:first = {
+					NOT = { religion = religion:christianity_religion }
+					any_held_title = {
+						tier = tier_county
+						title_province = { geographical_region = custom_theodosian_ere }
+					}
+				}
+				scope:second = {
+					NOT = { religion = religion:christianity_religion }
+					any_held_title = {
+						tier = tier_county
+						title_province = { geographical_region = custom_theodosian_ere }
+					}
+				}
+			}
+			title:e_byzantium.holder = {
+				basileus_activate_roman_catalyst_effect = {
+					CATALYST = catalyst_basileus_defender_alliance_shattered
+					CHAR = title:e_byzantium.holder
+				}
+			}
+		}
+	}
+}
+
+

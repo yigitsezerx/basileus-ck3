@@ -1,0 +1,188 @@
+# ============================================================================
+# Culture-conditional flavor terms (eastern_roman vs Greek fallback).
+# ----------------------------------------------------------------------------
+# Same convention as basileus_senate_names.txt: branch on the scope character's
+# top_liege culture; eastern_roman → Latinised term, default → Greek term.
+# Invoked via [GetPlayer.Custom('Fn')], including inside dynamic game-concept
+# names (game_concept_patriarch / game_concept_saracen).
+# ============================================================================
+
+GetEnemyDemonym = {
+	type = character
+
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_TERM_SARACEN_LATIN
+	}
+	text = {
+		# Default — Greek
+		localization_key = BASILEUS_TERM_SARACEN_GREEK
+	}
+}
+
+# ============================================================================
+# Reorganized-theme title names (eastern_roman Latinised vs Greek fallback).
+# Invoked from the title-name loc keys via [GetPlayer.Custom('Fn')] so the
+# renamed theme duchies read in the viewer's idiom.
+# ============================================================================
+
+GetBasileusThemeHaemimontusName = {
+	type = character
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_THEME_HAEMIMONTUS_NAME_ER
+	}
+	text = {
+		localization_key = BASILEUS_THEME_HAEMIMONTUS_NAME_GREEK
+	}
+}
+GetBasileusThemeHaemimontusAdj = {
+	type = character
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_THEME_HAEMIMONTUS_ADJ_ER
+	}
+	text = {
+		localization_key = BASILEUS_THEME_HAEMIMONTUS_ADJ_GREEK
+	}
+}
+GetBasileusThemeParistrionName = {
+	type = character
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_THEME_PARISTRION_NAME_ER
+	}
+	text = {
+		localization_key = BASILEUS_THEME_PARISTRION_NAME_GREEK
+	}
+}
+GetBasileusThemePeloponneseName = {
+	type = character
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_THEME_PELOPONNESE_NAME_ER
+	}
+	text = {
+		localization_key = BASILEUS_THEME_PELOPONNESE_NAME_GREEK
+	}
+}
+GetBasileusThemePeloponneseAdj = {
+	type = character
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_THEME_PELOPONNESE_ADJ_ER
+	}
+	text = {
+		localization_key = BASILEUS_THEME_PELOPONNESE_ADJ_GREEK
+	}
+}
+GetBasileusThemeParistrionAdj = {
+	type = character
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_THEME_PARISTRION_ADJ_ER
+	}
+	text = {
+		localization_key = BASILEUS_THEME_PARISTRION_ADJ_GREEK
+	}
+}
+GetBasileusThemeThrakeName = {
+	type = character
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_THEME_THRAKE_NAME_ER
+	}
+	text = {
+		localization_key = BASILEUS_THEME_THRAKE_NAME_GREEK
+	}
+}
+GetBasileusThemeThrakeAdj = {
+	type = character
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_THEME_THRAKE_ADJ_ER
+	}
+	text = {
+		localization_key = BASILEUS_THEME_THRAKE_ADJ_GREEK
+	}
+}
+GetBasileusThemeMacedoniaName = {
+	type = character
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_THEME_MACEDONIA_NAME_ER
+	}
+	text = {
+		localization_key = BASILEUS_THEME_MACEDONIA_NAME_GREEK
+	}
+}
+GetBasileusThemeMacedoniaAdj = {
+	type = character
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_THEME_MACEDONIA_ADJ_ER
+	}
+	text = {
+		localization_key = BASILEUS_THEME_MACEDONIA_ADJ_GREEK
+	}
+}
+GetBasileusThemeDiocleaName = {
+	type = character
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_THEME_DIOCLEA_NAME_ER
+	}
+	text = {
+		localization_key = BASILEUS_THEME_DIOCLEA_NAME_GREEK
+	}
+}
+GetBasileusThemeDiocleaAdj = {
+	type = character
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_THEME_DIOCLEA_ADJ_ER
+	}
+	text = {
+		localization_key = BASILEUS_THEME_DIOCLEA_ADJ_GREEK
+	}
+}
+GetBasileusThemeCroatiaName = {
+	type = character
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_THEME_CROATIA_NAME_ER
+	}
+	text = {
+		localization_key = BASILEUS_THEME_CROATIA_NAME_GREEK
+	}
+}
+GetBasileusThemeCroatiaAdj = {
+	type = character
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_THEME_CROATIA_ADJ_ER
+	}
+	text = {
+		localization_key = BASILEUS_THEME_CROATIA_ADJ_GREEK
+	}
+}
+GetBasileusThemeAfricaName = {
+	type = character
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_THEME_AFRICA_NAME_ER
+	}
+	text = {
+		localization_key = BASILEUS_THEME_AFRICA_NAME_GREEK
+	}
+}
+GetBasileusThemeAfricaAdj = {
+	type = character
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = BASILEUS_THEME_AFRICA_ADJ_ER
+	}
+	text = {
+		localization_key = BASILEUS_THEME_AFRICA_ADJ_GREEK
+	}
+}

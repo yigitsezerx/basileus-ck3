@@ -1,0 +1,34 @@
+# ERCF Activity XP
+# Rewards the Autocrat for Imperial Grandeur
+
+on_feast_end = {
+    on_actions = {
+        ercf_activity_xp_pulse
+    }
+}
+
+on_hunt_end = {
+    on_actions = {
+        ercf_activity_xp_pulse
+    }
+}
+
+on_tourney_end = {
+    on_actions = {
+        ercf_activity_xp_pulse
+    }
+}
+
+ercf_activity_xp_pulse = {
+    effect = {
+        if = {
+            limit = { has_trait = autocrator_ercf }
+            add_trait_xp = {
+                trait = autocrator_ercf
+                value = 1
+            }
+            # Instant mandate check
+            ercf_autocrator_mandate_check_effect = yes
+        }
+    }
+}

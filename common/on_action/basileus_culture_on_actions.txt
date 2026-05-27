@@ -1,0 +1,13 @@
+﻿# Spiritual successor to ERCF on_actions, if append works, shouldn't break any vanilla on_actions.
+on_character_culture_change = {
+    on_actions = {
+        basileus_check_latinization
+    }
+}
+
+# BASILEUS LATINIZATION CHECK #
+basileus_check_latinization = {
+    events = {
+        basileus_maintenance.0001
+    }
+}

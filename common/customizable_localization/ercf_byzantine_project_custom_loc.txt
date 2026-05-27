@@ -1,0 +1,372 @@
+# Custom Localization for Great Projects and Son of Heaven Title
+# Checks if the character is Byzantine/Roman to apply flavor overrides
+
+GetSonOfHeavenTitle = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ruler_trigger = yes
+		}
+		localization_key = son_of_heaven_byz
+	}
+	text = {
+		fallback = yes
+		localization_key = son_of_heaven_tgp
+	}
+}
+
+GetSonOfHeavenTitleShort = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ruler_trigger = yes
+		}
+		localization_key = son_of_heaven_short_byz
+	}
+	text = {
+		fallback = yes
+		localization_key = son_of_heaven_short_tgp
+	}
+}
+
+GetSonOfHeavenTitlePossessive = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ruler_trigger = yes
+		}
+		localization_key = son_of_heaven_possessive_byz
+	}
+	text = {
+		fallback = yes
+		localization_key = son_of_heaven_possessive_tgp
+	}
+}
+
+GetCelestialRetirementLawName = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ruler_trigger = yes
+		}
+		localization_key = celestial_retirement_law_byz
+	}
+	text = {
+		fallback = yes
+		localization_key = celestial_retirement_law_tgp
+	}
+}
+
+GetGreatWallProjectName = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ruler_trigger = yes
+		}
+		localization_key = great_project_type_great_wall_byz
+	}
+	text = {
+		fallback = yes
+		localization_key = great_project_type_great_wall_tgp
+	}
+}
+
+GetGreatWallProjectDesc = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ruler_trigger = yes
+		}
+		localization_key = great_project_type_great_wall_desc_byz
+	}
+	text = {
+		fallback = yes
+		localization_key = great_project_type_great_wall_desc_tgp
+	}
+}
+
+GetGrandCanalsProjectName = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ruler_trigger = yes
+		}
+		localization_key = great_project_type_grand_canals_byz
+	}
+	text = {
+		fallback = yes
+		localization_key = great_project_type_grand_canals_tgp
+	}
+}
+
+GetGrandCanalsProjectDesc = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ruler_trigger = yes
+		}
+		localization_key = great_project_type_grand_canals_desc_byz
+	}
+	text = {
+		fallback = yes
+		localization_key = great_project_type_grand_canals_desc_tgp
+	}
+}
+
+GetGrandCampaignProjectName = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ruler_trigger = yes
+		}
+		localization_key = great_project_type_grand_campaign_project_byz
+	}
+	text = {
+		fallback = yes
+		localization_key = great_project_type_grand_campaign_project_tgp
+	}
+}
+
+GetGrandCampaignProjectDesc = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ruler_trigger = yes
+		}
+		localization_key = great_project_type_grand_campaign_project_desc_byz
+	}
+	text = {
+		fallback = yes
+		localization_key = great_project_type_grand_campaign_project_desc_tgp
+	}
+}
+
+GetGreatProjectStartedTitle = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ruler_trigger = yes
+		}
+		localization_key = msg_great_project_started_title_byz
+	}
+	text = {
+		fallback = yes
+		localization_key = msg_great_project_started_title_tgp
+	}
+}
+
+GetGreatProjectStartedDesc = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ruler_trigger = yes
+		}
+		localization_key = msg_great_project_started_desc_byz
+	}
+	text = {
+		fallback = yes
+		localization_key = msg_great_project_started_desc_tgp
+	}
+}
+
+GetGreatProjectTabName = {
+	type = character
+	# --- PROJECT NAME FILTERING ---
+	text = {
+		trigger = {
+			dominus_is_byzantine_ruler_trigger = yes
+		}
+		localization_key = GetGreatProjectTabName_byz
+	}
+	text = {
+		trigger = {
+			NOT = { dominus_is_byzantine_ruler_trigger = yes }
+		}
+		localization_key = great_projects
+	}
+}
+
+defined_text = {
+	name = GetGreatProjectSingleName
+	# --- PROJECT NAME FILTERING ---
+	text = {
+		trigger = {
+			dominus_is_byzantine_ruler_trigger = yes
+		}
+		localization_key = GetGreatProjectSingleName_byz
+	}
+	text = {
+		trigger = {
+			NOT = { dominus_is_byzantine_ruler_trigger = yes }
+		}
+		localization_key = great_project
+	}
+}
+
+# New Custom Loc for Filtering Notifications
+# This logic ensures that notifications are only shown to players in the same realm as the project.
+# This silences Chinese project notifications for Byzantine players and vice versa.
+
+defined_text = {
+	name = GetGreatProjectPlannedTitle
+	
+	# Case 1: Project is in Player's Realm (Owner or Overlord)
+	text = {
+		trigger = {
+			scope:great_project = {
+				owner = { top_liege = root }
+			}
+		}
+		localization_key = msg_great_project_planned_title_byz
+	}
+	
+	# Case 2: Project is NOT in Player's Realm (Hide it)
+	text = {
+		trigger = {
+			scope:great_project = {
+				NOT = { owner = { top_liege = root } }
+			}
+		}
+		localization_key = "empty_string"
+	}
+}
+
+defined_text = {
+	name = GetGreatProjectPlannedDesc
+	text = {
+		trigger = {
+			scope:great_project = {
+				owner = { top_liege = root }
+			}
+		}
+		localization_key = msg_great_project_planned_desc_byz
+	}
+	text = {
+		trigger = {
+			scope:great_project = {
+				NOT = { owner = { top_liege = root } }
+			}
+		}
+		localization_key = "empty_string"
+	}
+}
+
+defined_text = {
+	name = GetGreatProjectStartedTitle
+	text = {
+		trigger = {
+			scope:great_project = {
+				owner = { top_liege = root }
+			}
+		}
+		localization_key = msg_great_project_started_title_byz
+	}
+	text = {
+		trigger = {
+			scope:great_project = {
+				NOT = { owner = { top_liege = root } }
+			}
+		}
+		localization_key = "empty_string"
+	}
+}
+
+defined_text = {
+	name = GetGreatProjectStartedDesc
+	text = {
+		trigger = {
+			scope:great_project = {
+				owner = { top_liege = root }
+			}
+		}
+		localization_key = msg_great_project_started_desc_byz
+	}
+	text = {
+		trigger = {
+			scope:great_project = {
+				NOT = { owner = { top_liege = root } }
+			}
+		}
+		localization_key = "empty_string"
+	}
+}
+
+defined_text = {
+	name = GetGreatProjectAbortedTitle
+	text = {
+		trigger = {
+			scope:great_project = {
+				owner = { top_liege = root }
+			}
+		}
+		localization_key = msg_great_project_aborted_title_byz
+	}
+	text = {
+		trigger = {
+			scope:great_project = {
+				NOT = { owner = { top_liege = root } }
+			}
+		}
+		localization_key = "empty_string"
+	}
+}
+
+defined_text = {
+	name = GetGreatProjectAbortedDesc
+	text = {
+		trigger = {
+			scope:great_project = {
+				owner = { top_liege = root }
+			}
+		}
+		localization_key = msg_great_project_aborted_desc_byz
+	}
+	text = {
+		trigger = {
+			scope:great_project = {
+				NOT = { owner = { top_liege = root } }
+			}
+		}
+		localization_key = "empty_string"
+	}
+}
+
+defined_text = {
+	name = GetGreatProjectCompletedTitle
+	text = {
+		trigger = {
+			scope:great_project = {
+				owner = { top_liege = root }
+			}
+		}
+		localization_key = msg_great_project_completed_title_byz
+	}
+	text = {
+		trigger = {
+			scope:great_project = {
+				NOT = { owner = { top_liege = root } }
+			}
+		}
+		localization_key = "empty_string"
+	}
+}
+
+defined_text = {
+	name = GetGreatProjectCompletedDesc
+	text = {
+		trigger = {
+			scope:great_project = {
+				owner = { top_liege = root }
+			}
+		}
+		localization_key = msg_great_project_completed_desc_byz
+	}
+	text = {
+		trigger = {
+			scope:great_project = {
+				NOT = { owner = { top_liege = root } }
+			}
+		}
+		localization_key = "empty_string"
+	}
+}

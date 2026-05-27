@@ -1,0 +1,25 @@
+﻿namespace = basileus_maintenance
+
+basileus_maintenance.0001 = {
+    type = character_event
+    hidden = yes
+    
+    trigger = {
+        # Only fire if they just turned Roman
+        culture = culture:eastern_roman
+        
+        # Only for House Heads
+        is_house_head = yes
+
+        # SECOND CHECK: Do not run if we already did this.
+        NOT = {
+            dynasty = {
+                has_variable = ercf_dynasty_already_latinized
+            }
+        }        
+    }
+    
+    immediate = {
+        ercf_latinize_dynasty_name = yes
+    }
+}

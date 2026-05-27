@@ -1,0 +1,66 @@
+defined_text = {
+	name = GetGreekCultureName
+	
+	text = {
+		trigger = {
+			has_game_rule = {
+				rule = ercf_greek_culture_name_rule
+				value = rhomaios
+			}
+		}
+		localization_key = ercf_rhomaios_name
+	}
+	text = {
+		trigger = {
+			has_game_rule = {
+				rule = ercf_greek_culture_name_rule
+				value = greek
+			}
+		}
+		localization_key = ercf_greek_name
+	}
+}
+
+defined_text = {
+	name = GetGreekCulturePrefix
+	text = {
+		trigger = {
+			has_game_rule = {
+				rule = ercf_greek_culture_name_rule
+				value = rhomaios
+			}
+		}
+		localization_key = ercf_rhomaios_prefix
+	}
+	text = {
+		trigger = {
+			has_game_rule = {
+				rule = ercf_greek_culture_name_rule
+				value = greek
+			}
+		}
+		localization_key = ercf_greek_prefix
+	}
+}
+
+defined_text = {
+	name = GetGreekCultureCollective
+	text = {
+		trigger = {
+			has_game_rule = {
+				rule = ercf_greek_culture_name_rule
+				value = rhomaios
+			}
+		}
+		localization_key = ercf_rhomaios_collective
+	}
+	text = {
+		trigger = {
+			has_game_rule = {
+				rule = ercf_greek_culture_name_rule
+				value = greek
+			}
+		}
+		localization_key = ercf_greek_collective
+	}
+}

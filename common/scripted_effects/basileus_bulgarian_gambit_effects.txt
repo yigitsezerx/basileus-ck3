@@ -1,0 +1,27 @@
+# =====================================================================
+# THE BULGARIAN GAMBIT — finale effect.
+# Run from event bulgarian_gambit.0050 (root = the e_byzantium holder)
+# once the Haemimontus frontier is fully held. Dismantles the Bulgarian
+# crown and applies the payoff.
+# =====================================================================
+
+basileus_bulgarian_gambit_finale_effect = {
+	# Remember who fell, for the event text.
+	if = {
+		limit = { exists = title:k_bulgaria.holder }
+		title:k_bulgaria.holder = { save_scope_as = fallen_bulgarian_ruler }
+	}
+
+	# Break the crown.
+	destroy_title = title:k_bulgaria
+
+	# Payoff — Byzantine-centric glory.
+	add_prestige = 500
+	add_dynasty_prestige = 500
+	add_character_modifier = {
+		modifier = basileus_subjugator_of_bulgaria
+	}
+
+	# The iconic epithet of the conqueror of Bulgaria.
+	give_nickname = nick_basileus_bulgar_slayer
+}

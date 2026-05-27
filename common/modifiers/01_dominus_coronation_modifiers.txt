@@ -1,0 +1,73 @@
+# ============================================================
+# Dominus Coronation — character modifiers
+# ============================================================
+# Notes:
+# - dominus_regnal_throne_name is the "Born: <birthname>" badge.
+#   It has no stat effects; its sole purpose is to display the
+#   birth-name line in the character window's modifier panel via
+#   its loc desc (DOMINUS_BIRTH_NAME_TOOLTIP).
+# - The dominus_echo_* modifiers are applied by
+#   dominus_apply_ancestor_echo_effect based on the chosen
+#   parent/ancestor's strongest skill axis (martial / diplomacy /
+#   stewardship / intrigue / learning), with a generic fallback.
+#   Duration is 10 years (matching dominus_forge_own_path).
+# ============================================================
+
+dominus_forge_own_path = {
+	icon = stewardship_positive
+	monthly_lifestyle_xp_gain_mult = 0.1
+	monthly_prestige = 0.5
+}
+
+# Permanent badge: "Throne Name". Its loc desc shows the birth name.
+dominus_regnal_throne_name = {
+	icon = diplomacy_positive
+	# No stat effects — pure flavour / tooltip carrier.
+}
+
+# Echo of a Conqueror ancestor (martial focus)
+dominus_echo_conqueror = {
+	icon = martial_positive
+	prowess = 2
+	knight_effectiveness_mult = 0.05
+	men_at_arms_maintenance_mult = -0.05
+}
+
+# Echo of a Peacemaker ancestor (diplomacy focus)
+dominus_echo_peacemaker = {
+	icon = diplomacy_positive
+	diplomacy = 2
+	courtier_and_guest_opinion = 5
+	powerful_vassal_opinion = 5
+}
+
+# Echo of a Builder ancestor (stewardship focus)
+dominus_echo_builder = {
+	icon = stewardship_positive
+	stewardship = 2
+	development_growth_factor = 0.1
+	monthly_income_mult = 0.05
+}
+
+# Echo of a Schemer ancestor (intrigue focus)
+dominus_echo_schemer = {
+	icon = intrigue_positive
+	intrigue = 2
+	hostile_scheme_resistance_add = 10
+	enemy_hostile_scheme_success_chance_add = -5
+}
+
+# Echo of a Philosopher ancestor (learning focus)
+dominus_echo_philosopher = {
+	icon = learning_positive
+	learning = 2
+	monthly_piety = 0.25
+	monthly_lifestyle_xp_gain_mult = 0.1
+}
+
+# Generic ancestral echo — applied if the ancestor has no dominant axis.
+dominus_echo_ancestors = {
+	icon = diplomacy_positive
+	monthly_prestige = 0.25
+	general_opinion = 3
+}

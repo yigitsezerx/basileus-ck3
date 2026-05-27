@@ -1,0 +1,15 @@
+cataphract_roman = {
+	alias = { cataphracts }
+}
+
+akritai_roman = {
+	alias = { acrites }
+}
+
+ballistrai_roman = {
+	alias = { ballistrae }
+}
+
+skoutatoi_roman = {
+	alias = { scutati }
+}

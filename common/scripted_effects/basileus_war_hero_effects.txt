@@ -1,0 +1,11 @@
+# =====================================================================
+# BASILEUS — WAR HERO TRACKING
+# ---------------------------------------------------------------------
+# (Intentionally empty.) War-hero capture is now done by DIRECT character
+# flagging in common/on_action/basileus_war_on_actions.txt — commanders/
+# knights are flagged with `basileus_recent_war_hero` (15-yr, auto-expiring)
+# the moment they win a battle / complete a siege on the Basileus's side,
+# and co-belligerents are flagged at war-won. No variable-lists, no roster,
+# no scripted effect needed here anymore. The grant_triumphator_interaction
+# reads the flag directly via has_character_flag.
+# =====================================================================

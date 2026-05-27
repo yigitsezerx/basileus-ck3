@@ -1,0 +1,1169 @@
+###########################################################
+# BASILEUS - PANDECTS & RENOVATIO - STARTING OF EVENT CHAIN
+###########################################################
+namespace = pandects_renovatio
+###########################################################
+################
+# Initial event.
+################
+pandects_renovatio.0001 = {
+	type = character_event
+	title = pandects_renovatio.0001.t
+	window = duel_event
+	desc = pandects_renovatio.0001.desc
+	theme = emperor
+	override_background = {
+		reference = ep3_constantinople
+	}
+	left_portrait = {
+		character = root
+		animation = reading
+		# camera = camera_event_horse_left
+	}
+	right_portrait = {
+		character = scope:justinian_the_great
+		animation = dismissal
+		# camera = camera_event_horse_right
+	}
+	immediate = {
+		character:70512 = {
+			save_scope_as = justinian_the_great
+		}
+		character:9000001 = {
+			save_scope_as = tribonian
+			# We set the scope here so we can reference it in the trigger for the artifact creation, which happens after the player makes their choice.
+		}
+		# CREATE THE ARTIFACT HERE so the scope exists for both options
+		hidden_effect_new_object = {
+			create_artifact = {
+				name = corpus_juris_civilis
+				description = corpus_juris_civilis_desc
+				type = journal
+				visuals = book
+				quality = 100
+				wealth = 100
+				modifier = basileus_pandects_modifier
+				decaying = no
+				save_scope_as = latin_codex_artifact				# <-- this is what both options reference
+				history = {
+					type = created
+					date = 533.12.16
+					actor = scope:tribonian
+					recipient = scope:justinian_the_great					# Justinian
+					location = province:496					#Constantinople
+				}
+			}
+			scope:latin_codex_artifact = {
+				set_variable = basileus_pandects
+			}
+			# Save the artifact as a variable on the emperor so future events can reference it
+			root = {
+				set_variable = {
+					name = latin_codex_var
+					value = scope:latin_codex_artifact
+				}
+			}
+		}
+	}
+	artifact = {
+		# To display the artifact in the event-window
+		target = scope:latin_codex_artifact
+		position = lower_center_portrait
+	}
+	# Triggered via decision: basileus_delve_into_classics
+	# OPTION A — Keep the Codex. The dream begins.
+	option = {
+		name = pandects_renovatio.0001.a
+		custom_tooltip = pandects_renovatio.0001.a_tt
+		add_prestige = 1000
+		# A flicker, emboldened by the flame of burning ambition..
+		#add_character_modifier = {
+		#    modifier = latin_revival_ambition
+		#    # Define this in common/modifiers:
+		#    # monthly_prestige = 0.1
+		#    # learning = 1
+		#    # (small, flavour-forward — the chain's payoff comes later)
+		#    years = 5
+		#}		
+		# Stress relief, this excites the character.
+		if = {
+			limit = {
+				OR = {
+					has_trait = ambitious
+					has_trait = diligent
+				}
+			}
+			add_stress = -10
+		}
+		# Open the door to future chain events
+		set_character_flag = pandects_renovatio_initiated
+		create_story = {
+			type = story_renovatio
+		}
+	}
+	after = {
+		show_as_tooltip = {
+			scope:latin_codex_artifact = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+	}
+}
+
+###########################################################
+# BASILEUS - PANDECTS & RENOVATIO - The Imperial Court
+###########################################################
+pandects_renovatio.0002 = {
+	type = character_event
+	title = pandects_renovatio.0002.t
+	desc = pandects_renovatio.0002.desc
+	theme = emperor
+	window = big_event_window
+	override_background = {
+		reference = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = pondering
+	}
+	right_portrait = {
+		character = scope:opposition_leader
+		animation = disapproval
+	}
+	immediate = {
+		# Grab the story.
+		random_owned_story = {
+			limit = {
+				type = story_renovatio
+			}
+			save_scope_as = story_renovatio
+		}
+		# Scope to that story to pull the artifact.
+		scope:story_renovatio = {
+			if = {
+				limit = {
+					exists = var:latin_codex_artifact
+				}
+				var:latin_codex_artifact = {
+					save_scope_as = the_codex
+				}
+			}
+		}
+		# Find a skeptical councillor
+		random_councillor = {
+			limit = {
+				is_adult = yes
+				NOT = {
+					this = root
+				}
+				OR = {
+					stewardship >= 12
+					learning >= 12
+				}
+			}
+			save_scope_as = opposition_leader
+		}
+		if = {
+			limit = {
+				NOT = {
+					exists = scope:opposition_leader
+				}
+			}
+			random_councillor = {
+				limit = {
+					is_adult = yes
+					NOT = {
+						this = root
+					}
+				}
+				save_scope_as = opposition_leader
+			}
+		}
+	}
+	option = {
+		name = pandects_renovatio.0002.a
+		custom_tooltip = pandects_renovatio.0002.a_tt
+		scope:opposition_leader = {
+			add_opinion = {
+				target = root
+				modifier = disappointed_opinion
+				opinion = -25
+			}
+		}
+		add_prestige = 500
+		if = {
+			limit = {
+				has_trait = content
+			}
+			add_stress = 50
+		}
+		add_character_flag = pandects_renovatio_imperial_court_done
+		scope:story_renovatio = {
+			set_variable = {
+				name = opposition_leader
+				value = scope:opposition_leader
+			}
+			set_variable = {
+				name = council_done
+				value = yes
+			}
+			if = {
+				limit = {
+					NOT = {
+						is_target_in_variable_list = {
+							name = detractors
+							target = scope:opposition_leader
+						}
+					}
+				}
+				add_to_variable_list = {
+					name = detractors
+					target = scope:opposition_leader
+				}
+			}
+			remove_list_variable = {
+				name = supporters
+				target = scope:opposition_leader
+			}
+			change_variable = {
+				name = renaissance_progress
+				add = 10
+			}
+		}
+	}
+	option = {
+		name = pandects_renovatio.0002.b
+		custom_tooltip = pandects_renovatio.0002.b_tt
+		if = {
+			limit = {
+				has_trait = ambitious
+			}
+			add_prestige = -500
+			add_stress = 25
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_trait = ambitious
+				}
+			}
+			add_stress = -25
+		}
+		scope:opposition_leader = {
+			add_opinion = {
+				target = root
+				modifier = pleased_opinion
+				opinion = 25
+			}
+		}
+		scope:story_renovatio = {
+			set_variable = {
+				name = council_done
+				value = yes
+			}
+			end_story = yes
+		}
+	}
+}
+
+###########################################################
+# BASILEUS - PANDECTS & RENOVATIO - Romana & Getica Rediscovered
+###########################################################
+pandects_renovatio.0003 = {
+	type = character_event
+	title = pandects_renovatio.0003.t
+	desc = pandects_renovatio.0003.desc
+	theme = emperor
+	window = big_event_window
+	override_background = {
+		reference = study
+	}
+	left_portrait = {
+		character = root
+		animation = reading
+	}
+	right_portrait = {
+		character = scope:jordanes_scholar
+		animation = happiness
+	}
+	artifact = {
+		target = scope:jordanes_artifact
+		position = lower_center_portrait
+	}
+	immediate = {
+		random_owned_story = {
+			limit = {
+				type = story_renovatio
+			}
+			save_scope_as = story_renovatio
+		}
+		create_character = {
+			name = "Theodoros"
+			age = 30
+			gender = male
+			culture = culture:greek
+			faith = faith:orthodox
+			trait = scholar
+			trait = diligent
+			trait = calm
+			save_scope_as = jordanes_scholar
+		}
+		scope:jordanes_scholar = {
+			hidden_effect = {
+				learn_language = language_latin
+			}
+			add_character_flag = basileus_jordanes_scholar
+		}
+		character:basileus_scholar_9000002 = {
+			save_scope_as = romana_actor
+		}
+		character:basileus_scholar_9000004 = {
+			save_scope_as = romana_recipient
+		}
+		character:9000003 = {
+			save_scope_as = cassiodorus_of_jordanes
+		}
+		# Create the artifact
+		hidden_effect_new_object = {
+			create_artifact = {
+				name = jordanes_romana_getica
+				description = jordanes_romana_getica_desc
+				type = book
+				visuals = book
+				category = court
+				quality = 100
+				wealth = 100
+				modifier = basileus_jordanes_modifier
+				decaying = no
+				save_scope_as = jordanes_artifact
+				history = {
+					type = created
+					date = 551.1.1
+					actor = scope:romana_actor
+					recipient = scope:romana_recipient
+					location = province:496					# Constantinople
+				}
+			}
+		}
+		root = {
+			set_variable = {
+				name = jordanes_romana_getica_var
+				value = scope:jordanes_artifact
+			}
+		}
+	}
+	option = {
+		name = pandects_renovatio.0003.a
+		custom_tooltip = pandects_renovatio.0003.a_tt
+		# Add scholar to court as a proper courtier
+		add_courtier = scope:jordanes_scholar
+		# Give the artifact to the Emperor
+		scope:jordanes_artifact = {
+			set_owner = {
+				target = root
+			}
+		}
+		# Save both scholar and artifact on the story for reliable retrieval
+		scope:story_renovatio = {
+			set_variable = {
+				name = jordanes_artifact
+				value = scope:jordanes_artifact
+			}
+			set_variable = {
+				name = jordanes_scholar
+				value = scope:jordanes_scholar
+			}
+			set_variable = {
+				name = scholar_arrival_done
+				value = yes
+			}
+			change_variable = {
+				name = renaissance_progress
+				add = 10
+			}
+		}
+		# Retrieve the scholar from the story variable (reliable across delayed events)
+		scope:story_renovatio = {
+			if = {
+				limit = {
+					exists = var:jordanes_scholar
+				}
+				var:jordanes_scholar = {
+					save_scope_as = jordanes_scholar
+				}
+			}
+		}
+		# Fallback: search courtiers by flag
+		if = {
+			limit = {
+				NOT = {
+					exists = scope:jordanes_scholar
+				}
+			}
+			random_courtier = {
+				limit = {
+					has_character_flag = basileus_jordanes_scholar
+				}
+				save_scope_as = jordanes_scholar
+			}
+		}
+		# Bond with the scholar
+		progress_towards_friend_effect = {
+			REASON = friend
+			CHARACTER = scope:jordanes_scholar
+			OPINION = 100
+		}
+		# Add to story cycle visualization
+		scope:story_renovatio = {
+			set_variable = {
+				name = latin_scholar
+				value = scope:jordanes_scholar
+			}
+			if = {
+				limit = {
+					NOT = {
+						is_target_in_variable_list = {
+							name = supporters
+							target = scope:jordanes_scholar
+						}
+					}
+				}
+				add_to_variable_list = {
+					name = supporters
+					target = scope:jordanes_scholar
+				}
+			}
+			remove_list_variable = {
+				name = detractors
+				target = scope:jordanes_scholar
+			}
+			set_variable = {
+				name = bonding_done
+				value = yes
+			}
+			change_variable = {
+				name = renaissance_progress
+				add = 10
+			}
+		}
+	}
+	# OPTION B — Dismiss the scholar. Learn to let goooooo...
+	option = {
+		name = pandects_renovatio.0003.b
+		custom_tooltip = pandects_renovatio.0003.b_tt
+		add_prestige = -100
+		scope:jordanes_scholar = {
+			silent_disappearance_effect = yes
+		}
+		# Fix: was scope:renovatio_story (typo — that scope only exists
+		# inside story-cycle effect_group context). The story scope here
+		# is scope:story_renovatio, saved in immediate above.
+		scope:story_renovatio = {
+			set_variable = {
+				name = scholar_arrival_done
+				value = yes
+			}
+			end_story = yes
+		}
+	}
+}
+
+###########################################################
+# BASILEUS - RENOVATIO - The Silver of Heraclius
+###########################################################
+pandects_renovatio.0004 = {
+	type = character_event
+	title = pandects_renovatio.0004.t
+	desc = pandects_renovatio.0004.desc
+	theme = emperor
+	window = big_event_window
+	override_background = {
+		reference = study
+	}
+	left_portrait = {
+		character = root
+		animation = pondering
+	}
+	right_portrait = {
+		character = scope:steward
+		animation = happiness
+	}
+	immediate = {
+		# Grab the story.
+		random_owned_story = {
+			limit = {
+				type = story_renovatio
+			}
+			save_scope_as = story_renovatio
+		}
+		# Does the Steward exists?
+		if = {
+			limit = {
+				exists = cp:councillor_steward
+			}
+			cp:councillor_steward = {
+				save_scope_as = steward
+			}
+		}
+		character:145071 = {
+			save_scope_as = heraclius
+		}		
+		# Create the Hexagram
+		hidden_effect_new_object = {
+			create_artifact = {
+				name = hexagram_of_heraclius
+				description = hexagram_of_heraclius_desc
+				type = pedestal
+				visuals = medallion
+				quality = 80
+				wealth = 80
+				modifier = basileus_hexagram_modifier
+				decaying = no
+				save_scope_as = hexagram_artifact
+				history = {
+					type = created
+					date = 615.1.1
+					actor = scope:heraclius
+					recipient = scope:heraclius
+					location = province:496
+				}
+			}
+		}
+		root = {
+			set_variable = {
+				name = hexagram_of_heraclius_var
+				value = scope:hexagram_artifact
+			}
+		}		
+	}
+	option = {
+		name = pandects_renovatio.0004.a
+		custom_tooltip = pandects_renovatio.0004.a_tt
+		scope:hexagram_artifact = {
+			set_owner = {
+				target = root
+			}
+		}
+		scope:story_renovatio = {
+			set_variable = {
+				name = hexagram_discovery_done
+				value = yes
+			}
+			set_variable = {
+				name = hexagram_artifact
+				value = scope:hexagram_artifact
+			}
+			change_variable = {
+				name = renaissance_progress
+				add = 20
+			}
+			if = {
+				limit = {
+					NOT = {
+						is_target_in_variable_list = {
+							name = supporters
+							target = scope:steward
+						}
+					}
+				}
+				add_to_variable_list = {
+					name = supporters
+					target = scope:steward
+				}
+			}
+			remove_list_variable = {
+				name = detractors
+				target = scope:steward
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:steward
+			}
+			scope:steward = {
+				add_opinion = {
+					target = root
+					modifier = pleased_opinion
+					opinion = 25
+				}
+			}
+		}
+	}
+}
+
+###########################################################
+# BASILEUS - RENOVATIO - Chrysobull
+###########################################################
+pandects_renovatio.0005 = {
+	type = character_event
+	title = pandects_renovatio.0005.t
+	desc = pandects_renovatio.0005.desc
+	theme = emperor
+	window = big_event_window
+	override_effect_2d = { reference = legend_glow }
+	override_background = {
+		reference = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = chancellor
+	}
+
+	immediate = {
+		random_owned_story = {
+			limit = {
+				type = story_renovatio
+			}
+			save_scope_as = story_renovatio
+		}
+		# We iterate through the lists saved on the story cycle.
+		scope:story_renovatio = {
+			every_in_list = {
+				variable = supporters
+				add_opinion = {
+					target = root
+					modifier = visionary_latin_ruler
+				}
+			}
+			every_in_list = {
+				variable = detractors
+				add_opinion = {
+					target = root
+					modifier = offended_by_latin_decree
+				}
+			}
+		}
+	}
+
+	option = {
+		name = pandects_renovatio.0005.a
+		custom_tooltip = pandects_renovatio.0005.a_tt
+		
+		title:e_byzantium = {
+			holder = {
+				set_court_language = language_latin
+				add_realm_law = imperial_bureaucracy_2
+				add_realm_law = province_war_law_2
+			}
+		}
+
+		scope:story_renovatio = {
+			change_variable = {
+				name = renaissance_progress
+				add = 20
+			}
+			set_variable = {
+				name = chrysobull_issued
+				value = yes
+			}
+		}
+
+		# Add a modifier to the Emperor
+		add_character_modifier = {
+			modifier = basileus_restorer_of_latin
+			years = 50
+		}
+
+		stress_impact = {
+			ambitious = -20
+			diligent = -10
+		}
+	}
+}
+
+###########################################################
+# BASILEUS - RENOVATIO - The Great Betrayal
+###########################################################
+
+# EVENT 0006 — The Great Betrayal
+# Triggered by story cycle pulse 6-18 months after Chrysobull
+pandects_renovatio.0006 = {
+	type = character_event
+	title = pandects_renovatio.0006.t
+	desc = pandects_renovatio.0006.desc
+	theme = emperor
+	window = big_event_window
+	
+	override_background = {
+		reference = throne_room
+	}
+	
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	
+	right_portrait = {
+		character = scope:messenger
+		animation = anxiety
+	}
+
+	immediate = {
+		random_owned_story = {
+			limit = { type = story_renovatio }
+			save_scope_as = story_renovatio
+		}
+		
+		# Identify the strongest detractor to be the Opposition Leader
+		scope:story_renovatio = {
+			ordered_in_list = {
+				variable = detractors
+				order_by = military_strength
+				limit = {
+					is_alive = yes
+					is_landed = yes
+				}
+				if = {
+					limit = { NOT = { exists = scope:opposition_leader } }
+					save_scope_as = opposition_leader
+				}
+			}
+			# If no detractor exists (unlikely), pick the most powerful vassal
+			if = {
+				limit = { NOT = { exists = scope:opposition_leader } }
+				story_owner = {
+					ordered_vassal = {
+						order_by = military_strength
+						limit = {
+							is_alive = yes
+							is_landed = yes
+						}
+						if = {
+							limit = { NOT = { exists = scope:opposition_leader } }
+							save_scope_as = opposition_leader
+						}
+					}
+				}
+			}
+			# Final fallback: any random powerful vassal
+			if = {
+				limit = { NOT = { exists = scope:opposition_leader } }
+				story_owner = {
+					random_vassal = {
+						limit = {
+							is_alive = yes
+							is_landed = yes
+						}
+						save_scope_as = opposition_leader
+					}
+				}
+			}
+		}
+		
+		# Identify a loyal messenger (Scholar or Supporter)
+		scope:story_renovatio = {
+			if = {
+				limit = { exists = var:jordanes_scholar }
+				var:jordanes_scholar = { save_scope_as = messenger }
+			}
+			else = {
+				random_in_list = {
+					variable = supporters
+					save_scope_as = messenger
+				}
+			}
+		}
+	}
+
+	# Option A: Comply (Surrender)
+	option = {
+		name = pandects_renovatio.0006.a
+		
+		custom_tooltip = pandects_renovatio.0006.a.tt
+		
+		title:e_byzantium = {
+			holder = {
+				set_court_language = language_greek
+			}
+		}
+		
+		scope:story_renovatio = {
+			end_story = yes
+		}
+		
+		add_character_modifier = {
+			modifier = basileus_broken_spirit
+			years = 10
+		}
+	}
+
+	# Option B: Refuse (Civil War)
+	option = {
+		name = pandects_renovatio.0006.b
+
+		custom_tooltip = pandects_renovatio.0006.b.tt
+
+		# Start the rebellion war
+		scope:opposition_leader = {
+			add_pressed_claim = title:e_byzantium
+			start_war = {
+				cb = pandects_betrayal_cb # Using custom civil war CB
+				target = root
+				claimant = scope:opposition_leader
+				target_title = title:e_byzantium
+			}
+			# Save the war object to force participants
+			every_character_war = {
+				limit = {
+					using_cb = pandects_betrayal_cb
+					primary_attacker = scope:opposition_leader
+				}
+				save_scope_as = betrayal_war
+			}
+		}
+
+		# Force detractors to join the enemy
+		scope:story_renovatio = {
+			# Mark the story as awaiting the Grand Finale. The story cycle's
+			# polling effect_group watches this flag + war state to fire 0007.
+			set_variable = {
+				name = betrayal_war_active
+				value = yes
+			}
+			# Force detractors to join the enemy side as co-belligerents
+			every_in_list = {
+				variable = detractors
+				limit = {
+					NOT = { this = scope:opposition_leader }
+					is_alive = yes
+					is_landed = yes
+				}
+				scope:betrayal_war = {
+					add_attacker = prev
+				}
+			}
+
+			# Force supporters to join the Emperor's side
+			every_in_list = {
+				variable = supporters
+				limit = {
+					is_alive = yes
+					is_landed = yes
+					NOT = { this = root }
+				}
+				scope:betrayal_war = {
+					add_defender = prev
+				}
+			}
+		}
+	}
+}
+
+###########################################################
+# BASILEUS - RENOVATIO - The Grand Finale
+###########################################################
+
+# EVENT 0007 — The Grand Finale
+# Triggered manually or after winning the civil war
+pandects_renovatio.0007 = {
+	type = character_event
+	title = pandects_renovatio.0007.t
+	desc = pandects_renovatio.0007.desc
+	theme = emperor
+	window = fullscreen_event
+	
+	override_background = {
+		reference = ep3_constantinople
+	}
+	override_effect_2d = { reference = legend_glow }
+
+	left_portrait = {
+		character = root
+		animation = admiration
+	}
+
+	immediate = {
+		random_owned_story = {
+			limit = { type = story_renovatio }
+			save_scope_as = story_renovatio
+		}
+	}
+
+	option = {
+		name = pandects_renovatio.0007.a
+		
+		custom_tooltip = pandects_renovatio.0007.a.tt
+		
+		# Limit Culture Flip to the ruler's realm/court/family
+		hidden_effect = {
+			culture:eastern_roman = {
+				get_all_innovations_from = culture:greek
+			}
+			set_culture = culture:eastern_roman
+			every_courtier_or_guest = {
+				limit = { culture = culture:greek }
+				set_culture = culture:eastern_roman
+			}
+			every_close_family_member = {
+				limit = { culture = culture:greek }
+				set_culture = culture:eastern_roman
+			}
+			every_vassal = {
+				limit = { culture = culture:greek }
+				set_culture = culture:eastern_roman
+			}
+			every_sub_realm_county = {
+				limit = { culture = culture:greek }
+				set_county_culture = culture:eastern_roman
+			}
+		}
+		
+		# Final Rewards
+		add_prestige = 1000
+		add_influence = 1000
+		add_trait = august
+		
+		# Conclude Story
+		scope:story_renovatio = {
+			end_story = yes
+		}
+	}
+}
+
+###########################################################
+# BASILEUS - RENOVATIO - Scholar Death & Succession
+###########################################################
+
+# EVENT 9000 — The Death of a Visionary
+# Triggered when jordanes_scholar dies
+pandects_renovatio.9000 = {
+	type = character_event
+	title = pandects_renovatio.9000.t
+	desc = pandects_renovatio.9000.desc
+	theme = emperor
+	window = big_event_window
+	
+	override_background = {
+		reference = study
+	}
+	
+	left_portrait = {
+		character = root
+		animation = sadness
+	}
+	
+	immediate = {
+		random_owned_story = {
+			limit = { type = story_renovatio }
+			save_scope_as = story_renovatio
+		}
+		scope:story_renovatio = {
+			var:jordanes_scholar = {
+				save_scope_as = jordanes_scholar
+			}
+		}
+	}
+	
+	# Option A: Find a successor
+	option = {
+		name = pandects_renovatio.9000.a
+		custom_tooltip = pandects_renovatio.9000.a.desc
+		
+		# Setback progress slightly
+		scope:story_renovatio = {
+			change_variable = {
+				name = renaissance_progress
+				add = -15
+			}
+		}
+		
+		# Trigger succession event after a delay
+		trigger_event = {
+			id = pandects_renovatio.9010
+			days = { 10 20 }
+		}
+	}
+	
+	# Option B: Abandon the dream
+	option = {
+		name = pandects_renovatio.9000.b
+		
+		scope:story_renovatio = {
+			end_story = yes
+		}
+		
+		add_character_modifier = {
+			modifier = basileus_broken_spirit
+			years = 5
+		}
+	}
+}
+
+# EVENT 9010 — The Succession of Learning
+# Triggered after choosing to find a successor
+pandects_renovatio.9010 = {
+	type = character_event
+	title = pandects_renovatio.9010.t
+	desc = pandects_renovatio.9010.desc
+	theme = emperor
+	window = big_event_window
+	
+	override_background = {
+		reference = study
+	}
+	
+	left_portrait = {
+		character = root
+		animation = pondering
+	}
+	
+	right_portrait = {
+		character = scope:new_scholar_candidate
+		animation = reading
+	}
+	
+	immediate = {
+		random_owned_story = {
+			limit = { type = story_renovatio }
+			save_scope_as = story_renovatio
+		}
+		
+		# Find a candidate in our court
+		random_courtier = {
+			limit = {
+				is_alive = yes
+				is_adult = yes
+				learning >= 10
+				NOT = { this = root }
+				NOT = { is_spouse_of = root }
+			}
+			weight = {
+				base = 10
+				modifier = {
+					add = 15
+					has_trait = scholar
+				}
+				modifier = {
+					add = 10
+					learning >= 15
+				}
+			}
+			save_scope_as = new_scholar_candidate
+		}
+		# Fallback: spawn one
+		if = {
+			limit = {
+				NOT = { exists = scope:new_scholar_candidate }
+			}
+			create_character = {
+				name = "Ioannes"
+				age = 28
+				gender = male
+				culture = culture:greek
+				faith = faith:orthodox
+				trait = scholar
+				learning = 12
+				save_scope_as = new_scholar_candidate
+			}
+			add_courtier = scope:new_scholar_candidate
+		}
+	}
+	
+	# Option A: Elevate candidate
+	option = {
+		name = pandects_renovatio.9010.a
+		custom_tooltip = pandects_renovatio.9010.a_tt
+		
+		scope:new_scholar_candidate = {
+			add_character_flag = basileus_jordanes_scholar
+			learn_language = language_latin
+		}
+		
+		scope:story_renovatio = {
+			set_variable = {
+				name = jordanes_scholar
+				value = scope:new_scholar_candidate
+			}
+			set_variable = {
+				name = latin_scholar
+				value = scope:new_scholar_candidate
+			}
+			remove_variable = scholar_death_handled
+			
+			if = {
+				limit = {
+					NOT = {
+						is_target_in_variable_list = {
+							name = supporters
+							target = scope:new_scholar_candidate
+						}
+					}
+				}
+				add_to_variable_list = {
+					name = supporters
+					target = scope:new_scholar_candidate
+				}
+			}
+			remove_list_variable = {
+				name = detractors
+				target = scope:new_scholar_candidate
+			}
+		}
+		
+		progress_towards_friend_effect = {
+			REASON = friend
+			CHARACTER = scope:new_scholar_candidate
+			OPINION = 50
+		}
+	}
+	
+	# Option B: Hire outsider
+	option = {
+		name = pandects_renovatio.9010.b
+		custom_tooltip = pandects_renovatio.9010.b_tt
+		
+		create_character = {
+			name = "Alexios"
+			age = 35
+			gender = male
+			culture = culture:greek
+			faith = faith:orthodox
+			trait = scholar
+			learning = 15
+			save_scope_as = new_outsider_scholar
+		}
+		add_courtier = scope:new_outsider_scholar
+		
+		scope:new_outsider_scholar = {
+			add_character_flag = basileus_jordanes_scholar
+			learn_language = language_latin
+		}
+		
+		scope:story_renovatio = {
+			set_variable = {
+				name = jordanes_scholar
+				value = scope:new_outsider_scholar
+			}
+			set_variable = {
+				name = latin_scholar
+				value = scope:new_outsider_scholar
+			}
+			remove_variable = scholar_death_handled
+			change_variable = {
+				name = renaissance_progress
+				add = -5
+			}
+			
+			if = {
+				limit = {
+					NOT = {
+						is_target_in_variable_list = {
+							name = supporters
+							target = scope:new_outsider_scholar
+						}
+					}
+				}
+				add_to_variable_list = {
+					name = supporters
+					target = scope:new_outsider_scholar
+				}
+			}
+			remove_list_variable = {
+				name = detractors
+				target = scope:new_outsider_scholar
+			}
+		}
+	}
+}

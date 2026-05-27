@@ -1,0 +1,196 @@
+# =====================================================================
+# BASILEUS — RECLAIM THE EAST — audience event (Phase 1).
+# Fires from basileus_reclaim_the_east_decision. The emperor meets a
+# senior senator (Hypatos preferred, else Senator, else Patrician, else
+# any councillor as a defensive fallback). The conversation closes with
+# the HBO Rome callback: "some may call it hubris" / "it's only hubris
+# if I fail".
+#
+# Only one option, which calls the Phase 2 struggle-trigger hook.
+# =====================================================================
+namespace = basileus_eastern_reconquest
+
+basileus_eastern_reconquest.0001 = {
+	type = character_event
+	title = basileus_eastern_reconquest.0001.t
+	desc = basileus_eastern_reconquest.0001.desc
+	theme = emperor
+	window = big_event_window
+	override_background = { reference = throne_room }
+
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:eastern_advisor
+		animation = personality_rational
+	}
+
+	immediate = {
+		# Pick the senate-side conversation partner.
+		# ---------------------------------------------------------------
+		# Strategy: lock in ROOT as the default at the TOP so the scope
+		# always exists. Then each fallback tries to upgrade. If any tier
+		# finds a real candidate it overrides the scope; if not, scope
+		# stays as root and loc still resolves (no more ERROR: lines).
+		#
+		# We use every_court_position_holder (proven to work in the
+		# senate's yearly pulse) rather than random_court_position_holder,
+		# since the previous random_X version wasn't producing a
+		# resolvable character-scope for some reason. The senate iteration
+		# overwrites the scope per iteration; for Hypatos (max 1) that's
+		# deterministic, for Senator/Patrician (up to 5 each) the "last
+		# iterated" is fine semantically.
+		# ---------------------------------------------------------------
+		save_scope_as = eastern_advisor
+
+		# Hypatos preferred.
+		every_court_position_holder = {
+			type = hypatus_court_position
+			save_scope_as = eastern_advisor
+		}
+		# Senator if still defaulted to root.
+		if = {
+			limit = {
+				scope:eastern_advisor = { this = root }
+			}
+			every_court_position_holder = {
+				type = senator_court_position
+				save_scope_as = eastern_advisor
+			}
+		}
+		# Patrician next.
+		if = {
+			limit = {
+				scope:eastern_advisor = { this = root }
+			}
+			every_court_position_holder = {
+				type = patrician_court_position
+				save_scope_as = eastern_advisor
+			}
+		}
+		# Any non-self councillor.
+		if = {
+			limit = {
+				scope:eastern_advisor = { this = root }
+			}
+			random_councillor = {
+				limit = { NOT = { this = root } }
+				save_scope_as = eastern_advisor
+			}
+		}
+		# Random powerful vassal as a final realistic fallback.
+		if = {
+			limit = {
+				scope:eastern_advisor = { this = root }
+			}
+			random_powerful_vassal = {
+				save_scope_as = eastern_advisor
+			}
+		}
+		# (If even that fails, scope stays as root — loc still resolves.)
+	}
+
+	option = {
+		name = basileus_eastern_reconquest.0001.a
+		basileus_start_eastern_struggle_effect = yes
+	}
+}
+
+# =====================================================================
+# STRUGGLE INTRODUCTION / PRIMER (fired from on-start).
+# ---------------------------------------------------------------------
+# Mirrors how vanilla struggles open with a starting event. Comes right
+# after the audience (0001) — that one is the dramatic "it's only hubris
+# if I fail" beat; this one is the mechanical primer: the struggle window
+# is now live, here's how it works (phases, catalysts, the two endings).
+# Fired from basileus_start_eastern_struggle_effect (root = the Basileus).
+# =====================================================================
+basileus_eastern_reconquest.0002 = {
+	type = character_event
+	title = basileus_eastern_reconquest.0002.t
+	desc = basileus_eastern_reconquest.0002.desc
+	theme = emperor
+	window = fullscreen_event
+	override_background = { reference = ep3_constantinople }
+
+	cooldown = { years = 100 }
+
+	# Injects the vanilla struggle-info widget — the "You are an Involved
+	# participant", current-phase line, and the clickable War/Culture/
+	# Faith/Other phase-effect icons. Same widget vanilla's iberian/persian
+	# intro events use (fp2_struggle.0501). The controller reads scope:struggle.
+	widgets = {
+		widget = {
+			gui = "event_window_widget_struggle_info"
+			container = "dynamic_content_widget"
+			controller = struggle_info
+			setup_scope = {
+				struggle:basileus_eastern_reconquest_struggle = { save_scope_as = struggle }
+			}
+		}
+	}
+
+	immediate = {
+		play_music_cue = "mx_Struggle_Opening"
+		# CRITICAL: the struggle_info widget's intro panel is gated on
+		# EventWindowCustomWidgetStruggleInfo.IsStartEvent (see
+		# gui/event_window_widgets/event_window_widget_struggle_info.gui:15),
+		# which reads this scope value. Without scope:start = yes the widget
+		# renders its "ended" variant ("You have ended the struggle…").
+		save_scope_value_as = {
+			name = start
+			value = yes
+		}
+	}
+
+	option = {
+		name = basileus_eastern_reconquest.0002.a
+		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+	}
+}
+
+# =====================================================================
+# HUBRIS TIMER — 50-year auto-fire.
+# ---------------------------------------------------------------------
+# Triggered from basileus_eastern_reconquest_yearly_pulse when 50 years
+# have elapsed since the struggle was launched and victory has not been
+# achieved (custom_theodosian_ere not completely held). The Basileus
+# is presented with a one-option finality event: the dream slips away.
+# =====================================================================
+basileus_eastern_reconquest.0050 = {
+	type = character_event
+	title = basileus_eastern_reconquest.0050.t
+	desc = basileus_eastern_reconquest.0050.desc
+	theme = emperor
+	window = big_event_window
+	# Quieter background than throne_room — "the maps are rolled up."
+	override_background = { reference = study }
+
+	# Skip the event entirely if the struggle has already concluded
+	# (triumph or earlier concede), or if victory has just been achieved.
+	trigger = {
+		any_character_struggle = {
+			is_struggle_type = basileus_eastern_reconquest_struggle
+		}
+		NOT = {
+			completely_controls_region = custom_theodosian_ere
+		}
+	}
+
+	left_portrait = {
+		character = root
+		animation = grief
+	}
+
+	# Single option — the player has no agency at this point; 50 years
+	# of trying has exhausted the political will. Hubris is applied.
+	option = {
+		name = basileus_eastern_reconquest.0050.a
+		basileus_end_eastern_struggle_hubris_effect = yes
+		# end_struggle must be called in struggle scope.
+		struggle:basileus_eastern_reconquest_struggle = { end_struggle = yes }
+	}
+}
+

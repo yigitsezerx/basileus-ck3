@@ -1,0 +1,69 @@
+# =====================================================================
+# BASILEUS — RECLAIM THE EAST — ending modifiers.
+# ---------------------------------------------------------------------
+# Two modifiers, one per struggle outcome:
+#   - basileus_restored_theodosian_empire  → success (Triumph ending)
+#   - basileus_hubris_of_the_east          → failure (Concede / 50yr)
+# In-phase modifiers (per-phase bonuses/penalties for involved characters)
+# are defined INLINE inside the struggle file's involved_character_modifier
+# blocks, not here — see basileus_eastern_reconquest_struggle.txt.
+# =====================================================================
+
+# Triumph ending — permanent realm modifier on the victorious Basileus.
+# Applied via the Triumph ending decision's effect. Carries to successors.
+# Bulgarian Gambit climax — permanent character modifier on the Basileus who
+# broke the Bulgarian crown.
+basileus_subjugator_of_bulgaria = {
+	icon = prestige_positive
+
+	monthly_prestige = 0.5
+	monthly_legitimacy_add = 1
+	powerful_vassal_opinion = 5
+	# Mastery of the Balkan frontier
+	knight_effectiveness_mult = 0.05
+}
+
+basileus_restored_theodosian_empire = {
+	icon = legitimacy_positive
+
+	# Imperial legitimacy & reach
+	monthly_legitimacy_add = 2
+	powerful_vassal_opinion = 10
+	vassal_opinion = 5
+	courtier_and_guest_opinion = 5
+
+	# Military prestige
+	monthly_prestige = 1
+	knight_effectiveness_mult = 0.05
+
+	# Economic dividend
+	domain_taxes_mult = 0.05
+	stationed_maa_toughness_mult = 0.05
+}
+
+# Hubris ending — character modifier on the failed Basileus (50 years).
+# Moderate penalty: stings, doesn't cripple. Plus a separate dynasty-wide
+# renown loss applied alongside via the concede ending effect.
+basileus_hubris_of_the_east = {
+	icon = legitimacy_negative
+
+	# Public dignity collapses
+	monthly_legitimacy_add = -1
+	monthly_prestige = -0.5
+	vassal_opinion = -5
+	powerful_vassal_opinion = -5
+
+	# Military embarrassment lingers
+	men_at_arms_maintenance_mult = 0.1
+	knight_effectiveness_mult = -0.05
+
+	# Treasury strain from the failed campaign
+	domain_taxes_mult = -0.05
+}
+
+basileus_consecrated_banners_modifier = {
+	icon = piety_positive
+	monthly_piety = 1.0
+	knight_effectiveness_mult = 0.05
+}
+

@@ -1,0 +1,44 @@
+namespace = dominus_coronation
+
+####################################
+# EVENT 1: The Imperial Name       #
+####################################
+dominus_coronation.0001 = {
+	type = activity_event
+	title = dominus_coronation.0001.t
+	desc = dominus_coronation.0001.desc
+	theme = coronation_activity
+
+	trigger = {
+		has_title = title:e_byzantium
+	}
+
+
+	left_portrait = {
+		character = scope:host
+		animation = personality_honorable
+	}
+
+	immediate = {
+		save_scope_as = event_host
+	}
+
+	# Option 1: Choose a name (goes to name-picker event)
+	option = {
+		name = dominus_coronation.0001.opt_rename
+		trigger_event = { id = dominus_coronation.0002 }
+	}
+
+	# Option 2: Keep birth name
+	option = {
+		name = dominus_coronation.0001.opt_keep
+		add_character_modifier = {
+			modifier = dominus_forge_own_path
+			years = 10
+		}
+		hidden_effect = {
+			remove_variable = dominus_birth_name_char
+			remove_character_flag = has_custom_regnal_name
+		}
+	}
+}

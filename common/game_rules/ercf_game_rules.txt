@@ -1,0 +1,33 @@
+ercf_greek_culture_name_rule = {
+	default = rhomaios
+	categories = {
+		culture
+	}
+	
+	rhomaios = {
+	}
+	greek = {
+	}
+}
+
+basileus_ere_colour_rule = {
+	default = basileus_default_colours
+	categories = {
+		tweaks
+	}
+
+	basileus_ere_colour = {
+	}
+	basileus_ere_colour_tyrian_red = {
+	}
+	basileus_default_colours = {
+	}
+}
+
+basileus_one_catholic_empire = {
+	categories = { titles tweaks }
+	default = basileus_one_catholic_empire_off
+
+	basileus_one_catholic_empire_off = {}
+	basileus_one_catholic_empire_on  = {}
+}

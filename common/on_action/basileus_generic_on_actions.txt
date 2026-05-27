@@ -1,0 +1,63 @@
+# =========================================================
+# ERCF GENERIC ON_ACTIONS
+# =========================================================
+
+on_faction_demand_accepted = {
+    on_actions = {
+        ercf_faction_demand_accepted_pulse
+    }
+}
+
+on_scheme_discovered = {
+    on_actions = {
+        ercf_scheme_discovered_pulse
+    }
+}
+
+# =========================================================
+# ERCF Pulses
+# =========================================================
+
+ercf_faction_demand_accepted_pulse = {
+    effect = {
+        # Root is the faction target (the liege)
+        if = {
+            limit = { has_trait = autocrator_ercf }
+            add_trait_xp = {
+                trait = autocrator_ercf
+                value = -10
+            }
+            # Hard Gate
+            ercf_autocrator_mandate_check_effect = yes
+        }
+    }
+}
+
+ercf_scheme_discovered_pulse = {
+    effect = {
+        # Root is the scheme, scope:target is the target character
+        scope:target = {
+            if = {
+                limit = { 
+                    has_trait = autocrator_ercf 
+                    root = { scheme_is_hostile = yes }
+                }
+                add_trait_xp = {
+                    trait = autocrator_ercf
+                    value = -5
+                }
+                # Hard Gate
+                ercf_autocrator_mandate_check_effect = yes
+            }
+        }
+    }
+}
+
+# =========================================================
+# BYZANTINE CORONATION — Naming Event Hook
+# Appends to the vanilla ceremony phase on_action.
+# Fires dominus_coronation.0001 for the player-controlled
+# e_byzantium host only, with no delay and no vanilla edits.
+# =========================================================
+
+

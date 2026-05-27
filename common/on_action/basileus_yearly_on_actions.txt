@@ -1,0 +1,347 @@
+# =========================================================
+# ERCF YEARLY ON_ACTIONS
+# =========================================================
+
+yearly_playable_pulse = {
+    on_actions = {
+        ercf_yearly_autocrator_pulse
+        basileus_eastern_reconquest_yearly_pulse
+    }
+
+    # Integration Events - Commented out as they are non-existent in current version
+    # events = {
+    #     ercf_roman_hegemony_integrations.0001
+    #     ercf_roman_hegemony_integrations.0002
+    #     ercf_roman_hegemony_integrations.0003
+    #     ercf_roman_hegemony_integrations.0004 # Germania
+    #     ercf_ravenna.1001
+    #     # Duchy of Rif - African Exarchate Integration
+    #     ercf_africa.2001 # The hidden checker event
+    # }
+}
+
+three_year_playable_pulse = {
+    # events = {
+    #     # Western Roman Empire
+    #     ercf_roman_hegemony_integrations.1001 # Francians adopt Western Roman customs
+    #     ercf_roman_hegemony_integrations.9002 # Hispanians adopt Western Roman customs
+    #     ercf_roman_hegemony_integrations.9003 # Roman Renaissance in Italy.
+    #     ercf_roman_hegemony_integrations.2008 # Roman Renaissance in Italy, if WRE isnt delegated yet, will flip to Eastern Roman.
+	# 	ercf_roman_hegemony_integrations.9004 # Illyrians adopt the Western Roman customs.
+	# 	ercf_roman_hegemony_integrations.9005 # Africans adopt the Western Roman customs.
+    #     # Eastern Roman Empire
+    #     ercf_roman_hegemony_integrations.3000 # Haemus populace adopts Eastern Roman customs.
+    #     ercf_roman_hegemony_integrations.3002 # Anatolian populace adopts Eastern Roman customs.
+    #     ercf_roman_hegemony_integrations.4002 # Local populace of the Oriens adopt Eastern Roman customs.
+    # }
+}
+
+five_year_playable_pulse = {
+    on_actions = {
+        ercf_five_year_roman_development_pulse
+    }
+    # events = {
+    #     ercf_roman_hegemony_integrations.1006 # Roman cultural victory over Germania.
+    # }
+}
+
+quarterly_playable_pulse = {
+    events = {
+        # autocrator.8011 # remvoed to save performance.
+        # autocrator.8022 # removed to save performance.
+    }
+}
+
+# =========================================================
+# ERCF Pulses
+# =========================================================
+
+ercf_yearly_autocrator_pulse = {
+    effect = {
+        if = {
+            limit = { has_trait = autocrator_ercf }
+
+            # ===============================================================
+            # CLIMB / STAGNATE / EROSION — relaxed thresholds, March 2026.
+            # ---------------------------------------------------------------
+            # Three "soft" limits, scored loosely. The autokrator profile is:
+            #   - no regent
+            #   - dread >= 15  (feared)
+            #   - prestige_level >= 1  (a known figure, low bar)
+            #
+            # Outcome bands (XP < 75):
+            #   ALL THREE OK            → full climb  (+3, +4 with Piety lv 2+)
+            #   TWO OK                  → half climb  (+1, +2 with Piety lv 2+)
+            #   ONE OK                  → stagnate (0/yr — neither climb nor erode)
+            #   NONE OK                 → erosion   (-1/yr)
+            #
+            # Note: erosion is now CAPPED AT -1 from the pulse (the harsh -2
+            # was removed). Big penalties still come from the dedicated
+            # effects (regency stagnation, corruption, war loss) — the pulse
+            # itself is forgiving.
+            # ===============================================================
+
+            # Tally how many limits are met into a temp variable.
+            set_variable = { name = ercf_autocrator_limits_met value = 0 }
+            if = {
+                limit = { has_regent = no }
+                change_variable = { name = ercf_autocrator_limits_met add = 1 }
+            }
+            if = {
+                limit = { dread >= 15 }
+                change_variable = { name = ercf_autocrator_limits_met add = 1 }
+            }
+            if = {
+                limit = { prestige_level >= 1 }
+                change_variable = { name = ercf_autocrator_limits_met add = 1 }
+            }
+
+            # CLIMB PHASE (XP < 75)
+            if = {
+                limit = {
+                    has_trait_xp = { trait = autocrator_ercf value < 75 }
+                    var:ercf_autocrator_limits_met >= 3
+                }
+                if = {
+                    limit = { piety_level >= 2 }
+                    add_trait_xp = { trait = autocrator_ercf value = 4 }
+                }
+                else = {
+                    add_trait_xp = { trait = autocrator_ercf value = 3 }
+                }
+            }
+            else_if = {
+                limit = {
+                    has_trait_xp = { trait = autocrator_ercf value < 75 }
+                    var:ercf_autocrator_limits_met = 2
+                }
+                if = {
+                    limit = { piety_level >= 2 }
+                    add_trait_xp = { trait = autocrator_ercf value = 2 }
+                }
+                else = {
+                    add_trait_xp = { trait = autocrator_ercf value = 1 }
+                }
+            }
+            # 1 limit met → stagnate (no XP change). No else branch needed.
+            else_if = {
+                limit = {
+                    has_trait_xp = { trait = autocrator_ercf value < 75 }
+                    var:ercf_autocrator_limits_met = 0
+                }
+                add_trait_xp = { trait = autocrator_ercf value = -1 }
+            }
+
+            # SUSTAIN PHASE (XP >= 75) — only erodes if ALL limits fail.
+            # Single/double failures cause stagnation, not erosion.
+            else_if = {
+                limit = {
+                    has_trait_xp = { trait = autocrator_ercf value >= 75 }
+                    var:ercf_autocrator_limits_met = 0
+                }
+                add_trait_xp = { trait = autocrator_ercf value = -1 }
+            }
+
+            remove_variable = ercf_autocrator_limits_met
+
+            # LIVING LEGEND: small bonus for max prestige (any phase).
+            if = {
+                limit = { prestige_level >= 5 }
+                add_trait_xp = { trait = autocrator_ercf value = 1 }
+            }
+
+            # RELIGIOUS ICON: small bonus for max piety (any phase).
+            if = {
+                limit = { piety_level >= 5 }
+                add_trait_xp = { trait = autocrator_ercf value = 1 }
+            }
+
+            # SENATE FAVOUR: a well-disposed Magnaura nudges the climb,
+            # but soft-capped — skipped past 100 XP so it can't bull an
+            # unworthy emperor through the Isapostolos gate.
+            if = {
+                limit = {
+                    has_character_modifier = senate_approval_high_modifier
+                    has_trait_xp = { trait = autocrator_ercf value < 100 }
+                }
+                add_trait_xp = { trait = autocrator_ercf value = 1 }
+            }
+        }
+
+        # REGENCY STAGNATION (extra one-time -5 penalty on top, legacy)
+        ercf_autocrator_regency_stagnation_effect = yes
+
+        # ADMINISTRATIVE CORRUPTION — -1/yr per corrupt councillor
+        # (greedy / deceitful / arbitrary), capped at -6.
+        ercf_autocrator_corruption_regression_effect = yes
+
+        # SACRED MANDATE: Hard Gate for Isapostolos at 100 XP
+        # (3 worthiness paths + 30-day grace on first crossing).
+        ercf_autocrator_mandate_check_effect = yes
+    }
+}
+
+ercf_five_year_roman_development_pulse = {
+    effect = {
+        # ROMAN ENGINUITY EVENT
+        if = {
+            limit = {
+               # FIRST, CHECK IF VALID
+               OR = {
+                    has_title = title:e_byzantium
+                    has_title = title:h_roman_empire
+                    has_title = title:h_eastern_roman_empire
+                    has_title = title:e_italy
+               }
+               is_target_in_global_variable_list = {
+                name = unavailable_unique_decisions
+                target = flag:flag_delegated_wre
+               }               
+            }
+            # THEN, ALEA IACTA EST
+            random = {
+                chance = 30 # 30% Chance to fire
+                trigger_event = ercf_roman_development_events.9001
+            }
+        }
+    }
+}
+
+basileus_eastern_reconquest_yearly_pulse = {
+    effect = {
+        if = {
+            limit = {
+                has_title = title:e_byzantium
+                any_character_struggle = {
+                    is_struggle_type = basileus_eastern_reconquest_struggle
+                }
+            }
+            # War chest logic
+            if = {
+                limit = {
+                    OR = {
+                        AND = {
+                            has_treasury = no
+                            gold >= 1000
+                        }
+                        AND = {
+                            has_treasury = yes
+                            treasury >= 1000
+                        }
+                    }
+                }
+                if = {
+                    limit = {
+                        NOT = { has_character_flag = basileus_has_filled_coffers }
+                    }
+                    add_character_flag = basileus_has_filled_coffers
+                    every_character_struggle = {
+                        limit = { is_struggle_type = basileus_eastern_reconquest_struggle }
+                        activate_struggle_catalyst = {
+                            catalyst = catalyst_basileus_filled_imperial_coffers
+                            character = root
+                        }
+                    }
+                }
+            }
+            else = {
+                remove_character_flag = basileus_has_filled_coffers
+            }
+
+            # Bankruptcy / Legion Mutiny logic
+            if = {
+                limit = {
+                    OR = {
+                        is_in_debt = yes
+                        AND = {
+                            has_treasury = yes
+                            treasury_debt_level >= 1
+                        }
+                    }
+                }
+                if = {
+                    limit = {
+                        NOT = { has_character_flag = basileus_has_bankrupt_in_struggle }
+                    }
+                    add_character_flag = basileus_has_bankrupt_in_struggle
+                    basileus_activate_defender_catalyst_effect = {
+                        CATALYST = catalyst_basileus_roman_bankrupt_in_struggle
+                        CHAR = root
+                    }
+                }
+                if = {
+                    limit = {
+                        any_character_struggle = {
+                            is_struggle_type = basileus_eastern_reconquest_struggle
+                            is_struggle_phase = struggle_eastern_reconquest_phase_triumph
+                        }
+                        NOT = { has_character_flag = basileus_legion_mutiny_triggered }
+                    }
+                    add_character_flag = basileus_legion_mutiny_triggered
+                    basileus_activate_defender_catalyst_effect = {
+                        CATALYST = catalyst_basileus_legion_mutiny
+                        CHAR = root
+                    }
+                }
+            }
+            else = {
+                remove_character_flag = basileus_has_bankrupt_in_struggle
+                remove_character_flag = basileus_legion_mutiny_triggered
+            }
+
+            # Plague Outbreak
+            if = {
+                limit = {
+                    any_character_struggle = {
+                        is_struggle_type = basileus_eastern_reconquest_struggle
+                        is_struggle_phase = struggle_eastern_reconquest_phase_triumph
+                    }
+                    NOT = { has_character_flag = basileus_plague_outbreak_triggered }
+                    OR = {
+                        title:c_constantinople.title_province = {
+                            any_province_epidemic = { }
+                        }
+                        any_sub_realm_county = {
+                            title_province = {
+                                geographical_region = custom_theodosian_ere
+                                any_province_epidemic = { }
+                            }
+                        }
+                    }
+                }
+                add_character_flag = basileus_plague_outbreak_triggered
+                basileus_activate_defender_catalyst_effect = {
+                    CATALYST = catalyst_basileus_plague_outbreak
+                    CHAR = root
+                }
+            }
+
+            # Senate Conspiracy
+            if = {
+                limit = {
+                    any_character_struggle = {
+                        is_struggle_type = basileus_eastern_reconquest_struggle
+                        is_struggle_phase = struggle_eastern_reconquest_phase_triumph
+                    }
+                    NOT = { has_character_flag = basileus_senate_conspiracy_triggered }
+                    any_court_position_holder = {
+                        OR = {
+                            type = hypatus_court_position
+                            type = senator_court_position
+                            type = patrician_court_position
+                        }
+                        opinion = {
+							target = root
+							value < -30
+						}
+                    }
+                }
+                add_character_flag = basileus_senate_conspiracy_triggered
+                basileus_activate_defender_catalyst_effect = {
+                    CATALYST = catalyst_basileus_senate_conspiracy
+                    CHAR = root
+                }
+            }
+        }
+    }
+}

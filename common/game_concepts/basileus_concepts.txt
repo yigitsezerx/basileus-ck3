@@ -1,0 +1,236 @@
+logothetes = {
+	alias = {
+		logothete
+	}
+}
+
+blachernae_palace = {
+	alias = {
+		blachernae
+		palace_of_blachernae
+	}
+}
+
+domestic_schools = {
+	alias = {
+		domesticus_schools
+	}
+}
+
+stratelates = {
+	alias = {
+		master_soldiers
+	}
+}
+
+magister_militum = {
+}
+
+magister_officiorum = {
+	alias = {
+		master_offices
+	}
+}
+
+sakellarios = {
+	alias = {
+		sakellarius
+	}
+}
+
+quaestor = {
+}
+
+eparch = {
+	alias = {
+		eparch_constantinople
+	}
+}
+
+great_palace = {
+	alias = {
+		great_palace_constantinople
+		palace_of_constantinople
+	}
+}
+
+patriarch = {
+}
+
+# Imperial senate institution. Static "Senate" name; tooltip describes the
+# Senate of Magnaura.
+senate = {
+	alias = {
+		synkletos
+		senatus
+		magnaura
+	}
+}
+
+# Dynamic enemy demonym — displayed name resolves via GetEnemyDemonym
+# (Greek "Hagarene" fallback / eastern_roman "Saracen").
+saracen = {
+	alias = {
+		saracens
+		hagarene
+		hagarenes
+	}
+}
+
+praefectus = {
+}
+
+praepositus = {
+	alias = {
+		praepositus_sacri_cubiculi
+	}
+}
+
+symphonia = {
+}
+
+autocrator = {
+	alias = {
+		autocrator
+		autokrator
+	}
+}
+
+constantine_the_great = {
+	alias = {
+		constantine
+		constantine_the_great
+		constantine_i
+	}
+}
+
+isapostolos = {
+	alias = {
+		isapostolos
+		equal_to_the_apostles
+	}
+}
+
+exalted_among_men = {
+	alias = {
+		exalted_among_men
+	}
+	parent = prestige_level
+}
+
+paragon_of_virtue = {
+	alias = {
+		paragon_of_virtue
+	}
+	parent = piety_level
+}
+
+rhomaios = {
+}
+
+triumph = {
+	parent = victory
+}
+
+# Byzantine Greek Concepts
+logothetes_dromou = {
+}
+
+parakoimomenos = {
+}
+
+megas_domestikos = {
+}
+
+logothetes_genikou = {
+}
+
+logothetes_kanikleiou = {
+}
+
+logothetes_praitoriou = {
+}
+
+eparchos = {
+}
+
+domestikos_ton_scholon = {
+}
+
+sakellarios_greek = {
+}
+
+stratopedarches = {
+}
+
+logothetes_ton_sekreton = {
+}
+
+tagmata = {
+	alias = {
+		tagma
+	}
+}
+
+# Pandects and Tribonian
+pandects = {
+	alias = {
+		digest
+	}
+}
+
+tribonian = {
+	alias = {
+		tribonianos
+	}
+}
+
+justinian_the_great = {
+	alias = {
+		justinian_i
+		justinian
+	}
+}
+
+corpus_juris_civilis = {
+}
+
+# Jordanes
+jordanes_the_historian = {
+	alias = {
+		jordanes
+	}
+}
+
+romana_et_getica = {
+	alias = {
+		romana
+		getica
+		romana_getica
+	}
+}
+
+cassiodorus = {
+	alias = {
+		cassiodorus_senator
+	}
+}
+
+struggle_eastern_reconquest_phase_resolve = {
+	parent = struggle_phase
+}
+
+struggle_eastern_reconquest_phase_reconquest = {
+	parent = struggle_phase
+}
+
+struggle_eastern_reconquest_phase_triumph = {
+	parent = struggle_phase
+}
+
+struggle_eastern_reconquest_phase_setback = {
+	parent = struggle_phase
+}
+
+two_emperor_problem = {
+}

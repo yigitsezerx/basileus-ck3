@@ -1,0 +1,181 @@
+# =====================================================================
+# BASILEUS — Conversion Failure Event Overrides
+# ---------------------------------------------------------------------
+# Overrides vanilla court_chaplain_task.2001 and court_chaplain_task.2002
+# to trigger the theological dispute catalyst if a county conversion
+# resistance/dispute fires in the struggle region during the Reconquest phase.
+# =====================================================================
+
+court_chaplain_task.2001 = {
+	hidden = yes
+
+	trigger = {
+		exists = cp:councillor_court_chaplain
+		scope:councillor = cp:councillor_court_chaplain
+		scope:councillor = {
+			learning < high_skill_rating
+		}
+		scope:county = {
+			NOT = { has_county_modifier = court_chaplain_resisted_conversion_modifier }
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		compare_modifier = {
+			target = scope:councillor
+			value = learning
+			multiplier = -0.2
+			offset = inverted_high_skill_rating
+		}
+	}
+
+	immediate = {
+		cp:councillor_court_chaplain = {
+			save_scope_as = active_councillor
+		}
+		set_variable = {
+			name = had_court_chaplain_task_side_effect
+			value = yes
+			days = court_chaplain_task_side_effect_cooldown
+		}
+		send_interface_message = {
+			type = msg_court_chaplain_task_bad
+			title = court_chaplain_task.2001.notification
+			desc = {
+				triggered_desc = {
+					trigger = {
+						scope:active_councillor = { learning <= average_skill_level }
+					}
+					desc = task_learning_bad_unskilled_notification_tooltip
+				}
+				triggered_desc = {
+					trigger = {
+						scope:active_councillor = { learning > average_skill_level }
+					}
+					desc = task_learning_bad_skilled_notification_tooltip
+				}
+			}
+			tooltip = task_conversion_notification_tooltip
+			left_icon = scope:county
+			right_icon = scope:councillor
+			
+			scope:county = {
+				add_county_modifier = {
+					modifier = court_chaplain_resisted_conversion_modifier
+					days = court_chaplain_task_modifier_duration
+				}
+			}
+		}
+
+		# Basileus Theological Dispute Flares Catalyst
+		if = {
+			limit = {
+				scope:county = {
+					title_province = {
+						geographical_region = custom_theodosian_ere
+					}
+				}
+				root = {
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+						is_struggle_phase = struggle_eastern_reconquest_phase_reconquest
+					}
+				}
+			}
+			basileus_activate_defender_catalyst_effect = {
+				CATALYST = catalyst_basileus_theological_dispute_flared
+				CHAR = root
+			}
+		}
+	}
+}
+
+court_chaplain_task.2002 = {
+	hidden = yes
+
+	trigger = {
+		exists = cp:councillor_court_chaplain
+		scope:councillor = cp:councillor_court_chaplain
+		scope:councillor = {
+			learning < high_skill_rating
+		}
+		scope:county = {
+			NOR = {
+				has_county_modifier = court_chaplain_county_conversion_upset_modifier
+				has_county_modifier = court_chaplain_county_conversion_support_modifier
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		compare_modifier = {
+			target = scope:councillor
+			value = learning
+			multiplier = -0.2
+			offset = inverted_high_skill_rating
+		}
+	}
+
+	immediate = {
+		cp:councillor_court_chaplain = {
+			save_scope_as = active_councillor
+		}
+		set_variable = {
+			name = had_court_chaplain_task_side_effect
+			value = yes
+			days = court_chaplain_task_side_effect_cooldown
+		}
+		send_interface_message = {
+			type = msg_court_chaplain_task_bad
+			title = court_chaplain_task.2002.notification
+			desc = {
+				triggered_desc = {
+					trigger = {
+						scope:active_councillor = { learning <= average_skill_level }
+					}
+					desc = task_learning_bad_unskilled_notification_tooltip
+				}
+				triggered_desc = {
+					trigger = {
+						scope:active_councillor = { learning > average_skill_level }
+					}
+					desc = task_learning_bad_skilled_notification_tooltip
+				}
+			}
+			tooltip = task_conversion_notification_tooltip
+
+			left_icon = scope:county
+			right_icon = scope:councillor
+
+			scope:county = {
+				add_county_modifier = {
+					modifier = court_chaplain_county_conversion_upset_modifier
+					days = court_chaplain_task_modifier_duration
+				}
+			}
+		}
+
+		# Basileus Theological Dispute Flares Catalyst
+		if = {
+			limit = {
+				scope:county = {
+					title_province = {
+						geographical_region = custom_theodosian_ere
+					}
+				}
+				root = {
+					any_character_struggle = {
+						is_struggle_type = basileus_eastern_reconquest_struggle
+						is_struggle_phase = struggle_eastern_reconquest_phase_reconquest
+					}
+				}
+			}
+			basileus_activate_defender_catalyst_effect = {
+				CATALYST = catalyst_basileus_theological_dispute_flared
+				CHAR = root
+			}
+		}
+	}
+}

@@ -1,0 +1,468 @@
+# =====================================================================
+# BASILEUS — THE EASTERN RECONQUEST — custom struggle.
+# ---------------------------------------------------------------------
+# 4 narrative phases, 2 ending decisions, asymmetric:
+#
+#   Phase 1: Resolve    → Reconquest
+#   Phase 2: Reconquest → Triumph OR Setback
+#   Phase 3a: Triumph   → (player invokes Triumph ending decision)
+#   Phase 3b: Setback   → can recover to Reconquest OR slide to Hubris
+#
+# Endings (via ending_decisions):
+#   - basileus_eastern_reconquest_triumph_decision   (success state)
+#   - basileus_eastern_reconquest_concede_decision   (failure state)
+#
+# Catalyst tuning aims for ~6-7 in-game years per phase transition on
+# average. The major movers are Roman wars won in the eastern regions
+# and major usurpations of eastern titles.
+# =====================================================================
+
+basileus_eastern_reconquest_struggle = {
+	illustration = "gfx/interface/illustrations/event_scenes/ep3_constantinople.dds"
+
+	##################################################
+	# Setup
+	##################################################
+
+	# Cultures eligible to be involved in the struggle. Mix of Roman-side
+	# (Greek / Roman / eastern-Christian cultures) and defender-side
+	# cultures (anyone with significant holdings in the regions).
+	cultures = {
+		# Roman / Greek Core
+		greek
+		eastern_roman
+		# western_roman not needed yet.
+		# Eastern Christian cultures
+		armenian
+		coptic
+		syriac
+		assyrian
+		# Defender side — peoples currently holding the East
+		levantine
+		bedouin
+		egyptian
+		mashriqi
+		nubian
+		ethiopian
+		afar
+		somali
+		# Persian/Iranian fringe (in case of overlap)
+		persian
+		kurdish
+	}
+
+	# Faiths eligible for involvement.
+	faiths = {
+		# Christian (Roman side + eastern denominations)
+		orthodox
+		catholic
+		nestorian
+		bogomilist
+		paulician
+		iconoclast
+		# Islamic (defender side)
+		ashari
+		mutazila
+		maturidi
+		ismaili
+		imami
+		# Jewish not really needed.
+		# rabbinism
+		# karaism
+		# samaritanism
+		# Pagan (edge cases)
+		# african_traditional not really needed.
+	}
+
+	regions = { custom_roman_haemimontus custom_roman_orient custom_heartlands_ere  }
+
+	# 50% of a culture/faith's total counties need to be inside the
+	# struggle region to auto-involve. The Basileus is force-involved
+	# separately by basileus_start_eastern_struggle_effect on launch.
+	involvement_prerequisite_percentage = 0.5
+
+	transition_state_duration = { months = 3 }
+
+	##################################################
+	# Hooks
+	##################################################
+	on_start = {
+		# Note: start_date variable is set by basileus_start_eastern_struggle_effect
+		# right before the struggle starts, so it's already in place here.
+	}
+
+	on_change_phase = {
+		# Future: phase-flavour events. MVP: nothing.
+	}
+
+	# Root = the joining character (as in vanilla iberian/persian on_join,
+	# where `is_ai`/trigger_event are evaluated directly on the joiner).
+	# Fire the struggle-intro primer here — NOT from the start effect —
+	# so the joiner's involvement is fully registered before the
+	# struggle_info widget reads it (otherwise the widget renders the
+	# "ended" fallback state, showing the current phase as an "ending").
+	# Gated to human Roman-side participants, once each.
+	on_join = {
+		if = {
+			limit = {
+				is_ai = no
+				OR = {
+					has_title = title:e_byzantium
+					any_liege_or_above = { has_title = title:e_byzantium }
+				}
+				NOT = { has_character_flag = basileus_eastern_reconquest_intro_seen }
+			}
+			add_character_flag = basileus_eastern_reconquest_intro_seen
+			trigger_event = basileus_eastern_reconquest.0002
+		}
+	}
+
+	##################################################
+	# Phases
+	##################################################
+	start_phase = struggle_eastern_reconquest_phase_resolve
+
+	phase_list = {
+
+		# -------------------------------------------------------------
+		# Phase 1: RESOLVE
+		# The declaration is made. The legions stir, the senate watches.
+		# Modest bonuses; the campaign hasn't truly begun.
+		# -------------------------------------------------------------
+		struggle_eastern_reconquest_phase_resolve = {
+			duration = { points = 1000 }
+			future_phases = {
+				struggle_eastern_reconquest_phase_reconquest = {
+					catalysts = {
+						catalyst_passing_of_time                                = minor_struggle_catalyst_over_time_gain
+						catalyst_win_any_war_within_the_region                  = major_struggle_catalyst_gain
+						# Custom Roman-side catalysts
+						catalyst_basileus_reconquered_eastern_county            = major_struggle_catalyst_gain
+						catalyst_basileus_great_eastern_city_recovered          = massive_struggle_catalyst_gain
+						catalyst_basileus_eastern_county_faith_flipped_christian = minor_struggle_catalyst_gain
+						catalyst_basileus_built_frontier_holding                = medium_struggle_catalyst_gain
+						catalyst_basileus_filled_imperial_coffers               = medium_struggle_catalyst_gain
+						catalyst_basileus_captured_high_value_defender           = medium_struggle_catalyst_gain
+						catalyst_basileus_assassinated_eastern_caliph            = major_struggle_catalyst_gain
+						# New Phase 1 catalysts
+						catalyst_basileus_senate_blessing                       = 25
+						catalyst_basileus_secured_western_frontier               = 15
+						catalyst_basileus_banners_consecrated                   = 10
+					}
+				}
+			}
+
+			war_effects = {
+				name = WAR_EFFECTS_NAME
+				common_parameters = {
+					unlocks_basileus_roman_reclamation_casus_belli = yes
+				}
+				involved_parameters = {
+					involved_or_interloper_wars_in_struggle_region_cheaper_prestige_costs = yes
+				}
+				involved_character_modifier = {
+					monthly_legitimacy_add = 1
+					monthly_prestige = 0.25
+				}
+			}
+
+			other_effects = {
+				name = OTHER_EFFECTS_NAME
+				involved_county_modifier = {
+					county_opinion_add = 5
+				}
+				uninvolved_county_modifier = {
+					county_opinion_add = -3
+				}
+			}
+
+			# Make the "View Struggle Ending" panel reachable from every
+			# phase. The Triumph decision still has its own is_valid =
+			# completely_controls_region check, so it'll appear greyed
+			# out (with the failure tooltip) during Resolve / Reconquest.
+			# Concede is always valid — the Basileus can give up at any
+			# time, which fits the "hubris" framing.
+			ending_decisions = {
+				basileus_eastern_reconquest_triumph_decision
+				basileus_eastern_reconquest_concede_decision
+			}
+		}
+
+		# -------------------------------------------------------------
+		# Phase 2: RECONQUEST
+		# The campaigns are in earnest. Bonuses peak; defenders strain.
+		# Can transition to Triumph (good progress) or Setback (bad).
+		# -------------------------------------------------------------
+		struggle_eastern_reconquest_phase_reconquest = {
+			duration = { points = 1000 }
+			future_phases = {
+				struggle_eastern_reconquest_phase_triumph = {
+					catalysts = {
+						catalyst_passing_of_time                                = minimal_struggle_catalyst_over_time_gain
+						catalyst_win_any_war_within_the_region                  = major_struggle_catalyst_gain
+						# Custom Roman-side catalysts
+						catalyst_basileus_reconquered_eastern_county            = major_struggle_catalyst_gain
+						catalyst_basileus_great_eastern_city_recovered          = massive_struggle_catalyst_gain
+						catalyst_basileus_eastern_culture_flipped               = medium_struggle_catalyst_gain
+						catalyst_basileus_eastern_county_faith_flipped_christian = medium_struggle_catalyst_gain
+						catalyst_basileus_recovered_holy_site                    = major_struggle_catalyst_gain
+						catalyst_basileus_converted_eastern_ruler                = medium_struggle_catalyst_gain
+						catalyst_basileus_won_eastern_battle                     = minor_struggle_catalyst_gain
+						catalyst_basileus_built_frontier_holding                = medium_struggle_catalyst_gain
+						catalyst_basileus_filled_imperial_coffers               = medium_struggle_catalyst_gain
+						catalyst_basileus_captured_high_value_defender           = medium_struggle_catalyst_gain
+						catalyst_basileus_assassinated_eastern_caliph            = major_struggle_catalyst_gain
+						# New Phase 2 (Triumph push) catalysts
+						catalyst_basileus_elevated_celebrated_general           = 10
+					}
+				}
+				struggle_eastern_reconquest_phase_setback = {
+					catalysts = {
+						catalyst_passing_of_time                       = minimal_struggle_catalyst_over_time_gain
+						# Defender-side catalysts — push Reconquest → Setback.
+						catalyst_basileus_roman_county_lost            = major_struggle_catalyst_gain
+						catalyst_basileus_great_eastern_city_lost      = massive_struggle_catalyst_gain
+						catalyst_basileus_basileus_died_during_struggle = major_struggle_catalyst_gain
+						catalyst_basileus_roman_vassal_revolt          = medium_struggle_catalyst_gain
+						catalyst_basileus_lost_eastern_battle          = minor_struggle_catalyst_gain
+						catalyst_basileus_basileus_captured_in_battle  = major_struggle_catalyst_gain
+						catalyst_basileus_roman_bankrupt_in_struggle   = major_struggle_catalyst_gain
+						# New Phase 2 (Setback push) catalysts
+						catalyst_basileus_theological_dispute_flared   = 25
+						catalyst_basileus_jihad_declared               = 25
+					}
+				}
+			}
+
+			war_effects = {
+				name = WAR_EFFECTS_NAME
+				common_parameters = {
+					unlocks_basileus_roman_reclamation_casus_belli = yes
+				}
+				involved_parameters = {
+					involved_or_interloper_wars_in_struggle_region_cheaper_prestige_costs = yes
+					claims_in_region_cost_prestige_not_gold_for_involved_parties = yes
+				}
+				involved_character_modifier = {
+					monthly_legitimacy_add = 1.5
+					monthly_prestige = 0.5
+					men_at_arms_maintenance = -0.1
+					knight_effectiveness_mult = 0.05
+					vassal_tax_contribution_mult = 0.05
+				}
+				# DEFENDER RALLY — interlopers (defenders in the region but not
+				# struggle-involved) get a modest rally bonus. The Reconquest is
+				# real, and defenders organise to push back.
+				interloper_character_modifier = {
+					monthly_prestige = 0.25
+					levy_reinforcement_rate = 0.05
+				}
+			}
+
+			faith_effects = {
+				name = FAITH_EFFECTS_NAME
+				common_parameters = {
+					holy_wars_in_region_cannot_be_declared = yes
+					cheaper_to_convert_to_struggle_faith = yes
+					county_faith_conversion_in_region_proceeds_faster = yes
+				}
+			}
+
+			culture_effects = {
+				name = CULTURE_EFFECTS_NAME
+				common_parameters = {
+					cheaper_to_convert_to_struggle_culture = yes
+					county_culture_conversion_in_region_proceeds_faster = yes
+				}
+			}
+
+			other_effects = {
+				name = OTHER_EFFECTS_NAME
+				involved_county_modifier = {
+					county_opinion_add = 5
+				}
+				uninvolved_county_modifier = {
+					county_opinion_add = -5
+					tax_mult = -0.1
+				}
+			}
+
+			# View Struggle Ending always reachable.
+			ending_decisions = {
+				basileus_eastern_reconquest_triumph_decision
+				basileus_eastern_reconquest_concede_decision
+			}
+		}
+
+		# -------------------------------------------------------------
+		# Phase 3a: TRIUMPH
+		# Romans winning. Momentum is unstoppable. Ending decision
+		# (basileus_eastern_reconquest_triumph_decision) is now visible
+		# and can be invoked once heartlands are fully held.
+		# -------------------------------------------------------------
+		struggle_eastern_reconquest_phase_triumph = {
+			duration = { points = 1000 }
+			future_phases = {
+				struggle_eastern_reconquest_phase_setback = {
+					catalysts = {
+						catalyst_passing_of_time                       = minimal_struggle_catalyst_over_time_gain
+						# Defender-side catalysts — push Triumph → Setback (rarer
+						# but more impactful: defenders rallying from a losing
+						# position is the dramatic reversal).
+						catalyst_basileus_roman_county_lost            = major_struggle_catalyst_gain
+						catalyst_basileus_great_eastern_city_lost      = massive_struggle_catalyst_gain
+						catalyst_basileus_basileus_died_during_struggle = major_struggle_catalyst_gain
+						catalyst_basileus_roman_vassal_revolt          = medium_struggle_catalyst_gain
+						catalyst_basileus_lost_eastern_battle          = minor_struggle_catalyst_gain
+						catalyst_basileus_basileus_captured_in_battle  = major_struggle_catalyst_gain
+						catalyst_basileus_roman_bankrupt_in_struggle   = major_struggle_catalyst_gain
+						# New Phase 3a (Setback push) catalysts
+						catalyst_basileus_eastern_coalition_formed     = 10
+						catalyst_basileus_plague_outbreak             = 10
+						catalyst_basileus_senate_conspiracy           = 25
+						catalyst_basileus_legion_mutiny               = 10
+						catalyst_basileus_eastern_lord_defected       = 25
+					}
+				}
+			}
+
+			war_effects = {
+				name = WAR_EFFECTS_NAME
+				common_parameters = {
+					unlocks_basileus_roman_reclamation_casus_belli = yes
+				}
+				involved_parameters = {
+					involved_or_interloper_wars_in_struggle_region_cheaper_prestige_costs = yes
+					claims_in_region_cost_prestige_not_gold_for_involved_parties = yes
+				}
+				involved_character_modifier = {
+					monthly_legitimacy_add = 2
+					monthly_prestige = 1
+					knight_effectiveness_mult = 0.1
+					men_at_arms_maintenance = -0.15
+					vassal_tax_contribution_mult = 0.05
+					vassal_limit = 5
+				}
+				# DEFENDER CORNERED — interlopers fight harder against schemes
+				# as Roman victory looms. Their levy doesn't get bigger but
+				# their counter-intel does.
+				interloper_character_modifier = {
+					hostile_scheme_phase_duration_add = 10
+				}
+			}
+
+			faith_effects = {
+				name = FAITH_EFFECTS_NAME
+				common_parameters = {
+					holy_wars_in_region_cannot_be_declared = yes
+					cheaper_to_convert_to_struggle_faith = yes
+					county_faith_conversion_in_region_proceeds_faster = yes
+				}
+			}
+
+			culture_effects = {
+				name = CULTURE_EFFECTS_NAME
+				common_parameters = {
+					cheaper_to_convert_to_struggle_culture = yes
+					county_culture_conversion_in_region_proceeds_faster = yes
+				}
+			}
+
+			other_effects = {
+				name = OTHER_EFFECTS_NAME
+				involved_county_modifier = {
+					county_opinion_add = 10
+				}
+				uninvolved_county_modifier = {
+					county_opinion_add = -10
+					tax_mult = -0.15
+				}
+			}
+
+			ending_decisions = {
+				basileus_eastern_reconquest_triumph_decision
+				basileus_eastern_reconquest_concede_decision
+			}
+		}
+
+		# -------------------------------------------------------------
+		# Phase 3b: SETBACK
+		# Reconquest is faltering. Defenders rally. The player can still
+		# recover by accumulating catalysts to push back to Reconquest.
+		# Concede decision (the failure path) is visible from here.
+		# -------------------------------------------------------------
+		struggle_eastern_reconquest_phase_setback = {
+			duration = { points = 500 }
+			future_phases = {
+				struggle_eastern_reconquest_phase_reconquest = {
+					catalysts = {
+						catalyst_passing_of_time                       = minimal_struggle_catalyst_over_time_gain
+						catalyst_win_any_war_within_the_region         = major_struggle_catalyst_gain
+						# Custom catalysts — any Roman win pulls the campaign back.
+						catalyst_basileus_reconquered_eastern_county   = major_struggle_catalyst_gain
+						catalyst_basileus_great_eastern_city_recovered = massive_struggle_catalyst_gain
+						catalyst_basileus_built_frontier_holding       = medium_struggle_catalyst_gain
+						catalyst_basileus_filled_imperial_coffers      = medium_struggle_catalyst_gain
+						catalyst_basileus_captured_high_value_defender  = medium_struggle_catalyst_gain
+						catalyst_basileus_assassinated_eastern_caliph   = major_struggle_catalyst_gain
+						# New Phase 3b (Recovery push) catalysts
+						catalyst_basileus_defender_alliance_shattered = 25
+					}
+				}
+				struggle_eastern_reconquest_phase_triumph = {
+					catalysts = {
+						catalyst_win_any_war_within_the_region         = massive_struggle_catalyst_gain
+						# Custom catalyst — a great-city recovery alone can leap from Setback to Triumph.
+						catalyst_basileus_great_eastern_city_recovered = massive_struggle_catalyst_gain
+						catalyst_basileus_assassinated_eastern_caliph   = massive_struggle_catalyst_gain
+						# New Phase 3b (Triumph leap) catalyst
+						catalyst_basileus_miracle_battle               = 50
+					}
+				}
+			}
+
+			war_effects = {
+				name = WAR_EFFECTS_NAME
+				involved_parameters = {
+					involved_or_interloper_wars_in_struggle_region_cheaper_prestige_costs = yes
+				}
+				involved_character_modifier = {
+					monthly_prestige = -0.05
+					vassal_opinion = -5
+					hostile_scheme_resistance_add = -5
+					vassal_limit = -5
+				}
+				interloper_character_modifier = {
+					monthly_prestige = 0.2
+					levy_size = 0.1
+					men_at_arms_recruitment_cost = -0.1
+				}
+			}
+
+			faith_effects = {
+				name = FAITH_EFFECTS_NAME
+				common_parameters = {
+					holy_wars_in_region_cannot_be_declared = yes
+				}
+			}
+
+			other_effects = {
+				name = OTHER_EFFECTS_NAME
+				uninvolved_county_modifier = {
+					county_opinion_add = 5
+				}
+				# Defender-held counties (interloper counties) thrive during
+				# the Setback: they tax more, recruit more, and feel safe.
+				interloper_county_modifier = {
+					county_opinion_add = 5
+					tax_mult = 0.02
+				}
+			}
+
+			ending_decisions = {
+				basileus_eastern_reconquest_triumph_decision
+				basileus_eastern_reconquest_concede_decision
+			}
+		}
+	}
+}

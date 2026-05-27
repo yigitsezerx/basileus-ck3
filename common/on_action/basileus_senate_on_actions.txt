@@ -1,0 +1,380 @@
+# Senate of Magnaura — initialisation, succession reset, yearly approval pulse.
+# Approval is stored as a scripted variable `senate_approval` on title:e_byzantium,
+# range 0–100, default 50.
+
+on_game_start_after_lobby = {
+	on_actions = {
+		basileus_senate_init
+	}
+}
+
+on_title_gain = {
+	on_actions = {
+		basileus_senate_on_title_gain
+	}
+}
+
+on_title_lost = {
+	on_actions = {
+		basileus_senate_on_title_lost
+	}
+}
+
+# Senate-sanctioned war: when the Basileus declares an offensive war against
+# a serious target with the senate's approval, apply a 5-year blessing.
+# Vanilla scope: scope:attacker, scope:defender, scope:war.
+on_war_started = {
+	on_actions = {
+		basileus_senate_on_war_started
+	}
+}
+
+yearly_global_pulse = {
+	on_actions = {
+		basileus_senate_yearly_pulse
+	}
+}
+
+# Note: no on_character_culture_change hook needed — the basileus/emeritus
+# traits switch their displayed name dynamically via the trait's name_block,
+# so culture changes are reflected automatically without any script action.
+
+# ---------------------------------------------------------------
+# Initialise senate_approval on the empire title at game start.
+# ---------------------------------------------------------------
+basileus_senate_init = {
+	effect = {
+		title:e_byzantium = {
+			if = {
+				limit = { NOT = { exists = var:senate_approval } }
+				set_variable = { name = senate_approval value = 50 }
+			}
+			# Trend tracking var — same default as approval so first-year
+			# tooltip shows "no change" instead of a wild delta from 0.
+			if = {
+				limit = { NOT = { exists = var:senate_approval_last_year } }
+				set_variable = { name = senate_approval_last_year value = var:senate_approval }
+			}
+		}
+		basileus_senate_recompute_counts = yes
+		# Sync the threshold modifier to current approval (covers the case
+		# where approval was modified via console / outside the pulse).
+		basileus_senate_apply_threshold_modifiers = yes
+	}
+}
+
+# ---------------------------------------------------------------
+# Demote any basileus traits when e_byzantium is lost.
+# scope:title = the title that was lost; root = the character who lost it.
+# ---------------------------------------------------------------
+basileus_senate_on_title_lost = {
+	effect = {
+		if = {
+			limit = {
+				scope:title = title:e_byzantium
+				is_alive = yes
+			}
+			basileus_senate_revert_ascended_traits = yes
+			# Strip approval / dynasty-dominance modifiers from the
+			# ex-emperor — these are tied to the throne, not the person.
+			remove_character_modifier = senate_approval_high_modifier
+			remove_character_modifier = senate_approval_low_modifier
+			remove_character_modifier = senate_dynasty_dominance_modifier
+		}
+	}
+}
+
+# ---------------------------------------------------------------
+# Reset senate_approval to 50 whenever e_byzantium changes hands.
+# ---------------------------------------------------------------
+basileus_senate_on_title_gain = {
+	effect = {
+		if = {
+			limit = {
+				scope:title = title:e_byzantium
+			}
+			# Senate blesses succession — if the OUTGOING reign ended with
+			# approval >= 70, apply the Anointed modifier to the new holder
+			# BEFORE the approval reset. The check is on the title var still
+			# holding the old value at this moment.
+			if = {
+				limit = {
+					scope:title = { var:senate_approval >= 70 }
+				}
+				add_character_modifier = {
+					modifier = senate_anointed_modifier
+					years = 5
+				}
+			}
+
+			scope:title = {
+				set_variable = {
+					name = senate_approval
+					value = 50
+				}
+				# Initialise the last-year tracking var for the trend display.
+				set_variable = {
+					name = senate_approval_last_year
+					value = 50
+				}
+			}
+			# Clear inherited threshold modifiers on the new emperor —
+			# they'll be re-evaluated by the yearly pulse, and dynasty-
+			# dominance is also re-checked here so the new emperor doesn't
+			# inherit a stale dominance modifier from a prior holder.
+			remove_character_modifier = senate_approval_high_modifier
+			remove_character_modifier = senate_approval_low_modifier
+			remove_character_modifier = senate_dynasty_dominance_modifier
+			# Refresh count variables — court positions transfer on succession,
+			# but our cached counts need to be re-synced for the new holder.
+			basileus_senate_recompute_counts = yes
+
+			# If the new holder previously served in the senate, ascend their
+			# tenure/emeritus trait(s) to the `_basileus` variant.
+			basileus_senate_ascend_senate_traits = yes
+
+			# Re-evaluate dynasty dominance immediately for the new holder so
+			# the modifier reflects current senate composition without waiting
+			# for the next yearly pulse.
+			basileus_senate_check_dynasty_dominance = yes
+
+			# Apply the high/low approval modifier immediately based on the
+			# (just-reset-to-50) approval. At 50 this clears both, but the call
+			# is here so any future change to the on-gain approval is handled.
+			basileus_senate_apply_threshold_modifiers = yes
+		}
+	}
+}
+
+# ---------------------------------------------------------------
+# Yearly recalculation of senate_approval. Relaxed tuning (Mar 2026)
+# — gentle climb when staffed, soft floor when empty.
+#
+# Baseline yearly drift:   -3  (mild institutional drag)
+# Per filled Hypatos:      +1.5   (halved to +0.75 if approval >= 80)
+# Per filled Senator:      +1.0   (halved to +0.5  if approval >= 80)
+# Per filled Patrician:    +0.5   (halved to +0.25 if approval >= 80)
+# Per senate member with opinion < 0:    -0.25 (no soft cap, softened
+#                                       from -0.5 — mild displeasure
+#                                       shouldn't bite hard)
+# Per senate member with opinion >= 50:  +0.5  (unchanged)
+#
+# Net result at fully-staffed (1 Hypatos + 5 Senators + 5 Patricians):
+#   Approval <80, mixed opinions:   ~+6 / year (was +4)
+#   Approval <80, all friendly:     ~+11 / year (was +9)
+#   Approval >=80, mixed opinions:  ~+1 / year (was -1; soft cap is now
+#                                   a true plateau, not a slow drift down)
+#   Approval >=80, all friendly:    ~+6 / year (was +4)
+#   Empty senate:                   ~-3 / year (was -5)
+# ---------------------------------------------------------------
+basileus_senate_yearly_pulse = {
+	effect = {
+		if = {
+			limit = {
+				exists = title:e_byzantium.holder
+			}
+
+			# Trend tracking — snapshot the START-of-year approval so the
+			# tooltip can show "vs last year" once this pulse's changes apply.
+			# (Stored before any approval mutation in this pulse.)
+			title:e_byzantium = {
+				if = {
+					limit = { NOT = { exists = var:senate_approval_last_year } }
+					set_variable = { name = senate_approval_last_year value = var:senate_approval }
+				}
+				set_variable = {
+					name = senate_approval_last_year
+					value = var:senate_approval
+				}
+			}
+
+			# Tenure XP: +4 per year served. Tracks auto-progress when thresholds
+			# are crossed (10 → Veteran, 25 → Elder).
+			title:e_byzantium.holder = {
+				every_court_position_holder = {
+					type = hypatus_court_position
+					add_trait_xp = { trait = hypatos_tenure value = 4 }
+				}
+				every_court_position_holder = {
+					type = senator_court_position
+					add_trait_xp = { trait = senator_tenure value = 4 }
+				}
+				every_court_position_holder = {
+					type = patrician_court_position
+					add_trait_xp = { trait = patrician_tenure value = 4 }
+				}
+			}
+
+			# Resync ascended-trait variants on the current emperor AND every
+			# courtier (former senate members usually stay at the imperial
+			# court). Catches culture changes the on_action might have missed
+			# and migrates pre-existing wrongly-tagged traits from older saves.
+			# The resync effect is a no-op for characters without any senate
+			# trait, so iterating the whole court is cheap.
+			title:e_byzantium.holder = {
+				basileus_senate_resync_ascended_variant = yes
+				every_courtier = {
+					basileus_senate_resync_ascended_variant = yes
+				}
+			}
+
+			# Dynasty dominance check — flag if any dynasty has ≥3 senate members.
+			basileus_senate_check_dynasty_dominance = yes
+
+			# Safety net: keep count variables in sync with reality.
+			basileus_senate_recompute_counts = yes
+
+			title:e_byzantium = {
+				change_variable = {
+					name = senate_approval
+					subtract = 3
+				}
+			}
+			title:e_byzantium.holder = {
+				save_scope_as = senate_emperor
+
+				every_court_position_holder = {
+					type = hypatus_court_position
+					# Hypatos yearly contribution. Soft cap: above 80 approval,
+					# halve the gain (senate runs out of new ways to love you).
+					if = {
+						limit = { title:e_byzantium = { var:senate_approval < 80 } }
+						title:e_byzantium = { change_variable = { name = senate_approval add = 1.5 } }
+					}
+					else = {
+						title:e_byzantium = { change_variable = { name = senate_approval add = 0.75 } }
+					}
+					if = {
+						limit = {
+							opinion = { target = scope:senate_emperor value < 0 }
+						}
+						title:e_byzantium = {
+							change_variable = {
+								name = senate_approval
+								subtract = 0.25
+							}
+						}
+					}
+					if = {
+						limit = {
+							opinion = { target = scope:senate_emperor value >= 50 }
+						}
+						title:e_byzantium = {
+							change_variable = {
+								name = senate_approval
+								add = 0.5
+							}
+						}
+					}
+				}
+
+				every_court_position_holder = {
+					type = senator_court_position
+					if = {
+						limit = { title:e_byzantium = { var:senate_approval < 80 } }
+						title:e_byzantium = { change_variable = { name = senate_approval add = 1 } }
+					}
+					else = {
+						title:e_byzantium = { change_variable = { name = senate_approval add = 0.5 } }
+					}
+					if = {
+						limit = {
+							opinion = { target = scope:senate_emperor value < 0 }
+						}
+						title:e_byzantium = {
+							change_variable = {
+								name = senate_approval
+								subtract = 0.25
+							}
+						}
+					}
+					if = {
+						limit = {
+							opinion = { target = scope:senate_emperor value >= 50 }
+						}
+						title:e_byzantium = {
+							change_variable = {
+								name = senate_approval
+								add = 0.5
+							}
+						}
+					}
+				}
+
+				every_court_position_holder = {
+					type = patrician_court_position
+					if = {
+						limit = { title:e_byzantium = { var:senate_approval < 80 } }
+						title:e_byzantium = { change_variable = { name = senate_approval add = 0.5 } }
+					}
+					else = {
+						title:e_byzantium = { change_variable = { name = senate_approval add = 0.25 } }
+					}
+					if = {
+						limit = {
+							opinion = { target = scope:senate_emperor value < 0 }
+						}
+						title:e_byzantium = {
+							change_variable = {
+								name = senate_approval
+								subtract = 0.25
+							}
+						}
+					}
+					if = {
+						limit = {
+							opinion = { target = scope:senate_emperor value >= 50 }
+						}
+						title:e_byzantium = {
+							change_variable = {
+								name = senate_approval
+								add = 0.5
+							}
+						}
+					}
+				}
+			}
+
+			title:e_byzantium = {
+				clamp_variable = {
+					name = senate_approval
+					min = 0
+					max = 100
+				}
+			}
+
+			# Apply / refresh threshold modifiers on the emperor.
+			# Tiers: <45 hostile (penalties), 45–69 neutral, ≥70 approving (bonuses).
+			basileus_senate_apply_threshold_modifiers = yes
+		}
+	}
+}
+
+# ---------------------------------------------------------------
+# Senate-sanctioned war: fires on every war start. If the attacker is
+# the Basileus, the target is kingdom-tier+, and senate_approval is
+# >= 70, the Basileus gets a 5-year Senate-Sanctioned War modifier.
+# Notification toast is sent so the player knows it triggered.
+# ---------------------------------------------------------------
+basileus_senate_on_war_started = {
+	effect = {
+		if = {
+			limit = {
+				scope:attacker = { has_title = title:e_byzantium }
+				scope:defender.highest_held_title_tier >= tier_kingdom
+				title:e_byzantium = { var:senate_approval >= 70 }
+			}
+			scope:attacker = {
+				add_character_modifier = {
+					modifier = senate_war_blessed_modifier
+					years = 5
+				}
+				send_interface_toast = {
+					type = event_toast_effect_good
+					title = senate_war_blessed_toast
+				}
+			}
+		}
+	}
+}
+

@@ -1,0 +1,207 @@
+# =========================================================
+# ERCF WAR ON_ACTIONS
+# ---------------------------------------------------------
+# IMPORTANT CK3 RULE: for a vanilla on_action, multiple `effect = {}`
+# blocks across files DO NOT merge — the engine keeps only the most
+# recent and discards the rest (jomini_onaction.cpp:161). Vanilla
+# already defines an `effect` for on_combat_end_winner / on_siege_completion
+# / on_war_won_*, so any `effect` we add here would be silently dropped.
+# Therefore every hook below registers a NAMED HANDLER via `on_actions = {}`
+# (that list DOES accumulate across files), and the handler holds the
+# effect. This is what makes the war-hero flagging actually run.
+#
+# War-hero capture: a character gets the `basileus_recent_war_hero`
+# character flag (15-yr, auto-expiring) the moment they distinguish
+# themselves on the Basileus's side — command/knight in a won battle,
+# complete a siege, or join a won war as a co-belligerent. The
+# grant_triumphator_interaction reads that flag.
+# =========================================================
+
+on_war_won_attacker = {
+    on_actions = {
+        ercf_war_won_attacker_pulse
+        basileus_war_won_attacker_heroes_handler
+    }
+}
+
+on_war_won_defender = {
+    on_actions = {
+        ercf_war_won_defender_pulse
+        basileus_war_won_defender_heroes_handler
+    }
+}
+
+on_combat_end_winner = {
+    on_actions = {
+        basileus_flag_combat_winner_heroes_handler
+    }
+}
+
+on_siege_completion = {
+    on_actions = {
+        basileus_flag_siege_hero_handler
+    }
+}
+
+# =========================================================
+# Handlers — custom on_actions; their `effect` runs when invoked.
+# =========================================================
+
+# Co-belligerents on the Basileus's side when he wins as ATTACKER.
+basileus_war_won_attacker_heroes_handler = {
+    effect = {
+        if = {
+            limit = {
+                scope:attacker = { has_title = title:e_byzantium }
+            }
+            scope:war = {
+                every_war_attacker = {
+                    limit = {
+                        is_alive = yes
+                        NOT = { this = scope:attacker }
+                    }
+                    add_character_flag = {
+                        flag = basileus_recent_war_hero
+                        years = 15
+                    }
+                }
+            }
+        }
+    }
+}
+
+# Co-belligerents on the Basileus's side when he wins as DEFENDER.
+basileus_war_won_defender_heroes_handler = {
+    effect = {
+        if = {
+            limit = {
+                scope:defender = { has_title = title:e_byzantium }
+            }
+            scope:war = {
+                every_war_defender = {
+                    limit = {
+                        is_alive = yes
+                        NOT = { this = scope:defender }
+                    }
+                    add_character_flag = {
+                        flag = basileus_recent_war_hero
+                        years = 15
+                    }
+                }
+            }
+        }
+    }
+}
+
+# Commander + knights of a battle WON by the Basileus's side.
+# Root = the winning combat side.
+basileus_flag_combat_winner_heroes_handler = {
+    effect = {
+        if = {
+            limit = {
+                exists = combat.combat_war
+                side_primary_participant = {
+                    OR = {
+                        has_title = title:e_byzantium
+                        any_liege_or_above = { has_title = title:e_byzantium }
+                    }
+                }
+            }
+            if = {
+                limit = { exists = side_commander }
+                side_commander = {
+                    add_character_flag = {
+                        flag = basileus_recent_war_hero
+                        years = 15
+                    }
+                }
+            }
+            every_side_knight = {
+                add_character_flag = {
+                    flag = basileus_recent_war_hero
+                    years = 15
+                }
+            }
+        }
+    }
+}
+
+# Besieger who completes a siege for the Basileus's side. root = besieger.
+basileus_flag_siege_hero_handler = {
+    effect = {
+        if = {
+            limit = {
+                root = {
+                    OR = {
+                        has_title = title:e_byzantium
+                        any_liege_or_above = { has_title = title:e_byzantium }
+                    }
+                }
+            }
+            root = {
+                add_character_flag = {
+                    flag = basileus_recent_war_hero
+                    years = 15
+                }
+            }
+        }
+    }
+}
+
+# =========================================================
+# ERCF Pulses (autocrator XP — unchanged)
+# =========================================================
+
+ercf_war_won_attacker_pulse = {
+    effect = {
+        # Autocrator gains XP for winning an offensive war
+        if = {
+            limit = {
+                scope:attacker = { has_trait = autocrator_ercf }
+            }
+            scope:attacker = {
+                add_trait_xp = {
+                    trait = autocrator_ercf
+                    value = 3
+                }
+                ercf_autocrator_mandate_check_effect = yes
+            }
+        }
+        # Autocrator LOSES XP for losing a defensive war (Disaster!)
+        if = {
+            limit = {
+                scope:defender = { has_trait = autocrator_ercf }
+            }
+            scope:defender = {
+                ercf_autocrator_war_lost_regression_effect = { OTHER_SIDE = scope:attacker }
+            }
+        }
+    }
+}
+
+ercf_war_won_defender_pulse = {
+    effect = {
+        # Autocrator gains MORE XP for successfully defending
+        if = {
+            limit = {
+                scope:defender = { has_trait = autocrator_ercf }
+            }
+            scope:defender = {
+                add_trait_xp = {
+                    trait = autocrator_ercf
+                    value = 5
+                }
+                ercf_autocrator_mandate_check_effect = yes
+            }
+        }
+        # Autocrator LOSES XP for losing an offensive war (Failure!)
+        if = {
+            limit = {
+                scope:attacker = { has_trait = autocrator_ercf }
+            }
+            scope:attacker = {
+                ercf_autocrator_war_lost_regression_effect = { OTHER_SIDE = scope:defender }
+            }
+        }
+    }
+}

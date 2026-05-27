@@ -1,0 +1,250 @@
+story_bulgarian_gambit = {
+	# Tracks the Byzantine emperor's campaign to bring Bulgaria to heel in the
+	# aftermath of the Photian Schism, ending with the conquest of the
+	# Haemimontus frontier and the dismantling of the Bulgarian crown.
+	#
+	# The gambit is bound to the THRONE, not the man: it survives the death of
+	# the Basileus (and of the Bulgarian ruler), passing to whoever next holds
+	# e_byzantium. It ends only if the empire or the Bulgarian crown ceases to
+	# exist, or at the climax.
+	visible = yes
+	icon = {
+		reference = "gfx/interface/icons/faith/orthodox.dds"
+	}
+	background = {
+		reference = "gfx/interface/illustrations/event_scenes/council_chamber.dds"
+	}
+	visualization = {
+		custom_string_key = "BULGARIAN_GAMBIT_INFO_STRING"
+		title = {
+			variable_name = "bulgaria_title"
+			label = "BG_REALM"
+		}
+		character = {
+			variable_name = "bulgarian_ruler"
+			label = "BG_BULGARIAN_RULER"
+		}
+		character = {
+			variable_name = "the_patriarch"
+			label = "BG_PATRIARCH"
+		}
+		character = {
+			variable_name = "the_spymaster"
+			label = "BG_SPYMASTER"
+		}
+		basic_counter = {
+			variable_name = "gambit_progress"
+			min = 0
+			max = 100
+			label = "BG_PROGRESS"
+			min_label = "BG_PROGRESS_MIN"
+			max_label = "BG_PROGRESS_MAX"
+		}
+		character_list = {
+			variable_name = "suborned_boyars"
+			label = "BG_SUBORNED_BOYARS"
+		}
+	}
+
+	on_setup = {
+		set_variable = { name = gambit_progress value = 0 }
+		set_variable = { name = bulgaria_title value = title:k_bulgaria }
+		if = {
+			limit = { exists = title:k_bulgaria.holder }
+			set_variable = { name = bulgarian_ruler value = title:k_bulgaria.holder }
+		}
+		if = {
+			limit = { exists = story_owner.cp:councillor_court_chaplain }
+			set_variable = { name = the_patriarch value = story_owner.cp:councillor_court_chaplain }
+		}
+		if = {
+			limit = { exists = story_owner.cp:councillor_spymaster }
+			set_variable = { name = the_spymaster value = story_owner.cp:councillor_spymaster }
+		}
+	}
+
+	on_end = {
+		# Clear the subjugation-CB unlock when the gambit closes (won, or the
+		# empire/Bulgaria ceased to exist). The once-per-realm decision lock
+		# (bulgarian_gambit_initiated) is intentionally NOT removed.
+		if = {
+			limit = { has_global_variable = bulgarian_subjugation_unlocked }
+			remove_global_variable = bulgarian_subjugation_unlocked
+		}
+	}
+
+	# Throne-bound: pass the gambit to the next Basileus rather than ending it.
+	on_owner_death = {
+		if = {
+			limit = {
+				exists = title:e_byzantium.holder
+				title:e_byzantium.holder = { is_alive = yes }
+			}
+			make_story_owner = title:e_byzantium.holder
+		}
+		else_if = {
+			limit = { exists = story_owner.player_heir }
+			make_story_owner = story_owner.player_heir
+		}
+		else = { end_story = yes }
+	}
+
+	# Keep the story bound to whoever holds e_byzantium (succession, usurpation).
+	effect_group = {
+		days = 30
+		trigger = {
+			exists = title:e_byzantium.holder
+			NOT = { story_owner = title:e_byzantium.holder }
+		}
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = { make_story_owner = title:e_byzantium.holder }
+		}
+	}
+
+	# End only if the empire or the Bulgarian crown is gone (not on mere death).
+	effect_group = {
+		days = 30
+		trigger = {
+			NOT = { has_variable = gambit_finale_done }
+			OR = {
+				NOT = { exists = title:e_byzantium.holder }
+				NOT = { exists = title:k_bulgaria.holder }
+			}
+		}
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = { end_story = yes }
+		}
+	}
+
+	# Panel refresh — keep the tracked principals current as titles/councils change.
+	effect_group = {
+		days = 30
+		trigger = { exists = title:k_bulgaria.holder }
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				set_variable = { name = bulgarian_ruler value = title:k_bulgaria.holder }
+				if = {
+					limit = { exists = story_owner.cp:councillor_court_chaplain }
+					set_variable = { name = the_patriarch value = story_owner.cp:councillor_court_chaplain }
+				}
+				if = {
+					limit = { exists = story_owner.cp:councillor_spymaster }
+					set_variable = { name = the_spymaster value = story_owner.cp:councillor_spymaster }
+				}
+			}
+		}
+	}
+
+	# 1. The Contest of Churches — Rome vs Constantinople over Bulgaria.
+	effect_group = {
+		days = { 60 120 }
+		chance = 100
+		trigger = {
+			NOT = { has_variable = contest_done }
+		}
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				set_variable = { name = contest_done value = yes }
+				story_owner = { trigger_event = bulgarian_gambit.0002 }
+			}
+		}
+	}
+
+	# 2. Reactive demand on the Bulgarian ruler — submit or resist.
+	effect_group = {
+		days = { 200 360 }
+		chance = 100
+		trigger = {
+			has_variable = contest_done
+			NOT = { has_variable = demand_done }
+			exists = title:k_bulgaria.holder
+		}
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				set_variable = { name = demand_done value = yes }
+				title:k_bulgaria.holder = {
+					trigger_event = bulgarian_gambit.0003
+				}
+			}
+		}
+	}
+
+	# 3. Subversion of the Boyars.
+	effect_group = {
+		days = { 300 500 }
+		chance = 100
+		trigger = {
+			var:gambit_progress >= 30
+			NOT = { has_variable = boyars_done }
+		}
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				set_variable = { name = boyars_done value = yes }
+				story_owner = { trigger_event = bulgarian_gambit.0004 }
+			}
+		}
+	}
+
+	# 4. The Sword Drawn — diplomacy exhausted, the campaign turns martial.
+	effect_group = {
+		days = { 400 700 }
+		chance = 100
+		trigger = {
+			var:gambit_progress >= 50
+			NOT = { has_variable = sword_done }
+		}
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				set_variable = { name = sword_done value = yes }
+				story_owner = { trigger_event = bulgarian_gambit.0005 }
+			}
+		}
+	}
+
+	# 5. Foreign complication (midpoint flavor).
+	effect_group = {
+		days = { 500 800 }
+		chance = 100
+		trigger = {
+			has_variable = sword_done
+			NOT = { has_variable = complication_done }
+		}
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				set_variable = { name = complication_done value = yes }
+				story_owner = { trigger_event = bulgarian_gambit.0006 }
+			}
+		}
+	}
+
+	# 6. Climax — the whole Bulgarian heartland (Haemimontus + Paristrion) is
+	# fully held; the crown falls.
+	effect_group = {
+		days = 90
+		chance = 100
+		trigger = {
+			NOT = { has_variable = gambit_finale_done }
+			exists = title:k_bulgaria.holder
+			story_owner = {
+				has_title = title:e_byzantium
+				completely_controls_region = custom_roman_haemimontus
+				completely_controls_region = custom_roman_paristrion
+			}
+		}
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				set_variable = { name = gambit_finale_done value = yes }
+				story_owner = { trigger_event = bulgarian_gambit.0050 }
+			}
+		}
+	}
+}

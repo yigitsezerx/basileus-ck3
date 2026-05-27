@@ -1,0 +1,9 @@
+basileus_triumphator_trait_add_xp_effect = {
+    if = {
+        limit = { has_trait_xp = { trait = basileus_triumphator value >= 75 } }
+        add_trait_xp = { trait = basileus_triumphator value = 5 }
+    }
+    else = {
+        add_trait_xp = { trait = basileus_triumphator value = 10 }
+    }
+}

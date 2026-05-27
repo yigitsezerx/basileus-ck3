@@ -1,0 +1,30 @@
+# ERCF Execution XP
+# Rewards the Autocrat for ruthless dominance
+
+on_death = {
+    on_actions = {
+        ercf_execution_xp_pulse
+    }
+}
+
+ercf_execution_xp_pulse = {
+    effect = {
+        # Check if there is a killer and if they are an Autocrat
+        if = {
+            limit = {
+                exists = scope:killer
+                scope:killer = { has_trait = autocrator_ercf }
+                # Check if the death reason was an execution
+                OR = {
+                    death_reason = death_execution
+                    death_reason = death_execution_bloodeagle
+                    death_reason = death_execution_sacrifice
+                }
+            }
+            # Reward the killer (the Autocrat)
+            scope:killer = {
+                ercf_autocrator_ruthless_dominance_effect = yes
+            }
+        }
+    }
+}

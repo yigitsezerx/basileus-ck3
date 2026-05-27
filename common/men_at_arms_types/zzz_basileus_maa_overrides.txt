@@ -1,0 +1,238 @@
+# Men-at-Arms Overrides for Cultural Naming
+# We use separate unit types with mutual exclusivity triggers to avoid UI bracket issues.
+
+# --- CATAPHRACTS ---
+cataphract = {
+	type = heavy_cavalry
+	damage = 125
+	toughness = 35
+	pursuit = 10
+	screen = 0
+	
+	terrain_bonus = {
+		plains = { damage = 30 toughness = 5 }
+		drylands = { damage = 30 }
+		hills = { damage = -10 }
+		mountains = { damage = -50 }
+		desert_mountains = { damage = -50 }
+		wetlands = { damage = -80 toughness = -15 pursuit = -10 }
+	}
+	counters = { archers = 1 gunpowder = 1 }
+	winter_bonus = {
+		normal_winter = { damage = -15 toughness = -5 }
+		harsh_winter = { damage = -30 toughness = -10 }
+	}
+	can_recruit = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_cataphract }
+		NOT = { culture = culture:eastern_roman } # Hidden for Romans
+	}
+	buy_cost = { gold = cataphract_recruitment_cost }
+	low_maintenance_cost = { gold = cataphract_low_maint_cost }
+	high_maintenance_cost = { gold = cataphract_high_maint_cost }
+	provision_cost = 21
+	stack = 50
+	ai_quality = { value = 80 }
+	icon = cataphracts
+}
+
+cataphract_roman = {
+	type = heavy_cavalry
+	name = cataphract_roman_name
+	flavor = cataphract_roman_flavor
+	damage = 125
+	toughness = 35
+	pursuit = 10
+	screen = 0
+	
+	terrain_bonus = {
+		plains = { damage = 30 toughness = 5 }
+		drylands = { damage = 30 }
+		hills = { damage = -10 }
+		mountains = { damage = -50 }
+		desert_mountains = { damage = -50 }
+		wetlands = { damage = -80 toughness = -15 pursuit = -10 }
+	}
+	counters = { archers = 1 gunpowder = 1 }
+	winter_bonus = {
+		normal_winter = { damage = -15 toughness = -5 }
+		harsh_winter = { damage = -30 toughness = -10 }
+	}
+	can_recruit = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_cataphract_roman }
+		culture = culture:eastern_roman # Only for Romans
+	}
+	buy_cost = { gold = cataphract_recruitment_cost }
+	low_maintenance_cost = { gold = cataphract_low_maint_cost }
+	high_maintenance_cost = { gold = cataphract_high_maint_cost }
+	provision_cost = 21
+	stack = 50
+	ai_quality = { value = 80 }
+	icon = cataphracts
+}
+
+# --- AKRITAI ---
+akritai = {
+	type = skirmishers
+	damage = 10
+	toughness = 14
+	pursuit = 12
+	screen = 18
+	terrain_bonus = {
+		mountains = { damage = 10 toughness = 10 }
+		desert_mountains = { damage = 6 toughness = 6 }
+		hills = { damage = 6 toughness = 6 }
+		forest = { toughness = 4 }
+		wetlands = { toughness = 4 }
+	}
+	counters = { heavy_infantry = 1 }
+	can_recruit = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_akritai }
+		NOT = { culture = culture:eastern_roman }
+	}
+	buy_cost = { gold = akritai_recruitment_cost }
+	low_maintenance_cost = { gold = akritai_low_maint_cost }
+	high_maintenance_cost = { gold = akritai_high_maint_cost }
+	provision_cost = 3
+	stack = 100
+	ai_quality = { value = -10 }
+	icon = akritai
+}
+
+akritai_roman = {
+	type = skirmishers
+	name = akritai_roman_name
+	flavor = akritai_roman_flavor
+	damage = 10
+	toughness = 14
+	pursuit = 12
+	screen = 18
+	terrain_bonus = {
+		mountains = { damage = 10 toughness = 10 }
+		desert_mountains = { damage = 6 toughness = 6 }
+		hills = { damage = 6 toughness = 6 }
+		forest = { toughness = 4 }
+		wetlands = { toughness = 4 }
+	}
+	counters = { heavy_infantry = 1 }
+	can_recruit = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_akritai_roman }
+		culture = culture:eastern_roman
+	}
+	buy_cost = { gold = akritai_recruitment_cost }
+	low_maintenance_cost = { gold = akritai_low_maint_cost }
+	high_maintenance_cost = { gold = akritai_high_maint_cost }
+	provision_cost = 3
+	stack = 100
+	ai_quality = { value = -10 }
+	icon = akritai
+}
+
+# --- BALLISTRAI ---
+ballistrai = {
+	type = archers
+	damage = 35
+	toughness = 12
+	pursuit = 0
+	screen = 0
+	siege_value = 0.1
+	terrain_bonus = {
+		farmlands = { damage = 8 toughness = 6 }
+		plains = { damage = 8 }
+		hills = { damage = 8 }
+	}
+	counters = { pikemen = 0.5 peasant_militia = 1 heavy_infantry = 0.5 }
+	can_recruit = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_ballistrai }
+		NOT = { culture = culture:eastern_roman }
+	}
+	buy_cost = { gold = ballistrai_recruitment_cost }
+	low_maintenance_cost = { gold = ballistrai_low_maint_cost }
+	high_maintenance_cost = { gold = ballistrai_high_maint_cost }
+	provision_cost = 12
+	stack = 50
+	ai_quality = { value = 280 }
+	icon = ballistrai
+}
+
+ballistrai_roman = {
+	type = archers
+	name = ballistrai_roman_name
+	flavor = ballistrai_roman_flavor
+	damage = 35
+	toughness = 12
+	pursuit = 0
+	screen = 0
+	siege_value = 0.1
+	terrain_bonus = {
+		farmlands = { damage = 8 toughness = 6 }
+		plains = { damage = 8 }
+		hills = { damage = 8 }
+	}
+	counters = { pikemen = 0.5 peasant_militia = 1 heavy_infantry = 0.5 }
+	can_recruit = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_ballistrai_roman }
+		culture = culture:eastern_roman
+	}
+	buy_cost = { gold = ballistrai_recruitment_cost }
+	low_maintenance_cost = { gold = ballistrai_low_maint_cost }
+	high_maintenance_cost = { gold = ballistrai_high_maint_cost }
+	provision_cost = 12
+	stack = 50
+	ai_quality = { value = 280 }
+	icon = ballistrai
+}
+
+# --- SKOUTATOI ---
+skoutatoi = {
+	type = pikemen
+	damage = 22
+	toughness = 26
+	pursuit = 0
+	screen = 20
+	terrain_bonus = {
+		mountains = { toughness = 8 }
+		desert_mountains = { toughness = 8 }
+		hills = { toughness = 8 }
+		plains = { damage = 8 }
+	}
+	counters = { light_cavalry = 1 heavy_cavalry = 1 camel_cavalry = 1 elephant_cavalry = 1 }
+	can_recruit = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_skoutatoi }
+		NOT = { culture = culture:eastern_roman }
+	}
+	buy_cost = { gold = skoutatoi_recruitment_cost }
+	low_maintenance_cost = { gold = skoutatoi_low_maint_cost }
+	high_maintenance_cost = { gold = skoutatoi_high_maint_cost }
+	provision_cost = 7
+	stack = 100
+	ai_quality = { value = 100 }
+	icon = skoutatoi
+}
+
+skoutatoi_roman = {
+	type = pikemen
+	name = skoutatoi_roman_name
+	flavor = skoutatoi_roman_flavor
+	damage = 22
+	toughness = 26
+	pursuit = 0
+	screen = 20
+	terrain_bonus = {
+		mountains = { toughness = 8 }
+		desert_mountains = { toughness = 8 }
+		hills = { toughness = 8 }
+		plains = { damage = 8 }
+	}
+	counters = { light_cavalry = 1 heavy_cavalry = 1 camel_cavalry = 1 elephant_cavalry = 1 }
+	can_recruit = {
+		valid_for_maa_trigger = { PARAMETER = unlock_maa_skoutatoi_roman }
+		culture = culture:eastern_roman
+	}
+	buy_cost = { gold = skoutatoi_recruitment_cost }
+	low_maintenance_cost = { gold = skoutatoi_low_maint_cost }
+	high_maintenance_cost = { gold = skoutatoi_high_maint_cost }
+	provision_cost = 7
+	stack = 100
+	ai_quality = { value = 100 }
+	icon = skoutatoi
+}

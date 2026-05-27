@@ -1,0 +1,238 @@
+# =====================================================================
+# RECLAIM THE EAST — once-per-realm decision (Phase 1).
+# Opens an HBO-Rome-styled audience with the Hypatos (or, if vacant, a
+# Senator/Patrician). The event has a single option that triggers
+# basileus_start_eastern_struggle_effect — currently a placeholder for
+# the Phase 2 custom struggle.
+#
+# Lock: global variable eastern_reconquest_decision_taken. Mirrors the
+# pattern used by basileus_delve_into_classics (pandects_renovatio_initiated_global).
+# =====================================================================
+
+basileus_reclaim_the_east_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	sort_order = 120
+	desc = basileus_reclaim_the_east_decision_desc
+	selection_tooltip = basileus_reclaim_the_east_decision_tooltip
+	decision_group_type = roman
+
+	is_shown = {
+		has_title = title:e_byzantium
+		is_adult = yes
+		# Once-per-realm-forever lock — set in effect, checked here.
+		NOT = {
+			has_global_variable = eastern_reconquest_decision_taken
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_at_war = no
+		is_imprisoned = no
+		has_regent = no
+		has_contagious_deadly_disease_trigger = no
+		NOT = {
+			exists = involved_activity
+		}
+	}
+
+	is_valid = {
+		# Drive — either ambitious or brave. Education — any track, level 3 or higher.
+		OR = {
+			has_trait = ambitious
+			has_trait = brave
+			has_trait = education_martial_3
+			has_trait = education_martial_4
+			has_trait = education_martial_5
+		}
+		# Full control of the imperial heartlands.
+		completely_controls_region = custom_heartlands_ere
+	}
+
+	effect = {
+		# Lock the decision for every future holder of e_byzantium.
+		set_global_variable = eastern_reconquest_decision_taken
+		# Open the conversation event.
+		trigger_event = basileus_eastern_reconquest.0001
+	}
+
+	cost = {
+		influence = 500
+	}
+
+	# AI doesn't fire this in Phase 1 — there's no struggle for it to
+	# meaningfully launch yet. Will be re-enabled in Phase 2.
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+
+# =====================================================================
+# TRIUMPH ENDING DECISION
+# Visible only while the struggle is active. Valid only once the
+# Basileus completely controls custom_theodosian_ere (the full
+# territorial extent of the late-Theodosian East).
+#
+# Ends the struggle and applies the Restored Theodosian Empire realm
+# modifier + dynasty renown bump.
+# =====================================================================
+basileus_eastern_reconquest_triumph_decision = {
+	picture = {
+		# Vanilla golden-age illustration — laurel/glory theme, fits triumph.
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_hold_triumph.dds"
+	}
+	extra_picture = "gfx/interface/illustrations/struggle_decision_buttons/basileus_decision_triumph.dds"
+	sort_order = 121
+	desc = basileus_eastern_reconquest_triumph_decision_desc
+	selection_tooltip = basileus_eastern_reconquest_triumph_decision_tooltip
+	decision_group_type = roman
+
+	is_shown = {
+		has_title = title:e_byzantium
+		is_adult = yes
+		# Only visible while the Basileus is in this struggle.
+		any_character_struggle = {
+			is_struggle_type = basileus_eastern_reconquest_struggle
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_imprisoned = no
+		has_regent = no
+	}
+
+	is_valid = {
+		# Hard victory condition: every county in custom_theodosian_ere
+		# must be held by root or one of root's vassals (any depth).
+		OR = {
+			completely_controls_region = custom_theodosian_ere
+			AND = {
+				completely_controls_region = custom_roman_orient
+				completely_controls_region = custom_roman_haemimontus
+			}
+		}
+	}
+
+	effect = {
+		basileus_end_eastern_struggle_triumph_effect = yes
+		struggle:basileus_eastern_reconquest_struggle = { end_struggle = yes }
+		show_as_tooltip = {
+			retake_eastern_provinces_decision_effect = yes
+		}
+	}
+
+	cost = {
+		prestige = 0
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+# =====================================================================
+# CONCEDE (HUBRIS) ENDING DECISION
+# Visible only while the struggle is active. Always valid — the player
+# can voluntarily abandon the reconquest at any time.
+# The 50-year auto-fire event 0050 also calls the same scripted effect.
+# =====================================================================
+basileus_eastern_reconquest_concede_decision = {
+	picture = {
+		# Vanilla "legitimacy" illustration — somber, fits a failed claim.
+		reference = "gfx/interface/illustrations/decisions/decision_byz_reception.dds"
+	}
+	extra_picture = "gfx/interface/illustrations/struggle_decision_buttons/basileus_decision_concede.dds"
+	sort_order = 122
+	desc = basileus_eastern_reconquest_concede_decision_desc
+	selection_tooltip = basileus_eastern_reconquest_concede_decision_tooltip
+	decision_group_type = roman
+
+	is_shown = {
+		has_title = title:e_byzantium
+		is_adult = yes
+		any_character_struggle = {
+			is_struggle_type = basileus_eastern_reconquest_struggle
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_imprisoned = no
+	}
+
+	is_valid = {
+		struggle:basileus_eastern_reconquest_struggle = {
+			OR = {
+				is_struggle_phase = struggle_eastern_reconquest_phase_reconquest
+				is_struggle_phase = struggle_eastern_reconquest_phase_setback
+			}
+		}
+	}
+
+	effect = {
+		basileus_end_eastern_struggle_hubris_effect = yes
+		struggle:basileus_eastern_reconquest_struggle = { end_struggle = yes }
+	}
+
+	cost = {
+		prestige = 0
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+# =====================================================================
+# CONSECRATE BANNERS DECISION
+# =====================================================================
+basileus_consecrate_banners_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	sort_order = 123
+	desc = basileus_consecrate_banners_decision_desc
+	selection_tooltip = basileus_consecrate_banners_decision_tooltip
+	decision_group_type = roman
+
+	is_shown = {
+		has_title = title:e_byzantium
+		is_adult = yes
+		any_character_struggle = {
+			is_struggle_type = basileus_eastern_reconquest_struggle
+			is_struggle_phase = struggle_eastern_reconquest_phase_resolve
+		}
+		NOT = {
+			has_character_modifier = basileus_consecrated_banners_modifier
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_imprisoned = no
+		has_regent = no
+	}
+
+	is_valid = {
+		gold >= 150
+		piety >= 200
+	}
+
+	effect = {
+		add_gold = -150
+		add_piety = -200
+		add_character_modifier = {
+			modifier = basileus_consecrated_banners_modifier
+			years = 10
+		}
+		basileus_activate_roman_catalyst_effect = {
+			CATALYST = catalyst_basileus_banners_consecrated
+			CHAR = root
+		}
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+

@@ -1,0 +1,25 @@
+### Latin Revival Opinion Modifiers
+basileus_latin_respect_opinion = {
+	opinion = 20
+	months = 120
+}
+
+basileus_latin_enforced_opinion = {
+	opinion = -40
+	months = 240
+}
+
+basileus_renaissance_converted_opinion = {
+	opinion = 50
+	months = 360
+}
+
+offended_by_latin_decree = {
+	opinion = -50
+	months = 240
+}
+
+visionary_latin_ruler = {
+	opinion = 30
+	months = 240
+}

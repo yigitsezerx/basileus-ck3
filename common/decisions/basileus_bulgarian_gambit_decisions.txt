@@ -1,0 +1,51 @@
+# =====================================================================
+# THE BULGARIAN GAMBIT — opt-in story-cycle start decision.
+# Byzantine-centric. Opens the chain (event 0001), which creates
+# story_bulgarian_gambit. Once-per-realm-forever via the global variable
+# bulgarian_gambit_initiated (mirrors the eastern_reconquest lock).
+# =====================================================================
+
+basileus_bulgarian_gambit_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	sort_order = 119
+	desc = basileus_bulgarian_gambit_decision_desc
+	selection_tooltip = basileus_bulgarian_gambit_decision_tooltip
+	decision_group_type = roman
+
+	is_shown = {
+		has_title = title:e_byzantium
+		is_adult = yes
+		exists = title:k_bulgaria.holder
+		NOT = { has_global_variable = bulgarian_gambit_initiated }
+	}
+
+	is_valid_showing_failures_only = {
+		is_imprisoned = no
+		has_regent = no
+		has_contagious_deadly_disease_trigger = no
+	}
+
+	is_valid = {
+		# Bulgaria must still stand outside the imperial fold — there must be
+		# a crown to break.
+		NOT = { title:k_bulgaria.holder = this }
+		NOR = {
+			completely_controls_region = custom_roman_haemimontus
+			completely_controls_region = custom_roman_paristrion
+		}
+	}
+
+	effect = {
+		set_global_variable = bulgarian_gambit_initiated
+		trigger_event = bulgarian_gambit.0001
+	}
+
+	cost = {
+		influence = 300
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}

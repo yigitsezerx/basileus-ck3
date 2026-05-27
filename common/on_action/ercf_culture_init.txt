@@ -1,0 +1,51 @@
+on_game_start_after_lobby = {
+	on_actions = {
+		basileus_check_gamerule_rhomaios
+		basileus_check_gamerule_ere_colour
+		basileus_check_gamerule_ere_colour_tyrian_red
+	}
+}
+
+basileus_check_gamerule_rhomaios = {
+	effect = {
+		if = {
+			limit = {
+				has_game_rule = rhomaios
+			}
+			culture:greek = {
+				set_culture_name = {
+					noun = ercf_rhomaios_name
+					collective_noun = ercf_rhomaios_collective
+					prefix = ercf_rhomaios_prefix
+				}
+			}
+		}
+	}
+}
+
+basileus_check_gamerule_ere_colour = {
+	effect = {
+		title:e_byzantium = {
+			if = {
+				limit = {
+					has_game_rule = basileus_ere_colour
+				}
+				set_title_color = { 99 14 20 }
+			}
+		}
+	}
+}
+
+basileus_check_gamerule_ere_colour_tyrian_red = {
+	effect = {
+		title:e_byzantium = {
+			if = {
+				limit = {
+					has_game_rule = basileus_ere_colour_tyrian_red
+				}
+				set_title_color = { 72 13 20 }
+			}
+		}
+	}
+}
+

@@ -1,0 +1,11 @@
+# =====================================================================
+# BASILEUS — Eastern Reconquest Script Values
+# =====================================================================
+
+# Divides losing side strength by winning side strength.
+# Evaluated on the winning combat side (root in on_combat_end_winner).
+# If this returns >= 2, the victors were outnumbered at least 2:1.
+basileus_is_outnumbered_two_to_one = {
+	value = enemy_side.side_strength
+	divide = side_strength
+}

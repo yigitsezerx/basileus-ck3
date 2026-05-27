@@ -1,0 +1,5 @@
+# dominus_regnal_name_effects.txt
+# This file is intentionally left empty.
+# The historical character name-lookup system was replaced in favour of
+# the parent-honouring and free-text rename system in dominus_coronation.0001/.0002.
+# The active effects are now in 01_dominus_coronation_effects.txt.

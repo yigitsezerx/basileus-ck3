@@ -1,0 +1,59 @@
+# =====================================================================
+# BASILEUS — THE BULGARIAN GAMBIT — small, time-limited beat modifiers.
+# Applied by the story-cycle event options instead of flat piety/prestige.
+# =====================================================================
+
+# 0001 — pressing the Patriarch's claim over Bulgaria's church.
+bg_pressing_the_claim = {
+	icon = piety_positive
+	monthly_piety = 0.2
+	same_faith_opinion = 5
+}
+
+# 0002 — the contest of churches (Rome vs Constantinople).
+bg_contest_of_churches = {
+	icon = learning_positive
+	monthly_piety = 0.2
+	learning = 1
+}
+
+# 0004 — boyars bought and in our pocket.
+bg_boyars_in_pocket = {
+	icon = intrigue_positive
+	intrigue = 1
+	monthly_prestige = 0.2
+}
+
+# 0005 — the tagmata mustered for the frontier.
+bg_tagmata_mustered = {
+	icon = martial_positive
+	knight_effectiveness_mult = 0.1
+	men_at_arms_maintenance_mult = -0.1
+}
+
+# 0006 — defiance of Rome's protests.
+bg_defiance_of_rome = {
+	icon = prestige_positive
+	monthly_prestige = 0.2
+}
+
+# 0003 submit — the Bulgarian ruler cowed by Constantinople.
+bg_cowed_by_the_city = {
+	icon = prestige_negative
+	monthly_prestige = -0.3
+	vassal_opinion = -3
+}
+
+# 0003 defy — the Bulgarian ruler defiant of the Greeks.
+bg_defiant_of_the_greeks = {
+	icon = prestige_positive
+	monthly_prestige = 0.5
+	vassal_opinion = 5
+}
+
+# 0051 failure — the Basileus humbled before Bulgaria.
+bg_humbled_by_bulgaria = {
+	icon = prestige_negative
+	monthly_prestige = -0.5
+	vassal_opinion = -5
+}

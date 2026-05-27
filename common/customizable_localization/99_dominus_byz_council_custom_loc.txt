@@ -1,0 +1,404 @@
+GetByzantineCouncilTitle = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ministry_trigger = yes
+			capital_province = province:496 # Byzantion
+			OR = {
+				has_global_variable = fourth_crusade_happened
+				current_date >= 1204.4.12
+			}
+		}
+		localization_key = BYZANTINE_COUNCIL_WINDOW_TITLE_BLACHERNAE
+	}
+	text = {
+		trigger = {
+			dominus_is_byzantine_ministry_trigger = yes
+			capital_province = province:496 # Byzantion
+		}
+		localization_key = BYZANTINE_COUNCIL_WINDOW_TITLE_GREAT_PALACE
+	}
+	text = {
+		trigger = {
+			dominus_is_byzantine_ministry_trigger = yes
+		}
+		localization_key = BYZANTINE_COUNCIL_WINDOW_TITLE
+	}
+	text = {
+		fallback = yes
+		localization_key = COUNCIL_WINDOW_TITLE
+	}
+}
+
+GetEparchCouncilLocation = {
+	type = character
+	text = {
+		trigger = {
+			capital_province = province:496 # Byzantion
+			OR = {
+				has_global_variable = fourth_crusade_happened
+				current_date >= 1204.4.12
+			}
+		}
+		localization_key = "at the [blachernae_palace|E]"
+	}
+	text = {
+		trigger = {
+			capital_province = province:496 # Byzantion
+		}
+		localization_key = "at the [great_palace|E]"
+	}
+	text = {
+		fallback = yes
+		localization_key = "on the [council|E]"
+	}
+}
+
+GetByzantineDepartmentsHeader = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ministry_trigger = yes
+		}
+		localization_key = BYZANTINE_DEPARTMENTS_HEADER
+	}
+	text = {
+		fallback = yes
+		localization_key = CELESTIAL_MINISTRY_HEADER_DEP
+	}
+}
+
+GetByzantineMinistriesHeader = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ministry_trigger = yes
+		}
+		localization_key = BYZANTINE_MINISTRIES_HEADER
+	}
+	text = {
+		fallback = yes
+		localization_key = CELESTIAL_MINISTRY_HEADER_MIN
+	}
+}
+
+GetMinisterGrandChancellorDesc = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = game_concept_dominus_minister_grand_chancellor_byz_desc
+	}
+	text = {
+		fallback = yes
+		localization_key = game_concept_dominus_minister_grand_chancellor_tgp_desc
+	}
+}
+
+GetMinisterCensorDesc = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = game_concept_dominus_minister_censor_byz_desc
+	}
+	text = {
+		fallback = yes
+		localization_key = game_concept_dominus_minister_censor_tgp_desc
+	}
+}
+
+GetMinisterGrandMarshalDesc = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ministry_trigger = yes
+			liege_or_court_owner = { culture = culture:greek }
+		}
+		localization_key = minister_grandmarshal_greek_desc
+	}
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = game_concept_dominus_minister_grand_marshal_byz_desc
+	}
+	text = {
+		fallback = yes
+		localization_key = game_concept_dominus_minister_grand_marshal_tgp_desc
+	}
+}
+
+GetMinisterOfPersonnelDesc = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ministry_trigger = yes
+			liege_or_court_owner = { culture = culture:greek }
+		}
+		localization_key = minister_personnel_greek_desc
+	}
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = game_concept_dominus_minister_of_personnel_byz_desc
+	}
+	text = {
+		fallback = yes
+		localization_key = game_concept_dominus_minister_of_personnel_tgp_desc
+	}
+}
+
+GetMinisterOfRevenueDesc = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = game_concept_dominus_minister_of_revenue_byz_desc
+	}
+	text = {
+		fallback = yes
+		localization_key = game_concept_dominus_minister_of_revenue_tgp_desc
+	}
+}
+
+GetMinisterOfRitesDesc = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = game_concept_dominus_minister_of_rites_byz_desc
+	}
+	text = {
+		fallback = yes
+		localization_key = game_concept_dominus_minister_of_rites_tgp_desc
+	}
+}
+
+GetMinisterOfWarDesc = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = game_concept_dominus_minister_of_war_byz_desc
+	}
+	text = {
+		fallback = yes
+		localization_key = game_concept_dominus_minister_of_war_tgp_desc
+	}
+}
+
+GetMinisterOfJusticeDesc = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ministry_trigger = yes
+			liege_or_court_owner = { culture = culture:greek }
+		}
+		localization_key = minister_justice_greek_desc
+	}
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = game_concept_dominus_minister_of_justice_byz_desc
+	}
+	text = {
+		fallback = yes
+		localization_key = game_concept_dominus_minister_of_justice_tgp_desc
+	}
+}
+
+GetMinisterOfWorksDesc = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ministry_trigger = yes
+			liege_or_court_owner = { culture = culture:greek }
+		}
+		localization_key = minister_works_greek_desc
+	}
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = game_concept_dominus_minister_of_works_byz_desc
+	}
+	text = {
+		fallback = yes
+		localization_key = game_concept_dominus_minister_of_works_tgp_desc
+	}
+}
+
+GetCouncillorChancellorDesc = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ministry_trigger = yes
+			liege_or_court_owner = { culture = culture:greek }
+		}
+		localization_key = councillor_chancellor_greek_desc
+	}
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = game_concept_dominus_councillor_chancellor_byz_desc
+	}
+	text = {
+		fallback = yes
+		localization_key = game_concept_chancellor_desc_vanilla
+	}
+}
+
+GetCouncillorStewardDesc = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege_or_court_owner = { culture = culture:greek }
+			}
+		}
+		localization_key = councillor_steward_greek_desc
+	}
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = game_concept_dominus_councillor_steward_byz_desc
+	}
+	text = {
+		fallback = yes
+		localization_key = game_concept_steward_desc_vanilla
+	}
+}
+
+GetCouncillorMarshalDesc = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege_or_court_owner = { culture = culture:greek }
+			}
+		}
+		localization_key = councillor_marshal_greek_desc
+	}
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = game_concept_dominus_councillor_marshal_byz_desc
+	}
+	text = {
+		fallback = yes
+		localization_key = game_concept_marshal_desc_vanilla
+	}
+}
+
+GetCouncillorSpymasterDesc = {
+	type = character
+	text = {
+		trigger = {
+			dominus_is_byzantine_ministry_trigger = yes
+			liege_or_court_owner = { culture = culture:greek }
+		}
+		localization_key = councillor_spymaster_greek_desc
+	}
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = game_concept_dominus_councillor_spymaster_byz_desc
+	}
+	text = {
+		fallback = yes
+		localization_key = game_concept_spymaster_desc_vanilla
+	}
+}
+
+GetCouncillorCourtChaplainDesc = {
+	type = character
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege_or_court_owner = { culture = culture:greek }
+			}
+		}
+		localization_key = councillor_court_chaplain_greek_desc
+	}
+	text = {
+		trigger = {
+			OR = {
+				dominus_is_byzantine_ministry_trigger = yes
+				liege = { dominus_is_byzantine_ministry_trigger = yes }
+			}
+		}
+		localization_key = game_concept_dominus_councillor_court_chaplain_byz_desc
+	}
+	text = {
+		fallback = yes
+		localization_key = game_concept_court_chaplain_desc_vanilla
+	}
+}
+
+GetEparchFiringRestrictionTooltip = {
+	type = character
+	text = {
+		trigger = {
+			liege_or_court_owner = { culture = culture:greek }
+		}
+		localization_key = eparch_cannot_be_fired_while_eparchos_tooltip
+	}
+	text = {
+		fallback = yes
+		localization_key = eparch_cannot_be_fired_while_praefectus_tooltip
+	}
+}

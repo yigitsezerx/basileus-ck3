@@ -1,0 +1,328 @@
+# Standard Values
+@pos_compat_high = 30
+@pos_compat_medium = 15
+@pos_compat_low = 5
+
+@neg_compat_high = -30
+@neg_compat_medium = -15
+@neg_compat_low = -5
+
+flavius_ercf = {
+	category = fame
+	
+	monthly_prestige = 0.2
+	same_culture_opinion = 10
+	dread_baseline_add = 10
+	domain_tax_mult = 0.10
+	domicile_monthly_prestige_add = 0.10
+	domicile_monthly_influence_add = 0.10
+	flag = initial_legitimacy_boost
+	
+	shown_in_ruler_designer = no
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_flavius_ercf_desc
+			}
+			desc = trait_flavius_ercf_character_desc
+		}
+	}	
+
+	name = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = this
+					is_female = yes
+				}
+				desc = trait_flavius_ercf_female
+			}
+			desc = trait_flavius_ercf
+		}
+	}	
+}
+
+autocrator_ercf = {
+	icon = autocrator_ercf.dds
+	category = lifestyle
+
+	shown_in_ruler_designer = no
+	
+	# Global effects for all levels
+	# Autocracy is stressful - you never trust anyone
+	stress_gain_mult = 0.10 
+	dread_baseline_add = 10
+	enemy_hostile_scheme_success_chance_add = 30
+	
+	track = {
+		# Level 1: Kyrios
+		25 = {
+			monthly_legitimacy_add = 2
+			vassal_opinion = 5
+
+			enemy_hostile_scheme_success_chance_add = -10 # Total: +20
+			
+			stress_gain_mult = 0.05
+		}
+		# Level 2: Autokrator
+		50 = {
+			monthly_legitimacy_add = 2
+			vassal_opinion = 5
+			dread_baseline_add = 5
+			
+			# DOWNSIDES
+			stress_gain_mult = 0.05
+			enemy_hostile_scheme_success_chance_add = -10 # Total: +10
+			
+			# custom_modifier = {
+			# 	opinion_of_liege_ambitious_vassal_penalty = -10
+			# 	opinion_of_liege_brave_vassal_penalty = -10
+			# }
+		}
+		# Level 3: Basileus kai Autokrator
+		75 = {
+			monthly_legitimacy_add = 2
+			vassal_opinion = 5
+			dread_baseline_add = 5
+			monthly_prestige = 0.5
+
+			enemy_hostile_scheme_success_chance_add = -10 # Total: 0 (Malus removed)
+			
+			# SEVERE DOWNSIDES
+			stress_gain_mult = 0.05
+			
+			# custom_modifier = {
+			# 	opinion_of_liege_ambitious_vassal_penalty = -30
+			# 	opinion_of_liege_brave_vassal_penalty = -30
+			# 	opinion_of_liege_proud_vassal_penalty = -20
+			# }
+		}
+		# Level 4: Isapostolos (Equal-to-the-Apostles)
+		100 = {
+			monthly_legitimacy_add = 4
+			vassal_opinion = 5
+			dread_baseline_add = 10
+			knight_effectiveness_mult = 0.1 # Imperial Guard
+			monthly_piety = 1.0
+			monthly_prestige = 0.5
+
+			enemy_hostile_scheme_success_chance_add = -10 # Total: -10 (Slight safety)
+			
+			# GOD-LIKE DANGER
+			stress_gain_mult = 0.05
+			
+			# custom_modifier = {
+			# 	opinion_of_liege_ambitious_vassal_penalty = -60
+			# 	opinion_of_liege_brave_vassal_penalty = -60
+			# 	opinion_of_liege_proud_vassal_penalty = -40
+			# }
+		}
+	}
+
+	# Dynamic Localization
+	name = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = this
+					has_trait_xp = { trait = autocrator_ercf value = 100 }
+				}
+				desc = trait_autocrator_ercf_level_4
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					has_trait_xp = { trait = autocrator_ercf value >= 75 }
+				}
+				desc = trait_autocrator_ercf_level_3
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					has_trait_xp = { trait = autocrator_ercf value >= 50 }
+				}
+				desc = trait_autocrator_ercf_level_2
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					has_trait_xp = { trait = autocrator_ercf value >= 25 }
+				}
+				desc = trait_autocrator_ercf_level_1
+			}
+			desc = trait_autocrator_ercf
+		}
+	}
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = this
+					has_trait_xp = { trait = autocrator_ercf value = 100 }
+				}
+				desc = trait_autocrator_ercf_level_4_desc
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					has_trait_xp = { trait = autocrator_ercf value >= 75 }
+				}
+				desc = trait_autocrator_ercf_level_3_desc
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					has_trait_xp = { trait = autocrator_ercf value >= 50 }
+				}
+				desc = trait_autocrator_ercf_level_2_desc
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					has_trait_xp = { trait = autocrator_ercf value >= 25 }
+				}
+				desc = trait_autocrator_ercf_level_1_desc
+			}
+			desc = trait_autocrator_ercf_desc
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+	}
+}
+
+
+nobilissimus_ercf = {
+    icon = nobilissimus_ercf.dds
+    category = fame # Persists until death
+
+	shown_in_ruler_designer = no
+    
+    # Inheritable?
+    inherit = no 
+    
+    ### BUFFS ###
+    short_reign_duration_mult = -0.10
+    
+    monthly_influence_mult = 0.10 # Boost to gaining influence
+    
+    # 3. Legitimacy & Prestige
+    legitimacy_gain_mult = 0.2 # Builds legitimacy
+    
+
+	name = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = this
+					is_female = yes
+				}
+				desc = trait_nobilissimus_ercf_female
+			}
+			desc = trait_nobilissimus_ercf
+		}
+	}	
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						has_title = title:e_byzantium
+						has_title = title:h_roman_empire
+						has_title = title:h_eastern_roman_empire
+					}
+				}
+				desc = trait_nobilissimus_ercf_emperor_desc
+			}
+
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_nobilissimus_ercf_desc
+			}
+			desc = trait_nobilissimus_ercf_character_desc
+		}
+	}
+}
+
+basileus_triumphator = {
+	category = fame
+	icon = triumphator.dds
+
+	shown_in_ruler_designer = no
+
+	# Baseline
+	monthly_influence = 0.10
+	stress_gain = -20
+	county_opinion_add = 5
+
+	track = {
+		50 = {
+			monthly_prestige = 0.1
+			monthly_influence = 0.10
+			army_maintenance_mult = -0.02
+		}
+		100 = {
+			monthly_prestige = 0.10
+			monthly_influence = 0.10
+			army_maintenance_mult = -0.02
+			county_opinion_add = 5
+		}
+	}
+
+	name = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = this
+					has_trait_xp = {
+						trait = basileus_triumphator
+						value >= 50
+					}
+					top_liege = { culture = culture:greek }
+				}
+				desc = trait_basileus_triumphator_niketates
+			}			
+			triggered_desc = {
+				trigger = {
+					exists = this
+					top_liege = { culture = culture:greek }
+				}
+				desc = trait_basileus_triumphator_tropaiouchos
+			}
+			desc = trait_basileus_triumphator
+		}
+	}
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = this
+					has_trait_xp = {
+						trait = basileus_triumphator
+						value >= 50
+					}
+					top_liege = { culture = culture:greek }
+				}
+				desc = trait_basileus_triumphator_niketates_desc
+			}			
+			triggered_desc = {
+				trigger = {
+					exists = this
+					top_liege = { culture = culture:greek }
+				}
+				desc = trait_basileus_triumphator_tropaiouchos_desc
+			}			
+			desc = trait_basileus_triumphator_desc
+		}		
+	}
+}

@@ -1,0 +1,393 @@
+###########################################################
+# BASILEUS — THE BULGARIAN GAMBIT
+# Byzantine-centric story cycle (story_bulgarian_gambit).
+# 0001 opener (decision-fired) creates the story; 0002-0006 are beats
+# polled from the story; 0003 is the reactive event on the Bulgarian
+# ruler; 0050 is the climax (dismantles k_bulgaria).
+###########################################################
+namespace = bulgarian_gambit
+
+###########################################################
+# 0001 — Opener. Root = the e_byzantium holder. Fired by the decision.
+###########################################################
+bulgarian_gambit.0001 = {
+	type = character_event
+	title = bulgarian_gambit.0001.t
+	# The rich historical-context desc references several 9th-century figures;
+	# use it only when they are all present (867-era), else a safe fallback.
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:bulgarian_ruler
+					exists = scope:photios
+					exists = scope:ignatius
+					exists = scope:basil
+					exists = scope:pope_nicolaus
+					exists = scope:boris
+					exists = scope:pope
+				}
+				desc = bulgarian_gambit.0001.desc
+			}
+			desc = bulgarian_gambit.0001.desc.simple
+		}
+	}
+	theme = emperor
+	override_background = { reference = throne_room }
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	right_portrait = {
+		character = scope:bulgarian_ruler
+		animation = scheme
+	}
+	lower_center_portrait = {
+		character = scope:photios
+		animation = horse_conversing_left
+	}
+		lower_right_portrait = {
+		character = scope:pope
+		animation = horse_conversing_right
+	}
+
+	immediate = {
+		create_story = { type = story_bulgarian_gambit }
+		random_owned_story = {
+			limit = { type = story_bulgarian_gambit }
+			save_scope_as = gambit_story
+		}
+		if = {
+			limit = { exists = title:k_bulgaria.holder }
+			title:k_bulgaria.holder = { save_scope_as = bulgarian_ruler }
+		}
+		# Historical cameos.
+		if = { limit = { exists = character:70554 } character:70554 = { save_scope_as = photios } }        # Photios
+		if = { limit = { exists = character:70555 } character:70555 = { save_scope_as = ignatius } }       # Ignatios
+		if = { limit = { exists = character:1700 }  character:1700 = { save_scope_as = basil } }           # Basil I
+		if = { limit = { exists = character:7853 }  character:7853 = { save_scope_as = pope_nicolaus } }   # Pope Nicholas I
+		if = { limit = { exists = character:70382 } character:70382 = { save_scope_as = boris } }          # Boris of Bulgaria
+		if = { limit = { exists = title:k_papal_state.holder } title:k_papal_state.holder = { save_scope_as = pope } }
+	}
+
+	# Single option — the work begins.
+	option = {
+		name = bulgarian_gambit.0001.a
+		add_character_modifier = { modifier = bg_pressing_the_claim  years = 5 }
+		scope:gambit_story = {
+			change_variable = { name = gambit_progress add = 15 }
+		}
+	}
+}
+
+###########################################################
+# 0002 — The Contest of Churches. Root = the emperor.
+###########################################################
+bulgarian_gambit.0002 = {
+	type = character_event
+	title = bulgarian_gambit.0002.t
+	desc = bulgarian_gambit.0002.desc
+	theme = faith
+	override_background = { reference = council_chamber }
+	left_portrait = {
+		character = root
+		animation = disapproval
+	}
+	right_portrait = {
+		character = scope:pope
+		animation = disapproval
+	}
+
+	immediate = {
+		random_owned_story = {
+			limit = { type = story_bulgarian_gambit }
+			save_scope_as = gambit_story
+		}
+		if = { limit = { exists = title:k_papal_state.holder } title:k_papal_state.holder = { save_scope_as = pope } }
+	}
+
+	# Single option — press the Patriarch's claim over Bulgaria's church.
+	option = {
+		name = bulgarian_gambit.0002.a
+		add_character_modifier = { modifier = bg_contest_of_churches  years = 5 }
+		scope:gambit_story = {
+			change_variable = { name = gambit_progress add = 20 }
+		}
+	}
+}
+
+###########################################################
+# 0003 — Reactive demand. Root = the Bulgarian ruler.
+###########################################################
+bulgarian_gambit.0003 = {
+	type = character_event
+	title = bulgarian_gambit.0003.t
+	desc = bulgarian_gambit.0003.desc
+	theme = diplomacy
+	override_background = { reference = throne_room }
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		character = scope:basileus
+		animation = disapproval
+	}
+
+	immediate = {
+		title:e_byzantium.holder = { save_scope_as = basileus }
+	}
+
+	# A — Submit: accept Constantinople's authority over the church.
+	option = {
+		name = bulgarian_gambit.0003.a
+		add_character_modifier = { modifier = bg_cowed_by_the_city  years = 5 }
+		add_opinion = {
+			target = scope:basileus
+			modifier = grateful_opinion
+			opinion = 20
+		}
+		scope:basileus = {
+			random_owned_story = {
+				limit = { type = story_bulgarian_gambit }
+				change_variable = { name = gambit_progress add = 15 }
+			}
+		}
+	}
+
+	# B — Defy: the Bulgarian church will answer to no Greek.
+	option = {
+		name = bulgarian_gambit.0003.b
+		add_character_modifier = { modifier = bg_defiant_of_the_greeks  years = 5 }
+		add_opinion = {
+			target = scope:basileus
+			modifier = angry_opinion
+			opinion = -20
+		}
+		scope:basileus = {
+			random_owned_story = {
+				limit = { type = story_bulgarian_gambit }
+				change_variable = { name = gambit_progress add = 5 }
+			}
+		}
+	}
+}
+
+###########################################################
+# 0004 — Subversion of the Boyars. Root = the emperor.
+###########################################################
+bulgarian_gambit.0004 = {
+	type = character_event
+	title = bulgarian_gambit.0004.t
+	desc = bulgarian_gambit.0004.desc
+	theme = intrigue
+	override_background = { reference = council_chamber }
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+
+	immediate = {
+		random_owned_story = {
+			limit = { type = story_bulgarian_gambit }
+			save_scope_as = gambit_story
+		}
+	}
+
+	# Single option — buy a faction of boyars outright.
+	option = {
+		name = bulgarian_gambit.0004.a
+		add_gold = -200
+		add_character_modifier = { modifier = bg_boyars_in_pocket  years = 5 }
+		scope:gambit_story = {
+			change_variable = { name = gambit_progress add = 15 }
+		}
+		if = {
+			limit = { exists = title:k_bulgaria.holder }
+			title:k_bulgaria.holder = {
+				random_vassal = {
+					limit = {
+						is_landed = yes
+						is_alive = yes
+					}
+					save_scope_as = suborned_boyar
+				}
+			}
+		}
+		if = {
+			limit = { exists = scope:suborned_boyar }
+			scope:gambit_story = {
+				add_to_variable_list = { name = suborned_boyars target = scope:suborned_boyar }
+			}
+		}
+	}
+}
+
+###########################################################
+# 0005 — The Sword Drawn. Root = the emperor.
+###########################################################
+bulgarian_gambit.0005 = {
+	type = character_event
+	title = bulgarian_gambit.0005.t
+	desc = bulgarian_gambit.0005.desc
+	theme = war
+	override_background = { reference = army_camp }
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+
+	immediate = {
+		random_owned_story = {
+			limit = { type = story_bulgarian_gambit }
+			save_scope_as = gambit_story
+		}
+	}
+
+	# A — Marshal the tagmata for the Haemimontus frontier.
+	# Unlocks the Subjugation of Bulgaria casus belli (throne-bound global).
+	option = {
+		name = bulgarian_gambit.0005.a
+		add_character_modifier = { modifier = bg_tagmata_mustered  years = 5 }
+		set_global_variable = bulgarian_subjugation_unlocked
+		send_interface_toast = {
+			type = event_toast_effect_good
+			title = bulgarian_gambit.0005.unlock_toast
+			left_icon = root
+		}
+		scope:gambit_story = {
+			change_variable = { name = gambit_progress add = 20 }
+		}
+	}
+}
+
+###########################################################
+# 0006 — Foreign Complication. Root = the emperor.
+###########################################################
+bulgarian_gambit.0006 = {
+	type = character_event
+	title = bulgarian_gambit.0006.t
+	desc = bulgarian_gambit.0006.desc
+	theme = diplomacy
+	override_background = { reference = throne_room }
+	left_portrait = {
+		character = root
+		animation = annoyed
+	}
+	right_portrait = {
+		character = scope:pope
+		animation = disapproval
+	}
+
+	immediate = {
+		if = { limit = { exists = title:k_papal_state.holder } title:k_papal_state.holder = { save_scope_as = pope } }
+	}
+
+	# Single option — ignore Rome's protests; the East is ours to order.
+	option = {
+		name = bulgarian_gambit.0006.a
+		add_character_modifier = { modifier = bg_defiance_of_rome  years = 5 }
+	}
+}
+
+###########################################################
+# 0007 — "The Eagles March". Root = the emperor (attacker). Fired from the
+# subjugation CB's on_declaration.
+###########################################################
+bulgarian_gambit.0007 = {
+	type = character_event
+	title = bulgarian_gambit.0007.t
+	desc = bulgarian_gambit.0007.desc
+	theme = war
+	override_background = { reference = army_camp }
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+
+	# Single option.
+	option = {
+		name = bulgarian_gambit.0007.a
+	}
+}
+
+###########################################################
+# 0008 — "The Eagles Come". Root = the Bulgarian ruler (defender). Fired from
+# the subjugation CB's on_declaration.
+###########################################################
+bulgarian_gambit.0008 = {
+	type = character_event
+	title = bulgarian_gambit.0008.t
+	desc = bulgarian_gambit.0008.desc
+	theme = war
+	override_background = { reference = army_camp }
+	left_portrait = {
+		character = root
+		animation = fear
+	}
+	right_portrait = {
+		character = scope:basileus
+		animation = aggressive
+	}
+
+	immediate = {
+		if = { limit = { exists = title:e_byzantium.holder } title:e_byzantium.holder = { save_scope_as = basileus } }
+	}
+
+	# Single option.
+	option = {
+		name = bulgarian_gambit.0008.a
+	}
+}
+
+###########################################################
+# 0051 — Failure. Root = the emperor. Fired from the subjugation CB's
+# on_white_peace / on_defeat. Ends the story permanently (the once-per-realm
+# lock stays set; no retry).
+###########################################################
+bulgarian_gambit.0051 = {
+	type = character_event
+	title = bulgarian_gambit.0051.t
+	desc = bulgarian_gambit.0051.desc
+	theme = emperor
+	override_background = { reference = throne_room }
+	left_portrait = {
+		character = root
+		animation = sadness
+	}
+
+	# A — The gambit is broken.
+	option = {
+		name = bulgarian_gambit.0051.a
+		add_character_modifier = { modifier = bg_humbled_by_bulgaria  years = 10 }
+		random_owned_story = {
+			limit = { type = story_bulgarian_gambit }
+			end_story = yes
+		}
+	}
+}
+
+###########################################################
+# 0050 — Climax: The Fall of the Bulgarian Crown. Root = the emperor.
+###########################################################
+bulgarian_gambit.0050 = {
+	type = character_event
+	title = bulgarian_gambit.0050.t
+	desc = bulgarian_gambit.0050.desc
+	theme = emperor
+	override_background = { reference = throne_room }
+	left_portrait = {
+		character = root
+		animation = acknowledging
+	}	
+
+	# A
+	option = {
+		name = bulgarian_gambit.0050.a
+		basileus_bulgarian_gambit_finale_effect = yes
+		random_owned_story = {
+			limit = { type = story_bulgarian_gambit }
+			end_story = yes
+		}
+	}
+}

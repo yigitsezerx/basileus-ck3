@@ -1,0 +1,11 @@
+﻿# Senate of Magnaura — scripted GUI helpers.
+
+# Visibility check for the HUD senate-tab button.
+# Returns true only when the scoped character holds e_byzantium.
+basileus_senate_button_visible = {
+	scope = character
+
+	is_shown = {
+		has_title = title:e_byzantium
+	}
+}

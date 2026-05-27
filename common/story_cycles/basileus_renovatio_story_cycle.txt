@@ -1,0 +1,665 @@
+story_renovatio = {
+	# This story cycle tracks the Emperor's attempt to revive the Latin language.
+	visible = yes
+	icon = {
+		reference = "gfx/interface/icons/artifact/artifact_chronicle.dds"
+	}
+	background = {
+		reference = "gfx/interface/illustrations/event_scenes/study.dds"
+	}
+	visualization = {
+		custom_string_key = "ROMAN_RENAISSANCE_INFO_STRING"
+		artifact = {
+			variable_name = "latin_codex_artifact"
+			label = "LATIN_CODEX"
+		}
+		artifact = {
+			variable_name = "jordanes_artifact"
+			label = "JORDANES_ARTIFACT"
+		}
+		artifact = {
+			variable_name = "hexagram_artifact"
+			label = "HEXAGRAM_ARTIFACT"
+		}
+		character = {
+			variable_name = "renaissance_leader"
+			label = "RENAISSANCE_LEADER"
+		}
+		character = {
+			variable_name = "opposition_leader"
+			label = "OPPOSITION_LEADER"
+		}
+		character = {
+			variable_name = "latin_scholar"
+			label = "LATIN_SCHOLAR"
+		}
+		basic_counter = {
+			variable_name = "renaissance_progress"
+			min = 0
+			max = 100
+			label = "RENAISSANCE_PROGRESS"
+			min_label = "RENAISSANCE_PROGRESS_MIN"
+			max_label = "RENAISSANCE_PROGRESS_MAX"
+		}
+		character_list = {
+			variable_name = "supporters"
+			label = "SUPPORTERS"
+		}
+		character_list = {
+			variable_name = "detractors"
+			label = "DETRACTORS"
+		}
+	}
+	on_setup = {
+		# Add the leader to the UI
+		set_variable = {
+			name = renaissance_leader
+			value = story_owner
+		}
+		# Initialize progress
+		set_variable = {
+			name = renaissance_progress
+			value = 0
+		}
+		set_variable = {
+			name = renaissance_duration_years
+			value = 0
+		}
+		# Grab the codex from the emperor
+		if = {
+			limit = {
+				exists = story_owner.var:latin_codex_var
+			}
+			set_variable = {
+				name = latin_codex_artifact
+				value = story_owner.var:latin_codex_var
+			}
+		}
+	}
+	on_end = {
+		story_owner = {
+			every_courtier = {
+				remove_character_flag = basileus_latin_scholar
+				remove_character_flag = basileus_jordanes_scholar
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = grand_finale_done }
+			}
+			remove_global_variable = pandects_renovatio_initiated_global
+		}
+	}
+	on_owner_death = {
+		end_story = yes
+	}
+	# Check if the owner is still the Byzantine Emperor
+	effect_group = {
+		days = 30
+		trigger = {
+			story_owner = {
+				NOT = {
+					has_title = title:e_byzantium
+				}
+			}
+		}
+		triggered_effect = {
+			trigger = {
+				always = yes
+			}
+			effect = {
+				end_story = yes
+			}
+		}
+	}
+	# 1. Initial Council — fires 2-4 months after story start
+	effect_group = {
+		days = {
+			60
+			120
+		}
+		chance = 100
+		trigger = {
+			NOT = {
+				has_variable = council_done
+			}
+		}
+		triggered_effect = {
+			trigger = {
+				always = yes
+			}
+			effect = {
+				story_owner = {
+					trigger_event = pandects_renovatio.0002
+				}
+			}
+		}
+	}
+	# 2. Jordanes scholar arrival — fires 1 years after story start, requires Council done
+	effect_group = {
+		days = {
+			365
+		}
+		chance = 100
+		trigger = {
+			var:renaissance_progress >= 10
+			has_variable = council_done
+			NOT = {
+				has_variable = scholar_arrival_done
+			}
+		}
+		triggered_effect = {
+			trigger = {
+				always = yes
+			}
+			effect = {
+				story_owner = {
+					trigger_event = pandects_renovatio.0003
+				}
+			}
+		}
+	}
+	# 3. Hexagram of Heraclius 
+	effect_group = {
+		days = {
+			600
+		}
+		chance = 100
+		trigger = {
+			NOT = {
+				has_variable = hexagram_discovery_done
+			}
+			story_owner = {
+				exists = cp:councillor_steward
+			}
+		}
+		triggered_effect = {
+			trigger = {
+				always = yes
+			}
+			effect = {
+				story_owner = {
+					trigger_event = pandects_renovatio.0004
+				}
+			}
+		}
+	}
+	# 4. The Latin Chrysobull — fires when progress >= 40
+	effect_group = {
+		days = {
+			180
+			360
+		}
+		chance = 100
+		trigger = {
+			var:renaissance_progress >= 40
+			NOT = {
+				has_variable = chrysobull_issued
+			}
+		}
+		triggered_effect = {
+			trigger = {
+				always = yes
+			}
+			effect = {
+				story_owner = {
+					trigger_event = pandects_renovatio.0005
+				}
+			}
+		}
+	}
+	# 5. The Great Betrayal — fires 6-18 months after the Chrysobull
+	effect_group = {
+		days = {
+			180
+			540
+		}
+		chance = 100
+		trigger = {
+			has_variable = chrysobull_issued
+			NOT = {
+				has_variable = betrayal_started
+			}
+		}
+		triggered_effect = {
+			trigger = {
+				always = yes
+			}
+			effect = {
+				set_variable = {
+					name = betrayal_started
+					value = yes
+				}
+				story_owner = {
+					trigger_event = pandects_renovatio.0006
+				}
+			}
+		}
+	}
+	# 6. The Grand Finale — fires when the betrayal war has ended and the
+	# Basileus is still on the throne. Polled every 90 days while a war is
+	# expected; gated by betrayal_war_active (set in 0006 option B).
+	effect_group = {
+		days = 90
+		chance = 100
+		trigger = {
+			has_variable = betrayal_war_active
+			NOT = { has_variable = grand_finale_done }
+			story_owner = {
+				has_title = title:e_byzantium
+				is_alive = yes
+				# Civil war is over (no remaining war using the betrayal CB
+				# with the emperor as defender).
+				NOT = {
+					any_character_war = {
+						using_cb = pandects_betrayal_cb
+						primary_defender = prev
+					}
+				}
+			}
+		}
+		triggered_effect = {
+			trigger = {
+				always = yes
+			}
+			effect = {
+				set_variable = {
+					name = grand_finale_done
+					value = yes
+				}
+				story_owner = {
+					trigger_event = pandects_renovatio.0007
+				}
+			}
+		}
+	}
+	# Bonding with the Scholar is handled in pandects_renovatio.0003
+	# If separate bonding events are needed, they can be added here.
+	# Scholar Maintenance — ensures the scholar stays at court and remains accessible
+	effect_group = {
+		days = 30
+		trigger = {
+			exists = var:jordanes_scholar
+			var:jordanes_scholar = {
+				is_alive = yes
+				NOT = {
+					is_courtier_of = story_owner
+				}
+			}
+		}
+		triggered_effect = {
+			trigger = {
+				always = yes
+			}
+			effect = {
+				var:jordanes_scholar = {
+					move_to_court = story_owner
+				}
+			}
+		}
+	}
+	# Scholar Death — fires event 9000 if the scholar is dead and we haven't handled it
+	effect_group = {
+		days = 30
+		trigger = {
+			exists = var:jordanes_scholar
+			var:jordanes_scholar = {
+				is_alive = no
+			}
+			NOT = {
+				has_variable = scholar_death_handled
+			}
+		}
+		triggered_effect = {
+			trigger = {
+				always = yes
+			}
+			effect = {
+				set_variable = {
+					name = scholar_death_handled
+					value = yes
+				}
+				story_owner = {
+					trigger_event = pandects_renovatio.9000
+				}
+			}
+		}
+	}
+	# Opposition Leadership — handles replacement of the opposition leader if they are won over or die
+	effect_group = {
+		days = 30
+		trigger = {
+			exists = var:opposition_leader
+			OR = {
+				var:opposition_leader = {
+					is_alive = no
+				}
+				var:opposition_leader = {
+					opinion = {
+						target = story_owner
+						value >= 10
+					}
+				}
+			}
+		}
+		triggered_effect = {
+			trigger = {
+				always = yes
+			}
+			effect = {
+				# Find a new leader from the existing detractors list first
+				random_in_list = {
+					variable = detractors
+					limit = {
+						is_alive = yes
+						NOT = {
+							this = var:opposition_leader
+						}
+					}
+					weight = {
+						base = 10
+						modifier = {
+							add = 10
+							is_powerful_vassal_of = story_owner
+						}
+						modifier = {
+							add = 5
+							has_trait = ambitious
+						}
+					}
+					save_scope_as = new_opp_leader
+				}
+				# If no detractor found, try any vassal who dislikes us
+				if = {
+					limit = {
+						NOT = {
+							exists = scope:new_opp_leader
+						}
+					}
+					story_owner = {
+						random_vassal = {
+							limit = {
+								is_alive = yes
+								opinion = {
+									target = prev
+									value < 0
+								}
+								NOT = {
+									this = var:opposition_leader
+								}
+							}
+							save_scope_as = new_opp_leader
+						}
+					}
+				}
+				# Update the leader if we found someone
+				if = {
+					limit = {
+						exists = scope:new_opp_leader
+					}
+					set_variable = {
+						name = opposition_leader
+						value = scope:new_opp_leader
+					}
+				}
+			}
+		}
+	}
+	# Periodic supporters/detractors pulse — scans vassals and councillors by opinion
+	effect_group = {
+		days = {
+			180
+			365
+		}
+		trigger = {
+			var:renaissance_progress >= 15
+		}
+		triggered_effect = {
+			trigger = {
+				always = yes
+			}
+			effect = {
+				save_scope_as = renovatio_story
+				# Prune characters from both lists (Dead, or opinion shifted)
+				every_in_list = {
+					variable = supporters
+					limit = {
+						OR = {
+							is_alive = no
+							# The Scholar is very persistent (remains until -50)
+							AND = {
+								this = scope:renovatio_story.var:jordanes_scholar
+								opinion = {
+									target = story_owner
+									value < -50
+								}
+							}
+							# Converted Skeptics remain until 0
+							AND = {
+								NOT = {
+									this = scope:renovatio_story.var:jordanes_scholar
+								}
+								has_character_flag = basileus_rr_converted_supporter
+								opinion = {
+									target = story_owner
+									value < 0
+								}
+							}
+							# Automatic Supporters remain until 30
+							AND = {
+								NOT = {
+									this = scope:renovatio_story.var:jordanes_scholar
+								}
+								NOT = {
+									has_character_flag = basileus_rr_converted_supporter
+								}
+								opinion = {
+									target = story_owner
+									value < 30
+								}
+							}
+						}
+					}
+					scope:renovatio_story = {
+						remove_list_variable = {
+							name = supporters
+							target = prev
+						}
+					}
+				}
+				every_in_list = {
+					variable = detractors
+					limit = {
+						OR = {
+							is_alive = no
+							opinion = {
+								target = story_owner
+								value > 10
+							}
+						}
+					}
+					scope:renovatio_story = {
+						remove_list_variable = {
+							name = detractors
+							target = prev
+						}
+					}
+				}
+				# Scan for supporters
+				story_owner = {
+					# The Scholar (Always added back if opinion > -50)
+					if = {
+						limit = {
+							exists = scope:renovatio_story.var:jordanes_scholar
+							scope:renovatio_story.var:jordanes_scholar = {
+								is_alive = yes
+								opinion = {
+									target = root
+									value > -50
+								}
+							}
+						}
+						scope:renovatio_story = {
+							if = {
+								limit = {
+									NOT = {
+										is_target_in_variable_list = {
+											name = supporters
+											target = scope:renovatio_story.var:jordanes_scholar
+										}
+									}
+								}
+								add_to_variable_list = {
+									name = supporters
+									target = scope:renovatio_story.var:jordanes_scholar
+								}
+							}
+							remove_list_variable = {
+								name = detractors
+								target = scope:renovatio_story.var:jordanes_scholar
+							}
+						}
+					}
+					# Scan Powerful Vassals
+					every_vassal = {
+						limit = {
+							is_adult = yes
+							is_powerful_vassal_of = prev
+						}
+						if = {
+							limit = {
+								opinion = {
+									target = prev
+									value >= 50
+								}
+							}
+							scope:renovatio_story = {
+								if = {
+									limit = {
+										NOT = {
+											is_target_in_variable_list = {
+												name = supporters
+												target = prev
+											}
+										}
+									}
+									add_to_variable_list = {
+										name = supporters
+										target = prev
+									}
+								}
+								remove_list_variable = {
+									name = detractors
+									target = prev
+								}
+							}
+						}
+						else_if = {
+							limit = {
+								opinion = {
+									target = prev
+									value <= 10
+								}
+							}
+							scope:renovatio_story = {
+								if = {
+									limit = {
+										NOT = {
+											is_target_in_variable_list = {
+												name = detractors
+												target = prev
+											}
+										}
+									}
+									add_to_variable_list = {
+										name = detractors
+										target = prev
+									}
+								}
+								remove_list_variable = {
+									name = supporters
+									target = prev
+								}
+							}
+						}
+					}
+					# Councillors
+					every_councillor = {
+						limit = {
+							is_adult = yes
+							NOT = {
+								this = prev
+							}
+							OR = {
+								opinion = {
+									target = prev
+									value >= 50
+								}
+								opinion = {
+									target = prev
+									value <= 10
+								}
+							}
+						}
+						if = {
+							limit = {
+								opinion = {
+									target = prev
+									value >= 50
+								}
+							}
+							scope:renovatio_story = {
+								if = {
+									limit = {
+										NOT = {
+											is_target_in_variable_list = {
+												name = supporters
+												target = prev
+											}
+										}
+									}
+									add_to_variable_list = {
+										name = supporters
+										target = prev
+									}
+								}
+								remove_list_variable = {
+									name = detractors
+									target = prev
+								}
+							}
+						}
+						else_if = {
+							limit = {
+								opinion = {
+									target = prev
+									value <= 10
+								}
+							}
+							scope:renovatio_story = {
+								if = {
+									limit = {
+										NOT = {
+											is_target_in_variable_list = {
+												name = detractors
+												target = prev
+											}
+										}
+									}
+									add_to_variable_list = {
+										name = detractors
+										target = prev
+									}
+								}
+								remove_list_variable = {
+									name = supporters
+									target = prev
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

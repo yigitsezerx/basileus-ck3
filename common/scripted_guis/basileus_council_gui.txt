@@ -1,0 +1,9 @@
+is_eastern_roman_gui = {
+	scope = character
+	is_valid = {
+		OR = {
+			has_title = title:e_byzantium
+			has_title = title:e_roman_empire
+		}
+	}
+}

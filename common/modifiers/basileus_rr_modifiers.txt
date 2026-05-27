@@ -1,0 +1,42 @@
+basileus_translation_efforts = {
+	icon = learning_positive
+	cultural_fascination_progress_add = 0.5
+	learning = 1
+}
+
+basileus_pandects_modifier = {
+	monthly_learning_lifestyle_xp_gain_mult = 0.2
+	monthly_stewardship_lifestyle_xp_gain_mult = 0.2
+	monthly_prestige = 0.5
+	general_opinion = 10
+}
+
+basileus_restorer_of_latin = {
+	icon = prestige_positive
+	monthly_prestige_gain_mult = 0.2
+	diplomacy = 2
+	learning = 2
+}
+
+basileus_jordanes_modifier = {
+	icon = learning_positive
+	monthly_learning_lifestyle_xp_gain_mult = 0.10
+	monthly_prestige = 0.2
+	diplomacy = 1
+}
+
+basileus_hexagram_modifier = {
+	christianity_religion_opinion = 3
+	same_culture_opinion = 3
+	monthly_influence_mult = 0.02
+	domain_tax_mult = 0.02	
+}
+
+basileus_broken_spirit = {
+	icon = stress_negative
+	diplomacy = -2
+	stewardship = -2
+	learning = -2
+	monthly_prestige = -1
+	stress_gain_mult = 0.3
+}

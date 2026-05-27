@@ -1,0 +1,416 @@
+# =====================================================================
+# BASILEUS — REORGANIZE THE THEMES
+# ---------------------------------------------------------------------
+# A multi-option (widget) decision: the e_byzantium holder, having fully
+# secured a frontier region, consolidates it into a historical theme —
+# merging the region's duchies into one surviving duchy, renaming it, and
+# destroying the emptied parent duchies. One-time per theme (locked via the
+# unavailable_unique_decisions global list). Uses CK3's vanilla decision
+# option-list framework (controller = decision_option_list_controller).
+#
+# Adding a theme = one item below + one basileus_form_theme_X_effect +
+# one lock flag + its loc keys.
+# =====================================================================
+
+basileus_reorganize_themes_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_roman_restoration.dds"
+	}
+	decision_group_type = roman
+	sort_order = 118
+
+	desc = basileus_reorganize_themes_decision_desc
+	selection_tooltip = basileus_reorganize_themes_decision_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_title = title:e_byzantium
+		# At least one theme remains unformed. (Add future themes' flags here.)
+		OR = {
+			NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_bulgarian_frontier_formed } }
+			NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_peloponnese_frontier_formed } }
+			NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_hellas_frontier_formed } }
+			NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_macedonia_frontier_formed } }
+			NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_thrace_formed } }
+			NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_dioclea_formed } }
+			NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_dalmatia_formed } }
+			NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_syria_formed } }
+			NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_palestine_formed } }
+			NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_africa_formed } }
+		}
+	}
+
+	is_valid = {
+		has_title = title:e_byzantium
+		custom_description = {
+			text = basileus_reorganize_themes_decision_req
+			subject = root
+			# Valid if ANY one theme is formable. (Add future themes as more
+			# AND branches inside this single OR.)
+			OR = {
+				AND = {
+					completely_controls_region = custom_roman_haemimontus
+					completely_controls_region = custom_roman_paristrion
+					NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_bulgarian_frontier_formed } }
+				}
+				AND = {
+					completely_controls_region = custom_roman_peloponnese
+					NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_peloponnese_frontier_formed } }
+				}
+				AND = {
+					completely_controls_region = custom_roman_hellas
+					# Hellas requires the Peloponnese theme to be formed first.
+					is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_peloponnese_frontier_formed }
+					NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_hellas_frontier_formed } }
+				}				
+				AND = {
+					completely_controls_region = custom_roman_macedonia
+					NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_macedonia_frontier_formed } }
+				}
+				AND = {
+					completely_controls_region = custom_roman_thrace
+					# Thrace requires the Macedonia theme to be formed first.
+					is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_macedonia_frontier_formed }					
+					NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_thrace_formed } }
+				}
+				AND = {
+					completely_controls_region = custom_roman_dioclea
+					NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_dioclea_formed } }
+				}				
+				AND = {
+					completely_controls_region = custom_roman_dalmatia
+					NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_dalmatia_formed } }
+				}				
+				#AND = {
+				#	completely_controls_region = custom_roman_croatia
+				#	NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_croatia_formed } }
+				#}				
+				AND = {
+					completely_controls_region = custom_roman_syria
+					NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_syria_formed } }
+				}				
+				AND = {
+					completely_controls_region = custom_roman_palestina
+					NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_palestina_formed } }
+				}				
+				AND = {
+					completely_controls_region = custom_roman_africae
+					NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_africa_formed } }
+				}				
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_imprisoned = no
+		has_regent = no
+	}
+
+	widget = {
+		gui = "decision_view_widget_option_list_generic"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "CHOOSE_THEME_BUTTON"
+
+		# --- The Bulgarian Frontier: forms Haemimontus + Paristrion together ---
+		item = {
+			value = theme_bulgarian_frontier
+			is_shown = {
+				NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_bulgarian_frontier_formed } }
+			}
+			is_valid = {
+				completely_controls_region = custom_roman_haemimontus
+				completely_controls_region = custom_roman_paristrion
+			}
+			current_description = basileus_theme_bulgarian_frontier_desc
+			localization = basileus_theme_bulgarian_frontier_desc
+			icon = "gfx/interface/icons/themes/bulgaria.dds"
+			ai_chance = { value = 0 }
+		}
+		# --- The Peloponnese ---
+		item = {
+			value = theme_peloponnese
+			is_shown = {
+				NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_peloponnese_frontier_formed } }
+			}
+			is_valid = {
+				completely_controls_region = custom_roman_peloponnese
+			}
+			current_description = basileus_theme_peloponnese_frontier_desc
+			localization = basileus_theme_peloponnese_frontier_desc
+			icon = "gfx/interface/icons/themes/peloponnese.dds"
+			ai_chance = { value = 0 }
+		}		
+		# --- Hellas ---
+		item = {
+			value = theme_hellas
+			is_shown = {
+				NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_hellas_frontier_formed } }
+			}
+			is_valid = {
+				completely_controls_region = custom_roman_hellas
+				# Must reorganize the Peloponnese before Hellas.
+				custom_tooltip = {
+					text = basileus_theme_hellas_requires_peloponnese_tt
+					is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_peloponnese_frontier_formed }
+				}
+			}
+			current_description = basileus_theme_hellas_frontier_desc
+			localization = basileus_theme_hellas_frontier_desc
+			icon = "gfx/interface/icons/themes/hellas.dds"
+			ai_chance = { value = 0 }
+		}		
+		# --- Macedonia ---
+		item = {
+			value = theme_macedonia
+			is_shown = {
+				NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_macedonia_frontier_formed } }
+			}
+			is_valid = {
+				completely_controls_region = custom_roman_macedonia
+			}
+			current_description = basileus_theme_macedonia_frontier_desc
+			localization = basileus_theme_macedonia_frontier_desc
+			icon = "gfx/interface/icons/themes/macedonia.dds"
+			ai_chance = { value = 0 }
+		}
+		# --- Thrace (elevates d_thrace into the kingdom of Thrace) ---
+		item = {
+			value = theme_thrace
+			is_shown = {
+				NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_thrace_formed } }
+			}
+			is_valid = {
+				completely_controls_region = custom_roman_thrace
+				# Must reorganize Macedonia before Thrace.
+				custom_tooltip = {
+					text = basileus_theme_thrace_requires_macedonia_tt
+					is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_macedonia_frontier_formed }
+				}				
+			}
+			current_description = basileus_theme_thrace_frontier_desc
+			localization = basileus_theme_thrace_frontier_desc
+			icon = "gfx/interface/icons/themes/thrace.dds"
+			ai_chance = { value = 0 }
+		}
+		# --- Dioclea ---
+		item = {
+			value = theme_dioclea
+			is_shown = {
+				NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_dioclea_formed } }
+			}
+			is_valid = {
+				completely_controls_region = custom_roman_dioclea
+			}
+			current_description = basileus_theme_dioclea_frontier_desc
+			localization = basileus_theme_dioclea_frontier_desc
+			icon = "gfx/interface/icons/themes/doclea.dds"
+			ai_chance = { value = 0 }
+		}		
+		# --- Dalmatia ---
+		item = {
+			value = theme_dalmatia
+			is_shown = {
+				NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_dalmatia_formed } }
+			}
+			is_valid = {
+				completely_controls_region = custom_roman_dalmatia
+				completely_controls_region = custom_roman_croatia
+			}
+			current_description = basileus_theme_dalmatia_frontier_desc
+			localization = basileus_theme_dalmatia_frontier_desc
+			icon = "gfx/interface/icons/themes/dalmatia.dds"
+			ai_chance = { value = 0 }
+		}		
+		# --- Croatia ---
+		#item = {
+		#	value = theme_croatia
+		#	is_shown = {
+		#		NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_croatia_formed } }
+		#	}
+		#	is_valid = {
+		#		completely_controls_region = custom_roman_croatia
+		#	}
+		#	current_description = basileus_theme_croatia_frontier_desc
+		#	localization = basileus_theme_croatia_frontier_desc
+		#	icon = "gfx/interface/icons/traits/open_terrain_expert.dds"
+		#	ai_chance = { value = 0 }
+		#}
+		# --- Syria ---
+		item = {
+			value = theme_syria
+			is_shown = {
+				NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_syria_formed } }
+			}
+			is_valid = {
+				completely_controls_region = custom_roman_syria
+			}
+			current_description = basileus_theme_syria_frontier_desc
+			localization = basileus_theme_syria_frontier_desc
+			icon = "gfx/interface/icons/themes/syria.dds"
+			ai_chance = { value = 0 }
+		}				
+		# --- Palestine ---
+		item = {
+			value = theme_palestina
+			is_shown = {
+				NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_palestina_formed } }
+			}
+			is_valid = {
+				completely_controls_region = custom_roman_palestina
+			}
+			current_description = basileus_theme_palestina_frontier_desc
+			localization = basileus_theme_palestina_frontier_desc
+			icon = "gfx/interface/icons/themes/palestine.dds"
+			ai_chance = { value = 0 }
+		}		
+		# --- Africa ---
+		item = {
+			value = theme_africa
+			is_shown = {
+				NOT = { is_target_in_global_variable_list = { name = unavailable_unique_decisions  target = flag:theme_africa_formed } }
+			}
+			is_valid = {
+				completely_controls_region = custom_roman_africae
+			}
+			current_description = basileus_theme_africa_frontier_desc
+			localization = basileus_theme_africa_frontier_desc
+			icon = "gfx/interface/icons/themes/africa.dds"
+			ai_chance = { value = 0 }
+		}		
+	}
+
+	effect = {
+		# --- The Bulgarian Frontier (Haemimontus + Paristrion) ---
+		hidden_effect = {
+			if = {
+				limit = { scope:theme_bulgarian_frontier = yes }
+				basileus_form_theme_haemimontus_effect = yes
+				basileus_form_theme_paristrion_effect = yes
+				add_to_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:theme_bulgarian_frontier_formed
+				}
+			}
+		}
+		# --- The Peloponnese ---
+		hidden_effect = {
+			if = {
+				limit = { scope:theme_peloponnese = yes }
+				basileus_form_theme_peloponnese_effect = yes
+				add_to_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:theme_peloponnese_frontier_formed
+				}
+			}
+		}
+		# --- Hellas ---
+		hidden_effect = {
+			if = {
+				limit = { scope:theme_hellas = yes }
+				basileus_form_theme_hellas_effect = yes
+				add_to_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:theme_hellas_frontier_formed
+				}
+			}
+		}		
+		# --- Macedonia ---
+		hidden_effect = {
+			if = {
+				limit = { scope:theme_macedonia = yes }
+				basileus_form_theme_macedonia_effect = yes
+				add_to_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:theme_macedonia_frontier_formed
+				}
+			}
+		}
+		# --- Thrace ---
+		hidden_effect = {
+			if = {
+				limit = { scope:theme_thrace = yes }
+				basileus_form_theme_thrace_effect = yes
+				add_to_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:theme_thrace_formed
+				}
+			}
+		}
+		# --- Dioclea ---
+		hidden_effect = {
+			if = {
+				limit = { scope:theme_dioclea = yes }
+				basileus_form_theme_dioclea_effect = yes
+				add_to_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:theme_dioclea_formed
+				}
+			}
+		}
+		# --- Dalmatia ---
+		hidden_effect = {
+			if = {
+				limit = { scope:theme_dalmatia = yes }
+				basileus_form_theme_dalmatia_effect = yes
+				add_to_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:theme_dalmatia_formed
+				}
+			}
+		}
+		# --- Croatia ---
+		#hidden_effect = {
+		#	if = {
+		#		limit = { scope:theme_croatia = yes }
+		#		basileus_form_theme_croatia_effect = yes
+		#		add_to_global_variable_list = {
+		#			name = unavailable_unique_decisions
+		#			target = flag:theme_croatia_formed
+		#		}
+		#	}
+		#}
+		# --- Syria ---
+		hidden_effect = {
+			if = {
+				limit = { scope:theme_syria = yes }
+				basileus_form_theme_syria_effect = yes
+				add_to_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:theme_syria_formed
+				}
+			}
+		}		
+		# --- Palestine ---
+		hidden_effect = {
+			if = {
+				limit = { scope:theme_palestina = yes }
+				basileus_form_theme_palestina_effect = yes
+				add_to_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:theme_palestina_formed
+				}
+			}
+		}		
+		# --- Africa ---
+		hidden_effect = {
+			if = {
+				limit = { scope:theme_africa = yes }
+				basileus_form_theme_africa_effect = yes
+				add_to_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:theme_africa_formed
+				}
+			}
+		}		
+	}
+
+	cost = {
+		gold = 200
+		prestige = 100
+		influence = 100
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}

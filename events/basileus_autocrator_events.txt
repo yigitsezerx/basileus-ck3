@@ -1,0 +1,37 @@
+﻿# You are now an autocrat, son
+#	by YS
+namespace = autocrator
+
+autocrator.8011 = {
+	type = character_event
+	hidden = yes
+
+	trigger = {
+		OR = {
+			has_title = title:h_eastern_roman_empire
+			has_title = title:e_byzantium
+			has_title = title:h_roman_empire
+		}
+		NOT = {
+			has_trait = autocrator_ercf
+		}
+	}
+
+	immediate = { add_trait = autocrator_ercf }
+}
+
+autocrator.8022 = {
+	type = character_event
+	hidden = yes
+
+	trigger = {
+		NOR = {
+			has_title = title:h_eastern_roman_empire
+			has_title = title:e_byzantium
+			has_title = title:h_roman_empire
+		}
+		has_trait = autocrator_ercf
+	}
+
+	immediate = { remove_trait = autocrator_ercf }
+}

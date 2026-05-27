@@ -1,0 +1,4 @@
+# dominus_regnal_name_loc.txt
+# This file is intentionally left empty.
+# The old customizable_localization for historical character name display was removed
+# when the coronation system was reworked to use parent-honouring + free-text rename.

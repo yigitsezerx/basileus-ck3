@@ -1,0 +1,8 @@
+﻿# Senate of Magnaura — peer opinion modifiers.
+# Applied bidirectionally between every pair of current senate members
+# (hypatos / senator / patrician). Refreshed on every appointment/revocation
+# of any senate position.
+
+senate_peer_opinion = {
+	opinion = 5
+}

@@ -1,0 +1,32 @@
+# ERCF Building XP
+# Rewards the Autocrat for infrastructure development
+
+on_building_completed = {
+    on_actions = {
+        ercf_building_xp_pulse
+    }
+}
+
+ercf_building_xp_pulse = {
+    effect = {
+        # Check if the character who completed the building is an Autocrat
+        if = {
+            limit = {
+                scope:character = { has_trait = autocrator_ercf }
+                # Only reward buildings in the capital or high-tier buildings to avoid spam
+                OR = {
+                    root = { this = scope:character.capital_province }
+                    scope:building = { building_tier >= 2 }
+                }
+            }
+            scope:character = {
+                add_trait_xp = {
+                    trait = autocrator_ercf
+                    value = 1
+                }
+                # Instant mandate check
+                ercf_autocrator_mandate_check_effect = yes
+            }
+        }
+    }
+}

@@ -1,0 +1,227 @@
+# =====================================================================
+# BASILEUS — RECLAIM THE EAST — scripted effects.
+# ---------------------------------------------------------------------
+# basileus_start_eastern_struggle_effect
+#   Called from basileus_reclaim_the_east_decision's effect block (via
+#   the audience event's single option). Stores the start date for the
+#   50-year hubris timer, then kicks off the custom struggle and
+#   force-involves the Basileus.
+#
+# basileus_end_eastern_struggle_triumph_effect
+#   Called from basileus_eastern_reconquest_triumph_decision. Applies
+#   the realm modifier + dynasty renown bump, then ends the struggle.
+#
+# basileus_end_eastern_struggle_hubris_effect
+#   Called from basileus_eastern_reconquest_concede_decision and from
+#   the 50-year auto-fire event 0050. Applies the character modifier +
+#   dynasty renown penalty, then ends the struggle.
+# =====================================================================
+
+basileus_start_eastern_struggle_effect = {
+	# Save the start date globally (informational; the actual 50-year
+	# timer is implemented via a delayed trigger_event scheduled below,
+	# which is more robust than polling).
+	set_global_variable = {
+		name = eastern_reconquest_start_date
+		value = current_date
+	}
+	# Running tally of net Roman territorial progress, used by the
+	# rubber-band defender catalysts (the more the Romans have gained,
+	# the harder the defenders rally). +1 per reconquered county,
+	# +3 per great city; -1 / -3 for losses. Lives only while the
+	# struggle is active; cleared by the ending effects.
+	set_global_variable = {
+		name = basileus_reconquest_net_gains
+		value = 0
+	}
+	# Start the custom struggle. Phase 1 = Resolve.
+	# The Basileus auto-involves: his culture (Greek / Eastern Roman) is
+	# in the struggle's cultures list and his realm sits inside the
+	# struggle region (custom_theodosian_ere), well past the 50%
+	# involvement_prerequisite_percentage threshold.
+	start_struggle = {
+		struggle_type = basileus_eastern_reconquest_struggle
+		start_phase = struggle_eastern_reconquest_phase_resolve
+	}
+	# Schedule the 50-year hubris-timer event. If the struggle has been
+	# concluded (triumph or concede) by then, the event's trigger filters
+	# it out so it's a no-op.
+	trigger_event = {
+		id = basileus_eastern_reconquest.0050
+		years = 50
+	}
+	# NOTE: the struggle introduction event (0002) is NOT fired here. It's
+	# fired from the struggle's on_join hook instead, so the joiner's
+	# involvement is fully registered before the struggle_info widget reads
+	# it. Firing it here (during start_struggle) was too early — the widget
+	# rendered the "ended" fallback state.
+}
+
+# Triumph payoff. Now folds in the vanilla "Re-Establish the Theodosian
+# Borders" decision: instead of bespoke rewards, we fire its celebration
+# event (ep3_decisions_event.4000), whose immediate runs the full vanilla
+# retake_eastern_provinces_decision_effect — augustus trait, "the Great"
+# nickname, de jure consolidation of the eastern kingdoms, massive
+# influence/legitimacy, 2500 dynasty renown, legend seed, Hippodrome
+# celebration + character memory. We keep our struggle-specific realm
+# modifier on top as unique flavour, plus a prestige capstone (the vanilla
+# effect is light on prestige).
+basileus_end_eastern_struggle_triumph_effect = {
+	add_character_modifier = {
+		modifier = basileus_restored_theodosian_empire
+		# Permanent — no `years = X`.
+	}
+	add_prestige = 1000
+
+	# Vanilla Theodosian celebration + full payoff effect.
+	trigger_event = {
+		id = ep3_decisions_event.4000
+		days = 1
+	}
+	# Mark the standalone Theodosian decision as completed, so it stays
+	# locked (it's also hidden while the struggle is/was in play).
+	add_to_global_variable_list = {
+		name = unavailable_unique_decisions
+		target = flag:retake_eastern_provinces_decision
+	}
+
+	# Tidy up the struggle vars.
+	if = {
+		limit = { has_global_variable = basileus_reconquest_net_gains }
+		remove_global_variable = basileus_reconquest_net_gains
+	}
+	if = {
+		limit = { has_global_variable = eastern_reconquest_start_date }
+		remove_global_variable = eastern_reconquest_start_date
+	}
+}
+
+# Hubris payoff: 50-year character modifier on the failed Basileus +
+# dynasty renown loss. Called from the concede ending decision and from
+# the 50-year auto-fire event 0050.
+basileus_end_eastern_struggle_hubris_effect = {
+	add_character_modifier = {
+		modifier = basileus_hubris_of_the_east
+		years = 50
+	}
+	add_prestige = -1000
+	add_legitimacy = -200
+	if = {
+		limit = { exists = dynasty }
+		dynasty = {
+			add_dynasty_prestige = -500
+		}
+	}
+	# Clear the start-date var so a future Basileus (if ever the lock is
+	# bypassed) doesn't inherit a stale timer.
+	if = {
+		limit = { has_global_variable = eastern_reconquest_start_date }
+		remove_global_variable = eastern_reconquest_start_date
+	}
+	# And the rubber-band tally.
+	if = {
+		limit = { has_global_variable = basileus_reconquest_net_gains }
+		remove_global_variable = basileus_reconquest_net_gains
+	}
+}
+
+# =====================================================================
+# Rubber-band defender catalyst activation.
+# ---------------------------------------------------------------------
+# Fires a defender-side catalyst, then fires it AGAIN at tally
+# thresholds — so the further ahead the Romans are (tracked in the
+# global var basileus_reconquest_net_gains), the more momentum each
+# defender success generates. "Backs against the wall."
+#   $CATALYST$ = the defender catalyst to activate
+#   $CHAR$     = the credit-bearing character (must be struggle-involved)
+# =====================================================================
+basileus_activate_defender_catalyst_effect = {
+	$CHAR$ = {
+		every_character_struggle = {
+			limit = { is_struggle_type = basileus_eastern_reconquest_struggle }
+			# Base activation — always.
+			activate_struggle_catalyst = {
+				catalyst = $CATALYST$
+				character = $CHAR$
+			}
+			# Tier 1 rally: Romans clearly ahead.
+			if = {
+				limit = {
+					has_global_variable = basileus_reconquest_net_gains
+					global_var:basileus_reconquest_net_gains >= 8
+				}
+				activate_struggle_catalyst = {
+					catalyst = $CATALYST$
+					character = $CHAR$
+				}
+			}
+			# Tier 2 rally: Romans dominant — desperate defenders.
+			if = {
+				limit = {
+					has_global_variable = basileus_reconquest_net_gains
+					global_var:basileus_reconquest_net_gains >= 16
+				}
+				activate_struggle_catalyst = {
+					catalyst = $CATALYST$
+					character = $CHAR$
+				}
+			}
+		}
+	}
+}
+
+basileus_activate_roman_catalyst_effect = {
+	$CHAR$ = {
+		every_character_struggle = {
+			limit = { is_struggle_type = basileus_eastern_reconquest_struggle }
+			activate_struggle_catalyst = {
+				catalyst = $CATALYST$
+				character = $CHAR$
+			}
+		}
+	}
+}
+
+basileus_eastern_reconquest_check_secured_western_frontier = {
+	if = {
+		limit = {
+			has_global_variable = basileus_reconquest_net_gains
+			title:e_byzantium.holder = {
+				any_character_struggle = {
+					is_struggle_type = basileus_eastern_reconquest_struggle
+					is_struggle_phase = struggle_eastern_reconquest_phase_resolve
+				}
+			}
+			scope:war = {
+				OR = {
+					AND = {
+						primary_attacker = { has_title = title:e_byzantium }
+						primary_defender = {
+							OR = {
+								has_title = title:e_hre
+								has_title = title:k_hungary
+								has_title = title:k_bulgaria
+							}
+						}
+					}
+					AND = {
+						primary_defender = { has_title = title:e_byzantium }
+						primary_attacker = {
+							OR = {
+								has_title = title:e_hre
+								has_title = title:k_hungary
+								has_title = title:k_bulgaria
+							}
+						}
+					}
+				}
+			}
+		}
+		title:e_byzantium.holder = {
+			basileus_activate_roman_catalyst_effect = {
+				CATALYST = catalyst_basileus_secured_western_frontier
+				CHAR = title:e_byzantium.holder
+			}
+		}
+	}
+}

@@ -1,0 +1,263 @@
+# =====================================================================
+# BASILEUS — THEME FORMATION EFFECTS
+# ---------------------------------------------------------------------
+# Called by basileus_reorganize_themes_decision. Each effect merges a
+# region's duchies' de jure counties into one surviving duchy, renames the
+# survivor to the theme (set_title_name — its adjective comes from the
+# <KEY>_adj loc convention), destroys the emptied parent duchies, and locks
+# the theme via the unavailable_unique_decisions global list.
+#
+# On reorganization, counties not of the reorganizer's culture get a one-shot
+# partial conversion toward it (basileus_theme_convert_region_effect).
+# =====================================================================
+
+# One-shot culture nudge: each county in REGION not already of root's culture
+# has a chance to flip to it. (root = the decision-taking emperor.)
+basileus_theme_convert_region_effect = {
+	every_county_in_region = {
+		region = $REGION$
+		limit = { NOT = { culture = root.culture } }
+		random = {
+			chance = 50
+			set_county_culture = root.culture
+		}
+	}
+}
+
+# Bake a culture-appropriate theme name onto a title at FORMATION time, so the
+# stored name is a fixed string. (A live [GetPlayer.Custom(...)] title name
+# renders empty in De Jure map mode / some tooltips when GetPlayer is null.)
+# Branches on the former emperor's culture (root). $ER$/$GREEK$ are static keys
+# whose <KEY>_adj siblings supply the adjective.
+basileus_set_theme_name_effect = {
+	if = {
+		limit = { culture = culture:eastern_roman }
+		$TITLE$ = { set_title_name = $ER$ }
+	}
+	else = {
+		$TITLE$ = { set_title_name = $GREEK$ }
+	}
+}
+
+# Haemimontus — custom_roman_haemimontus (d_bulgaria + d_philippopolis).
+# Survivor: d_philippopolis. Merged & destroyed: d_bulgaria.
+basileus_form_theme_haemimontus_effect = {
+	title:d_bulgaria = {
+		every_in_de_jure_hierarchy = {
+			limit = { tier = tier_county }
+			set_de_jure_liege_title = title:d_philippopolis
+		}
+	}
+	basileus_set_theme_name_effect = { TITLE = title:d_philippopolis  ER = BASILEUS_THEME_HAEMIMONTUS_NAME_ER  GREEK = BASILEUS_THEME_HAEMIMONTUS_NAME_GREEK }
+	destroy_title = title:d_bulgaria
+	basileus_theme_convert_region_effect = { REGION = custom_roman_haemimontus }
+	add_to_global_variable_list = {
+		name = unavailable_unique_decisions
+		target = flag:theme_haemimontus_formed
+	}
+}
+
+# Paristrion — custom_roman_paristrion (d_turnovo + d_dobrudja).
+# Survivor: d_turnovo. Merged & destroyed: d_dobrudja.
+basileus_form_theme_paristrion_effect = {
+	title:d_dobrudja = {
+		every_in_de_jure_hierarchy = {
+			limit = { tier = tier_county }
+			set_de_jure_liege_title = title:d_turnovo
+		}
+	}
+	basileus_set_theme_name_effect = { TITLE = title:d_turnovo  ER = BASILEUS_THEME_PARISTRION_NAME_ER  GREEK = BASILEUS_THEME_PARISTRION_NAME_GREEK }
+	destroy_title = title:d_dobrudja
+	basileus_theme_convert_region_effect = { REGION = custom_roman_paristrion }
+	add_to_global_variable_list = {
+		name = unavailable_unique_decisions
+		target = flag:theme_paristrion_formed
+	}
+}
+
+# Peloponnese — every duchy in custom_roman_peloponnese becomes de jure part of
+# k_krete (counties follow their duchies; the kingdom is then renamed). The lock
+# flag is set by the decision's effect, not here.
+basileus_form_theme_peloponnese_effect = {
+	every_county_in_region = {
+		region = custom_roman_peloponnese
+		limit = { exists = de_jure_liege }
+		de_jure_liege = {
+			set_de_jure_liege_title = title:k_krete
+		}
+	}
+	title:k_krete = {
+		set_capital_county = title:c_korinthos
+	}
+	basileus_set_theme_name_effect = { TITLE = title:k_krete  ER = BASILEUS_THEME_PELOPONNESE_NAME_ER  GREEK = BASILEUS_THEME_PELOPONNESE_NAME_GREEK }
+	basileus_theme_convert_region_effect = { REGION = custom_roman_peloponnese }
+}
+
+basileus_form_theme_hellas_effect = {
+	every_county_in_region = {
+		region = custom_roman_hellas
+		limit = { exists = de_jure_liege }
+		de_jure_liege = {
+			set_de_jure_liege_title = title:k_hellas
+		}
+	}	
+	title:k_hellas = {
+		set_capital_county = title:c_attica
+	}
+	basileus_theme_convert_region_effect = { REGION = custom_roman_hellas }
+}
+
+basileus_form_theme_macedonia_effect = {
+	every_county_in_region = {
+		region = custom_roman_macedonia
+		limit = { exists = de_jure_liege }
+		de_jure_liege = {
+			set_de_jure_liege_title = title:k_thessalonika
+		}
+	}
+	title:k_thessalonika = {
+		set_capital_county = title:c_thessalonika
+	}
+	basileus_set_theme_name_effect = { TITLE = title:k_thessalonika  ER = BASILEUS_THEME_MACEDONIA_NAME_ER  GREEK = BASILEUS_THEME_MACEDONIA_NAME_GREEK }
+	basileus_theme_convert_region_effect = { REGION = custom_roman_macedonia }
+}
+
+# Thrace — elevates d_thrace into the new titular kingdom k_thrace (de jure
+# under e_byzantium), granted to the reorganizer. Name is culture-dynamic via loc.
+basileus_form_theme_thrace_effect = {
+	title:k_thrace = { set_de_jure_liege_title = title:e_byzantium }
+	title:d_thrace = { set_de_jure_liege_title = title:k_thrace }
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:k_thrace = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+	basileus_set_theme_name_effect = { TITLE = title:k_thrace  ER = BASILEUS_THEME_THRAKE_NAME_ER  GREEK = BASILEUS_THEME_THRAKE_NAME_GREEK }
+	# One-shot culture nudge across d_thrace's counties.
+	title:d_thrace = {
+		every_de_jure_county = {
+			limit = { NOT = { culture = root.culture } }
+			random = {
+				chance = 33
+				set_county_culture = root.culture
+			}
+		}
+	}
+}
+
+basileus_form_theme_dioclea_effect = {
+	title:d_rashka = {
+		every_in_de_jure_hierarchy = {
+			limit = { tier = tier_county }
+			set_de_jure_liege_title = title:d_duklja
+		}
+	}
+	basileus_set_theme_name_effect = { TITLE = title:d_duklja  ER = BASILEUS_THEME_DIOCLEA_NAME_ER  GREEK = BASILEUS_THEME_DIOCLEA_NAME_GREEK }
+	destroy_title = title:d_rashka
+	basileus_theme_convert_region_effect = { REGION = custom_roman_dioclea }
+	add_to_global_variable_list = {
+		name = unavailable_unique_decisions
+		target = flag:theme_dioclea_formed
+	}
+}
+
+basileus_form_theme_dalmatia_effect = {
+	
+	every_county_in_region = {
+		region = custom_roman_dalmatia
+		set_de_jure_liege_title = title:d_dalmatia
+	}
+	every_county_in_region = {
+		region = custom_roman_croatia
+		set_de_jure_liege_title = title:d_dalmatia
+	}	
+
+	destroy_title = title:d_ragusa
+	destroy_title = title:d_usora
+	destroy_title = title:d_croatia
+	destroy_title = title:d_bosna
+	destroy_title = title:d_lower_bosna
+	basileus_theme_convert_region_effect = { REGION = custom_roman_dalmatia }
+	add_to_global_variable_list = {
+		name = unavailable_unique_decisions
+		target = flag:theme_dalmatia_formed
+	}
+}
+basileus_form_theme_croatia_effect = {
+	
+	every_county_in_region = {
+		region = custom_roman_croatia
+		set_de_jure_liege_title = title:d_croatia
+	}
+	basileus_set_theme_name_effect = { TITLE = title:d_croatia  ER = BASILEUS_THEME_CROATIA_NAME_ER  GREEK = BASILEUS_THEME_CROATIA_NAME_GREEK }
+	basileus_theme_convert_region_effect = { REGION = custom_roman_croatia }
+	add_to_global_variable_list = {
+		name = unavailable_unique_decisions
+		target = flag:theme_croatia_formed
+	}
+}
+
+basileus_form_theme_syria_effect = {
+
+	every_county_in_region = {
+		region = custom_roman_syria
+		limit = { exists = de_jure_liege }
+		de_jure_liege = {
+			set_de_jure_liege_title = title:k_syria
+		}
+	}
+
+	title:k_syria = {
+		set_capital_county = title:c_antiocheia
+	}
+
+	destroy_title = title:k_cyprus
+	basileus_theme_convert_region_effect = { REGION = custom_roman_syria }
+	add_to_global_variable_list = {
+		name = unavailable_unique_decisions
+		target = flag:theme_syria_formed
+	}
+}
+
+basileus_form_theme_palestina_effect = {
+	
+	every_county_in_region = {
+		region = custom_roman_palestina
+		limit = { exists = de_jure_liege }
+		de_jure_liege = {
+			set_de_jure_liege_title = title:k_jerusalem
+		}
+	}
+
+	basileus_theme_convert_region_effect = { REGION = custom_roman_palestina }
+	add_to_global_variable_list = {
+		name = unavailable_unique_decisions
+		target = flag:theme_palestina_formed
+	}
+}
+
+basileus_form_theme_africa_effect = {
+	
+	every_county_in_region = {
+		region = custom_roman_africae
+		limit = { exists = de_jure_liege }
+		de_jure_liege = {
+			set_de_jure_liege_title = title:k_africa
+		}
+	}
+
+	basileus_set_theme_name_effect = { TITLE = title:k_africa  ER = BASILEUS_THEME_AFRICA_NAME_ER  GREEK = BASILEUS_THEME_AFRICA_NAME_GREEK }
+
+	basileus_theme_convert_region_effect = { REGION = custom_roman_africae }
+	add_to_global_variable_list = {
+		name = unavailable_unique_decisions
+		target = flag:theme_africa_formed
+	}
+}

@@ -1,0 +1,94 @@
+﻿# ============================================================================
+# Senate of Magnaura — culture-conditional dignity names.
+# ============================================================================
+# Each function evaluates the scope character's top_liege culture and returns
+# the appropriate dignity name:
+#   - Greek culture        → Greek terms (Hypatos / Synkletikos / Patrikios)
+#   - Eastern Roman culture → Latinised terms (Hypatus / Senator / Patricius)
+#   - Default fallback     → Greek terms (the Magnaura is fundamentally Byzantine)
+#
+# Used by court position loc keys and tenure trait loc keys (base + each
+# track level). Same function is callable on the player (top liege) or on
+# the trait holder (whose top_liege is the emperor).
+# ============================================================================
+
+GetSenateHypatosName = {
+	type = character
+
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = SENATE_NAME_HYPATOS_LATIN
+	}
+	text = {
+		# Default — Greek
+		localization_key = SENATE_NAME_HYPATOS_GREEK
+	}
+}
+
+GetSenateSenatorName = {
+	type = character
+
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = SENATE_NAME_SENATOR_LATIN
+	}
+	text = {
+		# Default — Greek
+		localization_key = SENATE_NAME_SENATOR_GREEK
+	}
+}
+
+GetSenatePatricianName = {
+	type = character
+
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = SENATE_NAME_PATRICIAN_LATIN
+	}
+	text = {
+		# Default — Greek
+		localization_key = SENATE_NAME_PATRICIAN_GREEK
+	}
+}
+
+# ============================================================
+# Plural forms — used in section headers ("Hypatoi", "Senators", etc.)
+# Same culture switch, separate loc keys for proper Greek/Latin plurals.
+# ============================================================
+
+GetSenateHypatosPlural = {
+	type = character
+
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = SENATE_NAME_HYPATOS_LATIN_PLURAL
+	}
+	text = {
+		localization_key = SENATE_NAME_HYPATOS_GREEK_PLURAL
+	}
+}
+
+GetSenateSenatorPlural = {
+	type = character
+
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = SENATE_NAME_SENATOR_LATIN_PLURAL
+	}
+	text = {
+		localization_key = SENATE_NAME_SENATOR_GREEK_PLURAL
+	}
+}
+
+GetSenatePatricianPlural = {
+	type = character
+
+	text = {
+		trigger = { top_liege = { culture = culture:eastern_roman } }
+		localization_key = SENATE_NAME_PATRICIAN_LATIN_PLURAL
+	}
+	text = {
+		localization_key = SENATE_NAME_PATRICIAN_GREEK_PLURAL
+	}
+}
+

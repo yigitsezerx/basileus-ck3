@@ -1,0 +1,11 @@
+basileus_latin_classics = {
+	type = book
+	can_be_reforged = no
+	can_be_combined = no
+	quality = quality_epic
+	
+	modifier = {
+		learning = 2
+		cultural_fascination_progress_add = 0.1
+	}
+}

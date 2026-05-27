@@ -1,0 +1,54 @@
+# Tradition Overrides for Roman Culture
+# This tradition is a copy of the vanilla imperial_tagmata but unlocks Roman versions of the units.
+
+tradition_imperial_tagmata_roman = {
+	category = regional
+
+	layers = {
+		0 = martial
+		1 = mediterranean
+		4 = imperial_tagmata.dds 
+	}
+
+	is_shown = {
+		OR = {
+			this = culture:eastern_roman
+			this = culture:western_roman
+		}
+	}
+	
+	can_pick = {
+		OR = {
+			this = culture:eastern_roman
+			this = culture:western_roman
+		}
+	}
+	
+	parameters = {
+		unlock_maa_cataphract_roman = yes
+		unlock_maa_akritai_roman = yes
+		unlock_maa_ballistrai_roman = yes
+		unlock_maa_skoutatoi_roman = yes
+		frontier_themes_borrow_neighbor_troops = yes
+	}
+	character_modifier = {
+		heavy_cavalry_max_size_add = 2
+		counter_efficiency = 0.1
+		knight_effectiveness_mult = -0.25
+		men_at_arms_title_limit = 1
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+		}
+	}
+	
+	ai_will_do = {
+		value = 400
+	}
+}

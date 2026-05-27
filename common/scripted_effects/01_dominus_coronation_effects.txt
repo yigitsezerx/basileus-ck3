@@ -1,0 +1,98 @@
+# Note: dominus_coronation_advance_ceremony_effect was removed.
+# The ceremony advancement (6100/6101/6102) is handled by coronation_events.6131's
+# own else_if/else branches for all attendees. Our naming events (0001/0002)
+# are character_events that fire only for the host player and need no ceremony logic.
+
+# Applies the correct specialised modifier based on the parent's skill profile.
+# Call with $ANCESTOR$ = father OR $ANCESTOR$ = mother
+dominus_apply_ancestor_echo_effect = {
+	$ANCESTOR$ = { save_scope_as = echo_ancestor }
+	set_variable = {
+		name = chosen_regnal_ancestor
+		value = scope:echo_ancestor
+	}
+	set_character_flag = has_custom_regnal_name
+	
+	if = {
+		limit = {
+			scope:echo_ancestor = {
+				OR = {
+					has_trait_category = education_martial
+					martial >= 12
+				}
+			}
+		}
+		add_character_modifier = { name = dominus_echo_conqueror duration = 3650 }
+	}
+	else_if = {
+		limit = {
+			scope:echo_ancestor = {
+				OR = {
+					has_trait_category = education_diplomacy
+					diplomacy >= 12
+				}
+			}
+		}
+		add_character_modifier = { name = dominus_echo_peacemaker duration = 3650 }
+	}
+	else_if = {
+		limit = {
+			scope:echo_ancestor = {
+				OR = {
+					has_trait_category = education_stewardship
+					stewardship >= 12
+				}
+			}
+		}
+		add_character_modifier = { name = dominus_echo_builder duration = 3650 }
+	}
+	else_if = {
+		limit = {
+			scope:echo_ancestor = {
+				OR = {
+					has_trait_category = education_intrigue
+					intrigue >= 12
+				}
+			}
+		}
+		add_character_modifier = { name = dominus_echo_schemer duration = 3650 }
+	}
+	else_if = {
+		limit = {
+			scope:echo_ancestor = {
+				OR = {
+					has_trait_category = education_learning
+					learning >= 12
+				}
+			}
+		}
+		add_character_modifier = { name = dominus_echo_philosopher duration = 3650 }
+	}
+	else = {
+		add_character_modifier = { name = dominus_echo_ancestors duration = 3650 }
+	}
+}
+
+
+# Saves the current name of the character to a hidden donor character
+# Used to display "Born: [Name]" after a regnal rename
+dominus_save_birth_name_effect = {
+	# Force refresh to clear any old broken variables
+	remove_variable = dominus_birth_name_char
+	
+	create_character = {
+		template_character = root
+	}
+	last_created_character = {
+		# Marking them important and immortal prevents pruning
+		set_character_flag = is_important_for_scripting
+		set_immortal = yes
+		save_scope_as = identity_holder
+	}
+	set_variable = { 
+		name = dominus_birth_name_char 
+		value = scope:identity_holder 
+	}
+	add_character_flag = has_custom_regnal_name
+}
+

@@ -1,0 +1,587 @@
+﻿# ============================================================================
+# Senate of Magnaura — tenure traits with leveled tracks.
+# ============================================================================
+# Three single traits (hypatos_tenure, senator_tenure, patrician_tenure) each
+# using a track with two thresholds. XP accrues +1 per year served (yearly
+# pulse). Effects in each threshold STACK on top of baseline.
+#
+# Tier progression (per position):
+#   Year 0-4   — base (Junior) — baseline effects active
+#   Year 5-14  — level 1 (Veteran) — adds track[5] effects
+#   Year 15+   — level 2 (Elder) — adds track[15] effects on top of track[5]
+#
+# Plus 3 "emeritus" traits granted when revoked WHILE ALIVE. Characters who
+# die in office keep their active trait + accumulated XP (historical record).
+# ============================================================================
+
+# ============================================================
+# HYPATOS — leveled tenure trait
+# ============================================================
+hypatos_tenure = {
+	category = fame
+	icon = "hypatus.dds"
+
+	shown_in_ruler_designer = no
+
+	# Baseline (Junior) — applies as soon as appointed.
+	monthly_prestige = 0.2
+	diplomacy = 2
+
+	track = {
+		# Veteran tier — 10 years served.
+		50 = {
+			monthly_prestige = 0.02   # cumulative with baseline → 0.5/mo
+			diplomacy = 1            # cumulative → 3
+			learning = 2
+			same_culture_opinion = 5
+			monthly_influence_mult = 0.05 # Boost to gaining influence
+		}
+		# Elder tier — 20 years served.
+		100 = {
+			monthly_prestige = 0.02   # cumulative → 0.7/mo
+			diplomacy = 2           # cumulative → 4
+			learning = 2             # cumulative → 3
+			same_culture_opinion = 5 # cumulative → 10
+			monthly_influence_mult = 0.05 # Boost to gaining influence
+		}
+	}
+
+	# Dynamic name with culture switch baked into the triggers.
+	# Returns fully STATIC loc strings — no Custom calls inside the loc
+	# values, so the engine's level-vs-base detection works cleanly
+	# (matches the autocrator_ercf pattern that displays without empty parens).
+	name = {
+		first_valid = {
+			# Elder tier — Latin (Eastern Roman) culture
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = hypatos_tenure value >= 100 }  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_hypatos_tenure_level_2_latin
+			}
+			# Elder tier — Greek (default)
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = hypatos_tenure value >= 100 } }
+				desc = trait_hypatos_tenure_level_2_greek
+			}
+			# Veteran tier — Latin
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = hypatos_tenure value >= 50 }  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_hypatos_tenure_level_1_latin
+			}
+			# Veteran tier — Greek (default)
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = hypatos_tenure value >= 50 } top_liege = { culture = culture:greek } }
+				desc = trait_hypatos_tenure_level_1_greek
+			}
+			# Base (no level) — Latin
+			triggered_desc = {
+				trigger = { exists = this  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_hypatos_tenure_latin
+			}
+			# Base (no level) — Greek
+			triggered_desc = {
+				trigger = { exists = this  top_liege = { culture = culture:greek } }
+				desc = trait_hypatos_tenure_greek
+			}			
+			# Base (no level) (default)
+			desc = trait_hypatos_tenure_consul
+		}
+	}
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = hypatos_tenure value >= 100 }  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_hypatos_tenure_level_2_latin_desc
+			}
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = hypatos_tenure value >= 100 } }
+				desc = trait_hypatos_tenure_level_2_greek_desc
+			}
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = hypatos_tenure value >= 50 }  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_hypatos_tenure_level_1_latin_desc
+			}
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = hypatos_tenure value >= 50 } }
+				desc = trait_hypatos_tenure_level_1_greek_desc
+			}
+			triggered_desc = {
+				trigger = { exists = this  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_hypatos_tenure_latin_desc
+			}
+			desc = trait_hypatos_tenure_greek_desc
+		}
+	}
+}
+
+# ============================================================
+# SENATOR — leveled tenure trait
+# ============================================================
+senator_tenure = {
+	category = fame
+	icon = "senator.dds"
+
+	shown_in_ruler_designer = no
+
+	# Baseline (Junior).
+	monthly_prestige = 0.02
+	diplomacy = 1
+	track = {
+		# Veteran tier — 10 years served.
+		50 = {
+			monthly_prestige = 0.1   # → 0.25/mo
+			diplomacy = 1            # → 2
+			same_culture_opinion = 5
+			monthly_influence_mult = 0.02 # Boost to gaining influence
+		}
+		# Elder tier — 20 years served.
+		100 = {
+			monthly_prestige = 0.1   # → 0.35/mo
+			diplomacy = 1            # → 3
+			same_culture_opinion = 5
+			monthly_influence_mult = 0.03 # Boost to gaining influence
+		}
+	}
+
+	name = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = senator_tenure value >= 100 }  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_senator_tenure_level_2_latin
+			}
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = senator_tenure value >= 100 } }
+				desc = trait_senator_tenure_level_2_greek
+			}
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = senator_tenure value >= 50 }  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_senator_tenure_level_1_latin
+			}
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = senator_tenure value >= 50 } }
+				desc = trait_senator_tenure_level_1_greek
+			}
+			triggered_desc = {
+				trigger = { exists = this  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_senator_tenure_latin
+			}
+			# Base (no level) — Greek
+			triggered_desc = {
+				trigger = { exists = this  top_liege = { culture = culture:greek } }
+				desc = trait_senator_tenure_greek
+			}			
+			desc = trait_senator_tenure_senator
+		}
+	}
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = senator_tenure value >= 100 }  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_senator_tenure_level_2_latin_desc
+			}
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = senator_tenure value >= 100 } }
+				desc = trait_senator_tenure_level_2_greek_desc
+			}
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = senator_tenure value >= 50 }  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_senator_tenure_level_1_latin_desc
+			}
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = senator_tenure value >= 50 } }
+				desc = trait_senator_tenure_level_1_greek_desc
+			}
+			triggered_desc = {
+				trigger = { exists = this  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_senator_tenure_latin_desc
+			}
+			desc = trait_senator_tenure_greek_desc
+		}
+	}
+}
+
+# ============================================================
+# PATRICIAN — leveled tenure trait
+# ============================================================
+patrician_tenure = {
+	category = fame
+	icon = "patrician.dds"
+
+	shown_in_ruler_designer = no
+
+	# Baseline (Junior).
+	monthly_prestige = 0.02
+	vassal_opinion = 3
+	track = {
+		# Veteran tier — 10 years served.
+		50 = {
+			monthly_prestige = 0.1   # → 0.2/mo
+			diplomacy = 1
+			vassal_opinion = 2       # → 5
+		}
+		# Elder tier — 20 years served.
+		100 = {
+			monthly_prestige = 0.1   # → 0.3/mo
+			diplomacy = 1            # → 2
+			vassal_opinion = 3       # → 8
+		}
+	}
+
+	name = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = patrician_tenure value >= 100 }  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_patrician_tenure_level_2_latin
+			}
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = patrician_tenure value >= 100 } }
+				desc = trait_patrician_tenure_level_2_greek
+			}
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = patrician_tenure value >= 50 }  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_patrician_tenure_level_1_latin
+			}
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = patrician_tenure value >= 50 } }
+				desc = trait_patrician_tenure_level_1_greek
+			}
+			triggered_desc = {
+				trigger = { exists = this  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_patrician_tenure_latin
+			}
+			# Base (no level) — Greek
+			triggered_desc = {
+				trigger = { exists = this  top_liege = { culture = culture:greek } }
+				desc = trait_patrician_tenure_greek
+			}			
+			desc = trait_patrician_tenure_patrician
+		}
+	}
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = patrician_tenure value >= 100 }  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_patrician_tenure_level_2_latin_desc
+			}
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = patrician_tenure value >= 100 } }
+				desc = trait_patrician_tenure_level_2_greek_desc
+			}
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = patrician_tenure value >= 50 }  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_patrician_tenure_level_1_latin_desc
+			}
+			triggered_desc = {
+				trigger = { exists = this  has_trait_xp = { trait = patrician_tenure value >= 50 } }
+				desc = trait_patrician_tenure_level_1_greek_desc
+			}
+			triggered_desc = {
+				trigger = { exists = this  top_liege = { culture = culture:eastern_roman } }
+				desc = trait_patrician_tenure_latin_desc
+			}
+			desc = trait_patrician_tenure_greek_desc
+		}
+	}
+}
+
+# ============================================================
+# Emeritus traits (revoked while alive). Not leveled — terminal state.
+# ============================================================
+
+# ----------------------------------------------------------------
+# Three base emeritus traits, dynamic culture switching via name
+# block — same pattern as basileus and tenure. Variant trait
+# shells are kept for save-compat migration.
+# ----------------------------------------------------------------
+
+hypatos_emeritus = {
+	category = fame
+	icon = "former_hypatus.dds"
+
+	monthly_prestige = 0.02
+	same_culture_opinion = 5
+
+	shown_in_ruler_designer = no
+
+	name = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = this  culture = culture:eastern_roman }
+				desc = trait_hypatos_emeritus_latin
+			}
+			triggered_desc = {
+				trigger = { exists = this  culture = culture:greek }
+				desc = trait_hypatos_emeritus_greek
+			}
+			desc = trait_hypatos_emeritus_consul
+		}
+	}
+}
+
+senator_emeritus = {
+	category = fame
+	icon = "former_senator.dds"
+
+	monthly_prestige = 0.02
+	same_culture_opinion = 3
+
+	shown_in_ruler_designer = no
+
+	name = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = this  culture = culture:eastern_roman }
+				desc = trait_senator_emeritus_latin
+			}
+			triggered_desc = {
+				trigger = { exists = this  culture = culture:greek }
+				desc = trait_senator_emeritus_greek
+			}
+			desc = trait_senator_emeritus_senator
+		}
+	}
+}
+
+patrician_emeritus = {
+	category = fame
+	icon = "former_patrician.dds"
+
+	monthly_prestige = 0.02
+
+	shown_in_ruler_designer = no
+
+	name = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = this  culture = culture:eastern_roman }
+				desc = trait_patrician_emeritus_latin
+			}
+			triggered_desc = {
+				trigger = { exists = this  culture = culture:greek }
+				desc = trait_patrician_emeritus_greek
+			}
+			desc = trait_patrician_emeritus_patrician
+		}
+	}
+}
+
+# ----------------------------------------------------------------
+# Deprecated emeritus culture-variant shells — kept for save-compat.
+# Migration via yearly resync to base trait.
+# ----------------------------------------------------------------
+
+hypatos_emeritus_greek = {
+	category = fame
+	icon = "former_hypatus.dds"
+	monthly_prestige = 0.02
+	same_culture_opinion = 5
+	shown_in_ruler_designer = no
+}
+
+hypatos_emeritus_latin = {
+	category = fame
+	icon = "former_hypatus.dds"
+	monthly_prestige = 0.02
+	same_culture_opinion = 5
+	shown_in_ruler_designer = no
+}
+
+senator_emeritus_greek = {
+	category = fame
+	icon = "former_senator.dds"
+	monthly_prestige = 0.02
+	same_culture_opinion = 3
+	shown_in_ruler_designer = no
+}
+
+senator_emeritus_latin = {
+	category = fame
+	icon = "former_senator.dds"
+	monthly_prestige = 0.02
+	same_culture_opinion = 3
+	shown_in_ruler_designer = no
+}
+
+patrician_emeritus_greek = {
+	category = fame
+	icon = "former_patrician.dds"
+	monthly_prestige = 0.02
+	shown_in_ruler_designer = no
+}
+
+patrician_emeritus_latin = {
+	category = fame
+	icon = "former_patrician.dds"
+	monthly_prestige = 0.02
+	shown_in_ruler_designer = no
+}
+
+# ============================================================
+# Ascended traits — granted when a former senate dignitary
+# rises to hold e_byzantium themselves. Replaces the matching
+# emeritus (or active tenure) trait at the moment of ascension.
+# Multiple ascended traits can coexist (a character who served
+# in several senate roles before reaching the throne).
+# ============================================================
+
+# ----------------------------------------------------------------
+# Three base traits per role — one each for hypatos / senator /
+# patrician. The displayed name switches dynamically by the
+# character's culture via the `name = { first_valid }` block,
+# mirroring the tenure-trait pattern.
+#
+# CRITICAL: do NOT define `trait_hypatos_basileus` etc. as
+# top-level loc keys. The engine evaluates that key separately
+# in a scope-less context and concatenates it as a parenthetical
+# next to the name_block result — the "(Former (Ascended))"
+# doubling bug. Tenure traits avoid it by simply not defining
+# the top-level loc key; we do the same here.
+#
+# The _greek / _latin trait defs below are KEPT (not removed) so
+# any existing save that still references them keeps working
+# while the yearly resync migrates them onto the base trait.
+# ----------------------------------------------------------------
+
+hypatos_basileus = {
+	category = fame
+	icon = "hypatus.dds"
+
+	monthly_prestige = 0.1
+	monthly_legitimacy_add = 0.2
+	same_culture_opinion = 10
+	powerful_vassal_opinion = 10
+
+	shown_in_ruler_designer = no
+
+	name = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = this  culture = culture:eastern_roman }
+				desc = trait_hypatos_basileus_latin
+			}
+			triggered_desc = {
+				trigger = { exists = this  culture = culture:greek }
+				desc = trait_hypatos_basileus_greek
+			}
+			desc = trait_hypatos_basileus_consul
+		}
+	}
+}
+
+senator_basileus = {
+	category = fame
+	icon = "senator.dds"
+
+	monthly_prestige = 0.1
+	monthly_legitimacy_add = 0.1
+	same_culture_opinion = 5
+	powerful_vassal_opinion = 5
+
+	shown_in_ruler_designer = no
+
+	name = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = this  culture = culture:eastern_roman }
+				desc = trait_senator_basileus_latin
+			}
+			triggered_desc = {
+				trigger = { exists = this  culture = culture:greek }
+				desc = trait_senator_basileus_greek
+			}
+			desc = trait_senator_basileus_senator
+		}
+	}
+}
+
+patrician_basileus = {
+	category = fame
+	icon = "patrician.dds"
+
+	monthly_prestige = 0.1
+	same_culture_opinion = 3
+	vassal_opinion = 5
+
+	shown_in_ruler_designer = no
+
+	name = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = this  culture = culture:eastern_roman }
+				desc = trait_patrician_basileus_latin
+			}
+			triggered_desc = {
+				trigger = { exists = this  culture = culture:greek }
+				desc = trait_patrician_basileus_greek
+			}
+			desc = trait_patrician_basileus_patrician
+		}
+	}
+}
+
+# ----------------------------------------------------------------
+# Deprecated culture-variant trait shells — kept so existing saves
+# referencing them still load. The yearly resync effect strips
+# them and grants the corresponding base trait.
+# Safe to delete once all live saves have migrated.
+# ----------------------------------------------------------------
+
+hypatos_basileus_greek = {
+	category = fame
+	icon = "hypatus.dds"
+	monthly_prestige = 0.1
+	monthly_legitimacy_add = 0.2
+	same_culture_opinion = 10
+	powerful_vassal_opinion = 10
+	shown_in_ruler_designer = no
+}
+
+hypatos_basileus_latin = {
+	category = fame
+	icon = "hypatus.dds"
+	monthly_prestige = 0.1
+	monthly_legitimacy_add = 0.2
+	same_culture_opinion = 10
+	powerful_vassal_opinion = 10
+	shown_in_ruler_designer = no
+}
+
+senator_basileus_greek = {
+	category = fame
+	icon = "senator.dds"
+	monthly_prestige = 0.1
+	monthly_legitimacy_add = 0.1
+	same_culture_opinion = 5
+	powerful_vassal_opinion = 5
+	shown_in_ruler_designer = no
+}
+
+senator_basileus_latin = {
+	category = fame
+	icon = "senator.dds"
+	monthly_prestige = 0.1
+	monthly_legitimacy_add = 0.1
+	same_culture_opinion = 5
+	powerful_vassal_opinion = 5
+	shown_in_ruler_designer = no
+}
+
+patrician_basileus_greek = {
+	category = fame
+	icon = "patrician.dds"
+	monthly_prestige = 0.1
+	same_culture_opinion = 3
+	vassal_opinion = 5
+	shown_in_ruler_designer = no
+}
+
+patrician_basileus_latin = {
+	category = fame
+	icon = "patrician.dds"
+	monthly_prestige = 0.1
+	same_culture_opinion = 3
+	vassal_opinion = 5
+	shown_in_ruler_designer = no
+}

@@ -1,0 +1,65 @@
+basileus_eparch_appointed_on_action = {
+	trigger = {
+		# root is now the character (The Praefectus)
+		liege_or_court_owner = {
+			OR = {
+				has_title = title:e_byzantium
+				has_title = title:h_roman_empire
+			}
+		}
+	}
+	effect = {
+		# We target the liege to appoint us
+		liege_or_court_owner = {
+			appoint_court_position = {
+				recipient = root
+				court_position = eparch_court_position
+			}
+		}
+	}
+}
+
+basileus_patriarch_appointed_on_action = {
+	trigger = {
+		# root is the character who gained k_orthodox
+		exists = root
+		OR = {
+			# Case 1: The holder is a vassal of the Byzantine Emperor
+			AND = {
+				exists = liege
+				liege = {
+					OR = {
+						has_title = title:e_byzantium
+						has_title = title:h_roman_empire
+					}
+				}
+			}
+			# Case 2: The holder IS the Byzantine Emperor (unlikely but safe)
+			OR = {
+				has_title = title:e_byzantium
+				has_title = title:h_roman_empire
+			}
+		}
+	}
+	effect = {
+		# Find the Byzantine Emperor and assign us as their court chaplain
+		if = {
+			limit = {
+				exists = liege
+				liege = {
+					OR = {
+						has_title = title:e_byzantium
+						has_title = title:h_roman_empire
+					}
+				}
+			}
+			liege = {
+				assign_councillor_type = {
+					type = councillor_court_chaplain
+					remove_existing_councillor = yes
+					target = root
+				}
+			}
+		}
+	}
+}
