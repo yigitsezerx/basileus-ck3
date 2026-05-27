@@ -1,0 +1,318 @@
+﻿# Geographical regions
+# Regions can be declared with one or more of the following fields:
+#	hegemonies = { }, takes de-jure hegemony title names declared in landed_titles.txts 
+#	empires = { }, takes de-jure empire title names declared in landed_titles.txts 
+#	kingdoms = { }, takes de-jure kingdom title names declared in landed_titles.txts 
+#	duchies = { }, takes de-jure duchy title names declared in landed_titles.txt
+#	counties = { }, takes de-jure county title names declared in landed_titles.txt
+#	provinces = { }, takes province id numbers declared in /history/provinces
+#	regions = { }, a region can also include other regions, however the subregions needs to be declared before the parent region.
+#		E.g. If the region world_europe contains the region world_europe_west then world_europe_west needs to be declared as a region before (i.e. higher up in this file) world_europe.
+
+# Regions provide the following modifiers:
+# key + _development_growth
+# key + _development_growth_factor
+# This requires "generate_modifiers = yes" in the region
+
+###########################################################################
+# World Regions
+#	These groups are mutually exclusive on the same tier & should cover every part of the map
+###########################################################################
+
+# world_europe
+# > world_europe_west
+# >> world_europe_west_britannia
+# >> world_europe_west_germania
+# >> world_europe_west_francia
+# >> world_europe_west_iberia
+# > world_europe_north
+# > world_europe_south
+# >> world_europe_south_east
+# >> world_europe_south_italy
+# > world_europe_east
+
+# world_asia_minor
+
+# world_middle_east
+# > world_middle_east_jerusalem
+# > world_middle_east_arabia
+# > world_middle_east_persia
+
+# world_india
+# > world_india_deccan
+# > world_india_bengal
+# > world_india_rajastan
+# > custom_lanka
+
+# world_africa
+# > world_africa_north
+# >> world_africa_north_west
+# >> world_africa_north_east
+# > world_africa_west
+# > world_africa_east
+# > world_africa_sahara
+
+# world_steppe
+# > world_steppe_tarim
+# > world_steppe_west
+# > world_steppe_central
+# > world_steppe_east
+
+# world_siberia
+
+# world_tibet
+
+# world_burma
+# > custom_arakan_mountains
+
+# world_asia
+# > world_asia_east
+# >> world_asia_korea
+# >> world_asia_china
+# >> world_asia_japan
+# >> world_asia_sakhalin_hokkaido
+# > world_asia_southeast
+# >> world_asia_southeast_mainland
+# >>> world_asia_vietnam
+# >>> world_asia_cambodia
+# >>> world_asia_thailand
+# >>> world_asia_malaysia
+# >> world_asia_southeast_islands
+# >>> world_asia_philippines
+# >>> world_asia_borneo
+# >>> world_asia_sulawesi_maluku
+# >>> world_asia_indonesia
+# > world_asia_north_east
+
+# sea_atlantic_ocean
+# > sea_north_atlantic
+# >> sea_baltic_sea
+# >> sea_north_sea
+# >> sea_english_channel
+# >> sea_irish_sea
+# >> sea_bay_of_biscay
+# >> sea_macaronesia
+# >> sea_mediterranean_sea
+# >>> sea_western_mediterranean_sea
+# >>> sea_ionian_sea
+# >>> sea_adriatic_sea
+# >>> sea_aegean_sea
+# >>> sea_black_sea
+# > sea_south_atlantic
+# >> sea_gulf_of_guinea
+
+# sea_indian_ocean
+# > sea_bay_of_somalia
+# > sea_swahili_coast
+# > sea_red_sea
+# > sea_gulf_of_aden
+# > sea_persian_gulf
+# > sea_arabian_sea
+# > sea_bay_of_bengal
+
+# sea_inland_steppe_seas
+# > sea_caspian_sea
+# > sea_aral_sea
+
+custom_heartlands_ere = {
+	duchies = {
+		# balkans
+		d_thrace
+		d_strymon
+		d_thessalonika
+		d_thessaly
+		d_epirus
+		d_cephalonia
+		d_achaia
+		d_athens
+		d_aegean_islands
+		d_dyrrachion
+
+		# anatolia
+		d_optimatoi
+		d_opsikion
+		d_thracesia
+		d_cibyrrhaeot
+		d_bucellaria
+		d_paphlagonia
+		d_armeniac
+		d_chaldia
+		d_anatolia
+		d_cappadocia
+		d_charsianon
+		d_sebasteia
+	}
+	counties = {
+		# anatolia
+		c_cilicia
+		c_satala
+		c_seleucia
+	}
+}
+custom_justinian_ere = {
+	regions = {
+		# italy
+		world_europe_south_italy
+		# syria & palestine
+		custom_roman_syria_palestina
+	}
+	
+	duchies = {
+		# balkans
+		d_rashka
+		d_duklja
+		d_ragusa
+		d_usora
+		d_dalmatia
+		d_bosna
+		d_lower_bosna
+		d_croatia
+		d_aegean_islands
+
+		# egypt
+		d_sinai
+		d_delta
+		d_cairo
+		d_alexandria
+		d_al-said
+		d_al-wahat
+		d_eastern_desert
+
+		#northern africa
+		d_syrte
+		d_tripolitania
+		d_gabes
+		d_kairouan
+		d_tunis
+		d_kroumerie
+		d_bejaia
+		d_alger
+	}
+}
+custom_roman_orient = {
+	regions = {
+		custom_roman_syria_palestina
+		custom_roman_aegyptus
+		custom_roman_cyrenaica
+		ghw_region_greece
+		ghw_region_thessalonika
+		ghw_region_anatolia
+	}
+	duchies = {
+		# Bulgaria
+		# d_vidin
+		# d_turnovo
+		# d_dobrudja
+		#d_bulgaria
+		#d_philippopolis
+		# Crete
+		d_krete
+		# Cyprus
+		d_cyprus
+		# Edessa
+		d_edessa d_diyarmudar d_palmyra
+		# Jerusalem
+		d_amman
+		# Arabia
+		# d_shammar
+		# Egypt
+		d_al-wahat d_eastern_desert
+		d_aegean_islands
+	}
+}
+custom_roman_haemimontus = {
+	duchies = {
+		d_bulgaria
+		d_philippopolis
+	}
+}
+custom_roman_paristrion = {
+	duchies = {
+		# d_vidin
+		d_turnovo
+		d_dobrudja
+	}
+}
+custom_roman_peloponnese = {
+	duchies = {
+		d_achaia
+		d_krete
+		d_aegean_islands
+	}
+}
+custom_roman_hellas = {
+	duchies = {
+		d_athens
+		d_thessaly
+	}
+}
+custom_roman_macedonia = {
+	duchies = {
+		d_thessalonika
+		d_strymon
+	}
+}
+custom_roman_thrace = {
+	duchies = {
+		d_thrace
+	}
+}
+custom_roman_dioclea = {
+	duchies = {
+		d_duklja
+		d_rashka
+	}
+}
+custom_roman_dalmatia = {
+	duchies = {
+		d_ragusa
+		d_usora
+		d_dalmatia
+	}
+	counties = {
+		c_lika
+		# c_gacka
+		c_cherso
+	}
+}
+custom_roman_croatia = {
+	duchies = {
+		d_bosna
+		d_lower_bosna
+		d_croatia
+	}
+}
+custom_roman_syria = {
+	duchies = {
+		d_cyprus
+		d_antioch
+		d_edessa
+		d_diyarbakr
+		d_diyarmudar
+		d_aleppo
+		d_palmyra
+		d_homs
+		d_lebanon
+		d_damascus
+	}
+}
+custom_roman_palestina = {
+	duchies = {
+		d_amman
+		d_palestine
+		d_urdunn
+		d_oultrejourdain
+		d_sinai
+	}
+}
+custom_roman_africae = {
+	duchies = {
+		d_syrte
+		d_tripolitania
+		d_gabes
+		d_kairouan
+		d_tunis
+		d_kroumerie
+		d_bejaia
+	}
+}
